@@ -1,0 +1,7 @@
+name: Minecraftsurvival
+version: ${project.version}
+main: de.thomas.minecraftsurvival.Minecraftsurvival
+api-version: 1.16
+prefix: McS
+authors: [ DerEchte_ ]
+description: A Minecraft-Survival Plugin that includes some smart features
