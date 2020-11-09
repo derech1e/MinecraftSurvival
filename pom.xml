@@ -78,4 +78,17 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <scm>
+        <developerConnection>scm:git:https://github.com/derech1e/MinecraftSurvival.git</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub</name>
+            <url>https://github.com/derech1e/MinecraftSurvival.git</url>
+        </repository>
+    </distributionManagement>
+
 </project>

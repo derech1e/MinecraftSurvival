@@ -1,7 +1,7 @@
 package de.thomas.minecraftsurvival;
 
 import de.thomas.commands.TpSpawnCommand;
-import de.thomas.listeners.InteractListener;
+import de.thomas.listeners.CompassListener;
 import de.thomas.utils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -29,7 +29,7 @@ public final class MinecraftSurvival extends JavaPlugin {
 
     private void registerListeners() {
         PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new InteractListener(), this);
+        pluginManager.registerEvents(new CompassListener(), this);
 
         LOGGER.info("All Events registered!");
     }
