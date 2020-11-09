@@ -1,7 +1,10 @@
-name: Minecraftsurvival
+name: MinecraftSurvival
 version: ${project.version}
-main: de.thomas.minecraftsurvival.Minecraftsurvival
+main: de.thomas.minecraftsurvival.MinecraftSurvival
 api-version: 1.16
-prefix: McS
-authors: [ DerEchte_ ]
-description: A Minecraft-Survival Plugin that includes some smart features
+prefix: [ BM311 ]
+authors: [ Thomas ]
+description: Ein Plugin für das BM311 Survival Projekt
+commands:
+  spawn:
+    description: Telepotiere dich zum Spawn

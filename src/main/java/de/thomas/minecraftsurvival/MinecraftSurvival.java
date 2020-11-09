@@ -1,40 +1,42 @@
 package de.thomas.minecraftsurvival;
 
-import de.thomas.minecraftsurvival.commands.TpSpawnCommand;
-import de.thomas.minecraftsurvival.listeners.InteractListener;
-import de.thomas.minecraftsurvival.utils.Message;
+import de.thomas.commands.TpSpawnCommand;
+import de.thomas.listeners.InteractListener;
+import de.thomas.utils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.slf4j.Logger;
 
 import java.util.Objects;
-import java.util.logging.Logger;
 
 public final class MinecraftSurvival extends JavaPlugin {
 
+    public final Logger LOGGER = getSLF4JLogger();
+
     @Override
     public void onEnable() {
-        Logger.getGlobal().info("Enabled Plugin " + Message.PREFIX);
-        Logger.getGlobal().info("Start to Init registries.");
+        LOGGER.info("Enabled Plugin " + Message.PREFIX);
+        LOGGER.info("Start to Init registries.");
         registerCommands();
         registerListeners();
     }
 
     @Override
     public void onDisable() {
-        Logger.getGlobal().info("Disabled Plugin " + Message.PREFIX);
+        LOGGER.info("Disabled Plugin " + Message.PREFIX);
     }
 
     private void registerListeners() {
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new InteractListener(), this);
 
-        Logger.getGlobal().info("All Events registered!");
+        LOGGER.info("All Events registered!");
     }
 
     private void registerCommands() {
         Objects.requireNonNull(getCommand("spawn")).setExecutor(new TpSpawnCommand());
 
-        Logger.getGlobal().info("All Commands registered!");
+        LOGGER.info("All Commands registered!");
     }
 }
