@@ -10,10 +10,10 @@ public class PlayerConnectionListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        event.setJoinMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.DARK_GRAY + "]" + ChatColor.RESET + event.getPlayer().getName());
+        event.setJoinMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + event.getPlayer().getName());
     }
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        event.setQuitMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "]" + ChatColor.RESET + event.getPlayer().getName());
+        event.setQuitMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + event.getPlayer().getName());
     }
 }

@@ -6,6 +6,7 @@ import de.thomas.listeners.CompassListener;
 import de.thomas.listeners.PlayerConnectionListener;
 import de.thomas.listeners.PlayerGlideListener;
 import de.thomas.listeners.PlayerSleepListener;
+import de.thomas.utils.RestartThread;
 import de.thomas.utils.config.ConfigLoader;
 import de.thomas.utils.message.Message;
 import org.bukkit.Bukkit;
@@ -13,6 +14,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Objects;
 
 public final class MinecraftSurvival extends JavaPlugin {
@@ -38,6 +42,10 @@ public final class MinecraftSurvival extends JavaPlugin {
         LOGGER.info("Load Config File...");
         ConfigLoader.loadConfig();
         LOGGER.info("Loaded Config File.");
+
+        //Load Threads
+        new RestartThread();
+        LOGGER.info("Started Restart Thread");
     }
 
     @Override

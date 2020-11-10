@@ -37,11 +37,10 @@ public class PlayerGlideListener implements Listener {
 
     @EventHandler
     public void onPlayerDamageEvent(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
         if (event.getCause().equals(EntityDamageEvent.DamageCause.FALL))
             if (glidingPlayers.contains(player))
                 event.setCancelled(true);
-
-
     }
 }
