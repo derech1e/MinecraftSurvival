@@ -7,6 +7,11 @@ authors: [ Thomas ]
 description: Ein Plugin für das BM311 Survival Projekt
 commands:
   glidearea:
-    desciption: Setzte den Mittelpunkt der GlideArea
-    name: /glidearea [radius]
+    description: Setzte den Mittelpunkt der GlideArea
+    usage: /glidearea [radius]
     aliases: [ga, area]
+
+  glideboost:
+    description: Aktiviere oder Deaktiviere den GlideBoost
+    usage: /glideboost
+    aliases: [gb]

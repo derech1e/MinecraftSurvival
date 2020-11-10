@@ -1,6 +1,7 @@
 package de.thomas.minecraftsurvival;
 
 import de.thomas.commands.GlideAreaCommand;
+import de.thomas.commands.GlideBoostCommand;
 import de.thomas.listeners.CompassListener;
 import de.thomas.listeners.PlayerConnectionListener;
 import de.thomas.listeners.PlayerGlideListener;
@@ -12,13 +13,16 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 
-import javax.annotation.Nonnull;
 import java.util.Objects;
 
 public final class MinecraftSurvival extends JavaPlugin {
 
-    public final Logger LOGGER = getSLF4JLogger();
     private static MinecraftSurvival INSTANCE;
+    public final Logger LOGGER = getSLF4JLogger();
+
+    public static MinecraftSurvival getINSTANCE() {
+        return INSTANCE;
+    }
 
     @Override
     public void onEnable() {
@@ -56,10 +60,7 @@ public final class MinecraftSurvival extends JavaPlugin {
 
     private void registerCommands() {
         Objects.requireNonNull(getCommand("glidearea")).setExecutor(new GlideAreaCommand());
+        Objects.requireNonNull(getCommand("glideboost")).setExecutor(new GlideBoostCommand());
         LOGGER.info("All Commands registered!");
-    }
-
-    public static MinecraftSurvival getINSTANCE() {
-        return INSTANCE;
     }
 }

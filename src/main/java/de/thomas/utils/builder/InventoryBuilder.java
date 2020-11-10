@@ -50,9 +50,8 @@ public class InventoryBuilder {
         return this;
     }
 
-    public InventoryBuilder addItem(ItemStack... itemStack) {
+    public void addItem(ItemStack... itemStack) {
         inventory.addItem(itemStack);
-        return this;
     }
 
     public Inventory build() {
