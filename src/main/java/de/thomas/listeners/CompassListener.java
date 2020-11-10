@@ -1,8 +1,8 @@
 package de.thomas.listeners;
 
-import de.thomas.utils.InventoryBuilder;
-import de.thomas.utils.ItemBuilder;
-import de.thomas.utils.Message;
+import de.thomas.utils.builder.InventoryBuilder;
+import de.thomas.utils.builder.ItemBuilder;
+import de.thomas.utils.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -26,11 +26,6 @@ public class CompassListener implements Listener {
             return;
         Player player = event.getPlayer();
         int playerCount = player.getWorld().getPlayerCount();
-
-        if (playerCount == 1) {
-            player.sendMessage(new Message(ChatColor.RED + "Es gibt keine Spieler zu finden!").getMessage());
-            return;
-        }
 
         if (event.getItem() != null && event.getItem().getType().equals(Material.COMPASS)) {
             if (!player.isSneaking()) {

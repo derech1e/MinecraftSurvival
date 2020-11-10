@@ -1,4 +1,4 @@
-package de.thomas.utils;
+package de.thomas.utils.message;
 
 public enum ErrorMessageType {
 

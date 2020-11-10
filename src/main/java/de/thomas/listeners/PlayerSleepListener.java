@@ -1,7 +1,7 @@
 package de.thomas.listeners;
 
 import de.thomas.minecraftsurvival.MinecraftSurvival;
-import de.thomas.utils.Message;
+import de.thomas.utils.message.Message;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

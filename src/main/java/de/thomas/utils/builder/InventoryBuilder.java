@@ -1,4 +1,4 @@
-package de.thomas.utils;
+package de.thomas.utils.builder;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
