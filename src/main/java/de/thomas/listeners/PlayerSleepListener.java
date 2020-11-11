@@ -23,15 +23,17 @@ public class PlayerSleepListener implements Listener {
     @EventHandler
     public void onBedEnter(PlayerBedEnterEvent event) {
         Player player = event.getPlayer();
-        playerInBed.add(player);
+        if (!event.getBedEnterResult().equals(PlayerBedEnterEvent.BedEnterResult.OK))
+            return;
+            playerInBed.add(player);
 
         int countToSkip = (getPlayerCountToSkip(player) - playerInBed.size());
-        Bukkit.broadcastMessage(new Message(ChatColor.LIGHT_PURPLE + player.getName() + ChatColor.WHITE + " hat sich in Bett gelegt." + (countToSkip != 0 ? "(Noch " + countToSkip + ")" : "")).getMessage());
+        Bukkit.broadcastMessage(new Message(ChatColor.GOLD + player.getName() + ChatColor.WHITE + " hat sich ins Bett gelegt." + (countToSkip != 0 ? "(Noch " + countToSkip + ")" : "")).getMessage());
 
         if (canSkip(player)) {
             taskID = Bukkit.getScheduler().runTaskLater(MinecraftSurvival.getINSTANCE(), () -> {
                 player.getWorld().setTime(0);
-                Bukkit.broadcastMessage(new Message("Guten Morgen :D").getMessage());
+                Bukkit.broadcastMessage(new Message(ChatColor.GREEN + "Guten Morgen...").getMessage());
                 inProgress = true;
             }, 20 * 4);
         }
@@ -43,7 +45,7 @@ public class PlayerSleepListener implements Listener {
         Player player = event.getPlayer();
         if (!inProgress) {
             int countToSkip = (getPlayerCountToSkip(player) - playerInBed.size());
-            Bukkit.broadcastMessage(new Message(ChatColor.LIGHT_PURPLE + player.getName() + ChatColor.WHITE + " hat das Bett verlassen." + (countToSkip != 0 ? "(Noch " + countToSkip + ")" : "")).getMessage());
+            Bukkit.broadcastMessage(new Message(ChatColor.GOLD + player.getName() + ChatColor.WHITE + " hat das Bett verlassen." + (countToSkip != 0 ? "(Noch " + countToSkip + ")" : "")).getMessage());
         }
         playerInBed.remove(player);
 

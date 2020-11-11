@@ -36,18 +36,18 @@ public class CompassListener implements Listener {
                     double playerHeightToTarget = player.getLocation().getY() - player.getCompassTarget().getY();
                     System.out.println(playerHeightToTarget);
                     if (playerHeightToTarget <= -4)
-                        player.sendMessage(new Message(ChatColor.RED + "Schau mal nach" + ChatColor.GREEN + " oben" + ChatColor.RED + ". Dein Ziel befindet sich über dir!").getMessage());
+                        player.sendMessage(new Message("Schau mal nach" + ChatColor.GOLD + " oben" + ChatColor.WHITE + ". Dein Ziel befindet sich über dir!").getMessage());
                     else if (playerHeightToTarget >= 4)
-                        player.sendMessage(new Message(ChatColor.RED + "Schau mal nach" + ChatColor.GREEN + " unten" + ChatColor.RED + ". Dein Ziel befindet sich unter dir!").getMessage());
+                        player.sendMessage(new Message("Schau mal nach" + ChatColor.GOLD + " unten" + ChatColor.WHITE + ". Dein Ziel befindet sich unter dir!").getMessage());
                     else
-                        player.sendMessage(new Message(ChatColor.RED + "Schau mal nach um. Dein Ziel befindet sich auf " + ChatColor.GREEN + " gleicher Höhe" + ChatColor.RED + "!").getMessage());
+                        player.sendMessage(new Message("Schau mal nach um. Dein Ziel befindet sich auf " + ChatColor.GOLD + " gleicher Höhe" + ChatColor.WHITE + "!").getMessage());
                 }
                 return;
             }
             InventoryBuilder inventoryBuilder = new InventoryBuilder(INVENTORY_NAME, calculateInventorySize(playerCount + 1));
 
             ItemBuilder spawnItemBuilder = new ItemBuilder(Material.PLAYER_HEAD);
-            spawnItemBuilder.setName(ChatColor.GREEN + "Spawnpunkt");
+            spawnItemBuilder.setName(ChatColor.GOLD + "Spawnpunkt");
             spawnItemBuilder.setSkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2Y3Y2RlZWZjNmQzN2ZlY2FiNjc2YzU4NGJmNjIwODMyYWFhYzg1Mzc1ZTlmY2JmZjI3MzcyNDkyZDY5ZiJ9fX0=");
             inventoryBuilder.addItem(spawnItemBuilder.toItemStack());
 
@@ -75,7 +75,7 @@ public class CompassListener implements Listener {
             int distance = (int) Math.round(player.getLocation().distance(spawnLocation));
             if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Spawnpunkt")) {
                 player.setCompassTarget(spawnLocation);
-                player.sendMessage(new Message("Du hast deinen " + ChatColor.AQUA + "Spawnpunkt" + ChatColor.WHITE + " als neues Ziel gesetzt. (" + ChatColor.GOLD + distance + " Blöcke entfernt" + ChatColor.WHITE + ")").getMessage());
+                player.sendMessage(new Message("Du hast deinen " + ChatColor.GOLD + "Spawnpunkt" + ChatColor.WHITE + " als neues Ziel gesetzt. (" + ChatColor.GOLD + distance + " Blöcke entfernt" + ChatColor.WHITE + ")").getMessage());
                 player.closeInventory();
                 return;
             }
@@ -88,10 +88,6 @@ public class CompassListener implements Listener {
             targetPlayer.sendMessage(new Message(ChatColor.AQUA + player.getName() + ChatColor.WHITE + " hat dich als sein neues Compass-Ziel gesetzt. (" + ChatColor.GOLD + distance + " Blöcke entfernt " + ChatColor.WHITE + ")").getMessage());
             player.closeInventory();
         }
-    }
-
-    private Player getClosestPlayerToPlayer(Player player) {
-        return (Player) player.getWorld().getEntitiesByClasses(Player.class).stream().min(Comparator.comparingInt(p -> (int) p.getLocation().distance(player.getLocation()))).orElse(player);
     }
 
     private int calculateInventorySize(int onlinePlayers) {
