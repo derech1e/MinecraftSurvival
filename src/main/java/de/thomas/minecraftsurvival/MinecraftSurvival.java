@@ -2,10 +2,7 @@ package de.thomas.minecraftsurvival;
 
 import de.thomas.commands.GlideAreaCommand;
 import de.thomas.commands.GlideBoostCommand;
-import de.thomas.listeners.CompassListener;
-import de.thomas.listeners.PlayerConnectionListener;
-import de.thomas.listeners.PlayerGlideListener;
-import de.thomas.listeners.PlayerSleepListener;
+import de.thomas.listeners.*;
 import de.thomas.utils.RestartThread;
 import de.thomas.utils.config.ConfigLoader;
 import de.thomas.utils.message.Message;
@@ -14,9 +11,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Objects;
 
 public final class MinecraftSurvival extends JavaPlugin {
@@ -58,10 +52,13 @@ public final class MinecraftSurvival extends JavaPlugin {
 
     private void registerListeners() {
         PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new CompassListener(), this);
-        pluginManager.registerEvents(new PlayerSleepListener(), this);
-        pluginManager.registerEvents(new PlayerGlideListener(), this);
+        pluginManager.registerEvents(new PlayerInteractListener(), this);
+        pluginManager.registerEvents(new PlayerBedListener(), this);
+        pluginManager.registerEvents(new PlayerMoveListener(), this);
         pluginManager.registerEvents(new PlayerConnectionListener(), this);
+        pluginManager.registerEvents(new EntityDamageListener(), this);
+        pluginManager.registerEvents(new InventoryClickListener(), this);
+
 
         LOGGER.info("All Events registered!");
     }

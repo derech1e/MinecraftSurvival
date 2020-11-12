@@ -14,7 +14,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerSleepListener implements Listener {
+public class PlayerBedListener implements Listener {
 
     private final List<Player> playerInBed = new ArrayList<>();
     private BukkitTask taskID;

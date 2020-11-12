@@ -18,11 +18,11 @@ public class RestartThread {
     }
 
     private void startThread() {
-        Date date = new Date();   // given date
-        Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
-        calendar.setTime(date);   // assigns calendar to given date
-
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
+            Date date = new Date();
+            Calendar calendar = GregorianCalendar.getInstance();
+            calendar.setTime(date);
+
             if (calendar.get(Calendar.HOUR_OF_DAY) == 21 && calendar.get(Calendar.MINUTE) == 45) {
                 startCountdown();
                 Bukkit.getScheduler().cancelTask(taskID);
