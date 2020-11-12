@@ -13,8 +13,6 @@ public class EntityDamageListener implements Listener {
     public void onPlayerDamageEvent(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
-        System.out.println(TitleAnimation.getPlayerInAnimation().size());
-        System.out.println(event.getCause());
         if (event.getCause().equals(EntityDamageEvent.DamageCause.FALL))
             if (Variables.glidingPlayers.contains(player) || TitleAnimation.getPlayerInAnimation().contains(player))
                 event.setCancelled(true);
