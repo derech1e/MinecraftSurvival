@@ -7,6 +7,17 @@ on:
     branches: [ master ]
 
 jobs:
+  Remove-old-artifacts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+    - name: Remove old artifacts
+      uses: c-hive/gha-remove-artifacts@v1
+      with:
+        #age: '1 month'
+        skip-recent: 2
+        
   build:
     runs-on: ubuntu-latest
 
