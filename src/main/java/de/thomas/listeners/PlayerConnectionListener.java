@@ -1,13 +1,19 @@
 package de.thomas.listeners;
 
+import de.thomas.minecraftsurvival.MinecraftSurvival;
+import de.thomas.utils.Variables;
 import de.thomas.utils.animation.TitleAnimation;
 import de.thomas.utils.config.ConfigCache;
+import net.dv8tion.jda.api.entities.Activity;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.util.Random;
 
 public class PlayerConnectionListener implements Listener {
 
@@ -22,10 +28,25 @@ public class PlayerConnectionListener implements Listener {
             player.teleport(ConfigCache.spawnLocation);
             new TitleAnimation(player).startFirstJoinAnimation();
         }
+        MinecraftSurvival.getINSTANCE().getJda().getPresence().setPresence(Activity.playing(player.getWorld().getPlayerCount() + " Spieler auf dem Server"), true);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         event.setQuitMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + event.getPlayer().getName());
+        MinecraftSurvival.getINSTANCE().getJda().getPresence().setPresence(Activity.playing(event.getPlayer().getWorld().getPlayerCount() + " Spieler auf dem Server"), true);
+    }
+
+    @EventHandler
+    public void onAsyncPreLogin(AsyncPlayerPreLoginEvent event) {
+        if (!ConfigCache.verifiedPlayers.containsKey(event.getUniqueId())) {
+            String message = "&7Du musst dein &9Discord&7-Konto verknüpfen, um spielen zu können.\n\n&7Sende eine DM an den &bBaguetteBot&7, die dem Code &b{CODE}&7, um dein Account zu verknüpfen.\n\n&7Bei Problemen... » &bhast du Pech gehabt.";
+            short code = (short) new Random().nextInt(1 << 15);
+            if (Variables.verifyCodes.containsValue(event.getUniqueId())) {
+                Variables.verifyCodes.values().remove(event.getUniqueId());
+            }
+            Variables.verifyCodes.put(code, event.getUniqueId());
+            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_WHITELIST, ChatColor.translateAlternateColorCodes('&', message).replace("{CODE}", String.valueOf(code)));
+        }
     }
 }

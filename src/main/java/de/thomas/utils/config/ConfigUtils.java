@@ -3,6 +3,11 @@ package de.thomas.utils.config;
 import de.thomas.minecraftsurvival.MinecraftSurvival;
 import org.bukkit.Location;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+
 public class ConfigUtils {
 
     private static final MinecraftSurvival INSTANCE = MinecraftSurvival.getINSTANCE();
@@ -40,5 +45,19 @@ public class ConfigUtils {
 
     public void saveSpawnLocation(Location configLocation) {
         INSTANCE.getConfig().set(configItemName, configLocation);
+    }
+
+    public void saveVerifiedPlayers(HashMap<UUID, String> players) {
+        for (Map.Entry<UUID, String> map : players.entrySet()) {
+            INSTANCE.getConfig().set("Players.Verified." + map.getKey().toString(), map.getValue());
+        }
+    }
+
+    public HashMap<UUID, String> loadVerifiedPlayers() {
+        HashMap<UUID, String> verifiedPlayers = new HashMap<>();
+        for(String key : Objects.requireNonNull(INSTANCE.getConfig().getConfigurationSection("Players.Verified")).getKeys(false)) {
+             verifiedPlayers.put(UUID.fromString(key), Objects.requireNonNull(INSTANCE.getConfig().getString("Players.Verified." + key)));
+        }
+        return verifiedPlayers;
     }
 }

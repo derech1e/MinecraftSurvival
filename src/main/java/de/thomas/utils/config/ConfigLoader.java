@@ -7,6 +7,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Objects;
 
 public class ConfigLoader {
@@ -20,6 +21,7 @@ public class ConfigLoader {
         INSTANCE.getConfig().addDefault("GlideArea.Radius", 15.0D);
         INSTANCE.getConfig().addDefault("GlideBoost", false);
         INSTANCE.getConfig().addDefault("SpawnLocation", Objects.requireNonNull(INSTANCE.getServer().getWorld("world")).getSpawnLocation());
+        INSTANCE.getConfig().addDefault("Players.Verified", Collections.emptyMap());
         try {
             INSTANCE.getConfig().save(configFile);
         } catch (IOException e) {
@@ -57,6 +59,9 @@ public class ConfigLoader {
 
         ConfigUtils configUtilsSpawnLoc = new ConfigUtils("SpawnLocation");
         ConfigCache.spawnLocation = configUtilsSpawnLoc.loadSpawnLocation();
+
+        ConfigUtils configUtilsVerified = new ConfigUtils("Players.Verified");
+        ConfigCache.verifiedPlayers = configUtilsVerified.loadVerifiedPlayers();
     }
 
     private static void saveCache() {
@@ -68,5 +73,8 @@ public class ConfigLoader {
 
         ConfigUtils configUtilsSpawnLoc = new ConfigUtils("SpawnLocation");
         configUtilsSpawnLoc.saveSpawnLocation(ConfigCache.spawnLocation);
+
+        ConfigUtils configUtilsVerified = new ConfigUtils("Players.Verified");
+        configUtilsVerified.saveVerifiedPlayers(ConfigCache.verifiedPlayers);
     }
 }
