@@ -2,6 +2,7 @@ package de.thomas.minecraftsurvival;
 
 import de.thomas.commands.GlideAreaCommand;
 import de.thomas.commands.GlideBoostCommand;
+import de.thomas.commands.SpawnLocationCommand;
 import de.thomas.listeners.*;
 import de.thomas.utils.RestartThread;
 import de.thomas.utils.config.ConfigLoader;
@@ -66,6 +67,7 @@ public final class MinecraftSurvival extends JavaPlugin {
     private void registerCommands() {
         Objects.requireNonNull(getCommand("glidearea")).setExecutor(new GlideAreaCommand());
         Objects.requireNonNull(getCommand("glideboost")).setExecutor(new GlideBoostCommand());
+        Objects.requireNonNull(getCommand("spawnlocation")).setExecutor(new SpawnLocationCommand());
         LOGGER.info("All Commands registered!");
     }
 }

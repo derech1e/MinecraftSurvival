@@ -9,9 +9,11 @@ commands:
   glidearea:
     description: Setzte den Mittelpunkt der GlideArea
     usage: /glidearea [radius]
-    aliases: [ga, area]
 
   glideboost:
     description: Aktiviere oder Deaktiviere den GlideBoost
     usage: /glideboost
-    aliases: [gb]
+
+  spawnlocation:
+    description: Setze den Weltenspawn
+    usage: /spawnlocation

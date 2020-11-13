@@ -1,6 +1,7 @@
 package de.thomas.listeners;
 
 import de.thomas.utils.animation.TitleAnimation;
+import de.thomas.utils.config.ConfigCache;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +16,11 @@ public class PlayerConnectionListener implements Listener {
         Player player = event.getPlayer();
         event.setJoinMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + player.getName());
 
+        if(!player.hasPlayedBefore()) {
+            player.setBedSpawnLocation(ConfigCache.spawnLocation, true);
+            player.getWorld().setSpawnLocation(ConfigCache.spawnLocation);
+            player.teleport(ConfigCache.spawnLocation);
+        }
         new TitleAnimation(player).startFirstJoinAnimation();
     }
     @EventHandler

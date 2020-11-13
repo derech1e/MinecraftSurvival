@@ -33,4 +33,12 @@ public class ConfigUtils {
     public void saveGlideBoost(boolean state) {
         INSTANCE.getConfig().set(configItemName, state);
     }
+
+    public Location loadSpawnLocation() {
+        return INSTANCE.getConfig().getLocation(configItemName);
+    }
+
+    public void saveSpawnLocation(Location configLocation) {
+        INSTANCE.getConfig().set(configItemName, configLocation);
+    }
 }
