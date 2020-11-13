@@ -2,8 +2,11 @@ package de.thomas.utils.animation;
 
 import com.destroystokyo.paper.Title;
 import de.thomas.minecraftsurvival.MinecraftSurvival;
+import de.thomas.utils.config.ConfigCache;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -30,10 +33,10 @@ public class TitleAnimation {
 
     public void startFirstJoinAnimation() {
         playerInAnimation.add(targetPlayer);
-        targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 1250, 255, false, false, false));
+        targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 1240, 255, false, false, false));
         targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1260, 255, false, false, false));
         targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 1250, 255, false, false, false));
-        targetPlayer.teleport(targetPlayer.getLocation().add(0, 4800, 0));
+        targetPlayer.teleport(targetPlayer.getLocation().add(0, 4725, 0));
         Title title_1 = new Title("§nMinecraft Survival §9#1", "Nach einem Legendärem Minigames-Server startete die §5Expedition ", 50, 60, 50);
         Title title_2 = new Title("§nMinecraft Fette Mauer §a#2", "Nach einem Legendärem 1. Projekt, folgte das 2. mit neuen §dNachbarn §rund einer §dGroßen Mauer", 50, 60, 50);
         Title title_3 = new Title("§nMinecraft des Vergessens §b#3", "Es konnten keine genauen angebanen in der Datenbank gefunden werden.", 50, 60, 50);
@@ -87,11 +90,16 @@ public class TitleAnimation {
                     showWaitingAnimation();
                     titleNumber++;
                     new WorldBorderAnimation(targetPlayer, 5, 15).setWorldBorderInTime();
+                    new ParticleAnimation(ConfigCache.spawnLocation).start();
                     break;
                 case 11:
                     titleNumber++;
                     break;
                 case 12:
+                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 10,0);
+                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 10,0);
+                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_WITHER_AMBIENT, 10,0);
+                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 10,0);
                     Bukkit.getScheduler().cancelTask(waitingID);
                     targetPlayer.sendTitle(title_10);
                     new WorldBorderAnimation(targetPlayer).openWorldBorderFullDelayed();

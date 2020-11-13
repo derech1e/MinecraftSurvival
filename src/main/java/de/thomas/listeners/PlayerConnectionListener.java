@@ -16,13 +16,14 @@ public class PlayerConnectionListener implements Listener {
         Player player = event.getPlayer();
         event.setJoinMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + player.getName());
 
-        if(!player.hasPlayedBefore()) {
+        if (!player.hasPlayedBefore()) {
             player.setBedSpawnLocation(ConfigCache.spawnLocation, true);
             player.getWorld().setSpawnLocation(ConfigCache.spawnLocation);
             player.teleport(ConfigCache.spawnLocation);
+            new TitleAnimation(player).startFirstJoinAnimation();
         }
-        new TitleAnimation(player).startFirstJoinAnimation();
     }
+
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         event.setQuitMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + event.getPlayer().getName());

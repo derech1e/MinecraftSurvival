@@ -2,6 +2,7 @@ package de.thomas.listeners;
 
 import de.thomas.utils.Variables;
 import de.thomas.utils.config.ConfigCache;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,7 +27,7 @@ public class PlayerMoveListener implements Listener {
             }
 
         if (Variables.glidingPlayers.contains(player))
-            if (player.isOnGround())
+            if (player.isOnGround() || player.isInWater() || player.isInLava() || !player.getLocation().subtract(0,2,0).getBlock().getType().equals(Material.AIR))
                 Variables.glidingPlayers.remove(player);
 
         player.setGliding(Variables.glidingPlayers.contains(player));
