@@ -78,7 +78,6 @@ public final class MinecraftSurvival extends JavaPlugin {
         pluginManager.registerEvents(new EntityDamageListener(), this);
         pluginManager.registerEvents(new InventoryClickListener(), this);
 
-
         LOGGER.info("All Events registered!");
     }
 

@@ -2,10 +2,13 @@ package de.thomas.utils.animation;
 
 import com.destroystokyo.paper.Title;
 import de.thomas.minecraftsurvival.MinecraftSurvival;
+import de.thomas.utils.animation.particle.HelixParticleAnimationDown;
+import de.thomas.utils.animation.particle.HelixParticleAnimationUp;
+import de.thomas.utils.animation.particle.WaveParticleAnimation;
+import de.thomas.utils.animation.particle.base.ParticleAnimationHandler;
 import de.thomas.utils.config.ConfigCache;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -90,16 +93,40 @@ public class TitleAnimation {
                     showWaitingAnimation();
                     titleNumber++;
                     new WorldBorderAnimation(targetPlayer, 5, 15).setWorldBorderInTime();
-                    new ParticleAnimation(ConfigCache.spawnLocation).start();
+                    new ParticleAnimationHandler(new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 8, 0, 0, 64),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 2, 0, 5,64),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 2, 0, 2,64),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 6, 0, 3,64),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 3, 0, 0,64),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 5, 0, 0,64),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 2, 0, 5,32),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 2, 0, 2,16),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 6, 0, 3,8),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 3, 0, 0,16),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 5, 0, 0,32),
+                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0,10,0), 0, 4, 2),
+                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0,40,0), 3, 6, 5),
+                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0,30,0), 0, 8, 4),
+                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0,20,0), 0, 8, 3),
+                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0,20,0), 2, 8, 1),
+                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0,20,0), 5, 10, 2),
+                            new WaveParticleAnimation(ConfigCache.spawnLocation.clone()),
+                            new WaveParticleAnimation(ConfigCache.spawnLocation.clone().add(0,15,0)),
+                            new WaveParticleAnimation(ConfigCache.spawnLocation.clone().add(0,40,0))).start();
                     break;
                 case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
                     titleNumber++;
                     break;
-                case 12:
-                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 10,0);
-                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 10,0);
-                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_WITHER_AMBIENT, 10,0);
-                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 10,0);
+                case 17:
+                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1,0);
+                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1,0);
+                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_WITHER_AMBIENT, 1,0);
+                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1,0);
                     Bukkit.getScheduler().cancelTask(waitingID);
                     targetPlayer.sendTitle(title_10);
                     new WorldBorderAnimation(targetPlayer).openWorldBorderFullDelayed();
