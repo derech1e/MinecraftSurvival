@@ -1,10 +1,8 @@
 package de.thomas.utils.animation.particle;
 
 import com.destroystokyo.paper.ParticleBuilder;
-import de.thomas.utils.Variables;
 import de.thomas.utils.animation.particle.base.IParticleTask;
 import de.thomas.utils.animation.particle.base.ParticleOption;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 

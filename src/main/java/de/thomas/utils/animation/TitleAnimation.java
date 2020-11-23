@@ -92,6 +92,7 @@ public class TitleAnimation {
                 case 10:
                     showWaitingAnimation();
                     titleNumber++;
+                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.ITEM_ELYTRA_FLYING, 1, 0);
                     new WorldBorderAnimation(targetPlayer, 5, 15).setWorldBorderInTime();
                     new ParticleAnimationHandler(new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 8, 0, 0, 64),
                             new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 2, 0, 5,64),

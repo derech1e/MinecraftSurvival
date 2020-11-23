@@ -21,15 +21,7 @@ import org.json.simple.JSONObject;
 import java.lang.reflect.Field;
 import java.util.*;
 
-/**
- * This version of ItemBuilder is not complete and need someone method.
- * So the java doc isn't available.
- * <i>Just open ItemBuilder</i>
- * <i>Json as been not update for potion meta and skull meta</i>
- *
- * @author WarzouMc
- * @version 0.1.4.1 (not tested)
- */
+
 public class ItemBuilder {
 
     /**
@@ -736,7 +728,7 @@ public class ItemBuilder {
      * @return
      */
     public int getData() {
-        return itemStack.getData().getData();
+        return Objects.requireNonNull(itemStack.getData()).getData();
     }
 
     /**

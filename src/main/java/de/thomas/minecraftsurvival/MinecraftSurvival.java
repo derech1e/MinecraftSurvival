@@ -1,6 +1,8 @@
 package de.thomas.minecraftsurvival;
 
 import de.thomas.bot.BotDirectMessageListener;
+import de.thomas.bot.commands.HalloCommand;
+import de.thomas.bot.commands.OnlinePlayerCommand;
 import de.thomas.commands.GlideAreaCommand;
 import de.thomas.commands.GlideBoostCommand;
 import de.thomas.commands.SpawnLocationCommand;
@@ -90,9 +92,12 @@ public final class MinecraftSurvival extends JavaPlugin {
 
     private void registerBot() throws LoginException {
         LOGGER.info("Try to init bot");
-        jda = JDABuilder.create("Nzc2ODQxOTA4ODg5OTc2ODYy.X66waA.D1nzOfVglK7iDHuY08n5kSAo4wg", GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGES).build();
+        jda = JDABuilder.create("Nzc2ODQxOTA4ODg5OTc2ODYy.X66waA.D1nzOfVglK7iDHuY08n5kSAo4wg", GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES).build();
         jda.getPresence().setPresence(Activity.playing(getServer().getOnlinePlayers().size() + " Spieler auf dem Server"), true);
         jda.addEventListener(new BotDirectMessageListener());
+        jda.addEventListener(new OnlinePlayerCommand());
+        jda.addEventListener(new HalloCommand());
+        jda.setAutoReconnect(true);
         LOGGER.info("Bot started!");
     }
 }

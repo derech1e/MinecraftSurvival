@@ -27,8 +27,13 @@ public class BotDirectMessageListener extends ListenerAdapter {
             }
 
             if (Variables.verifyCodes.containsKey(code)) {
-                ConfigCache.verifiedPlayers.put(Variables.verifyCodes.get(code), receivedEvent.getAuthor().getId());
                 short finalCode = code;
+                if(ConfigCache.verifiedPlayers.containsValue(receivedEvent.getAuthor().getId())) {
+                    receivedEvent.getAuthor().openPrivateChannel().queue((channel) ->
+                            channel.sendMessage("Fehler! Du hast bereits einen Account mit " + receivedEvent.getAuthor().getName() + " Verknüpft!").queue());
+                    return;
+                }
+                ConfigCache.verifiedPlayers.put(Variables.verifyCodes.get(code), receivedEvent.getAuthor().getId());
                 receivedEvent.getAuthor().openPrivateChannel().queue((channel) ->
                             channel.sendMessage("Du hast erfolgreich deinen Account mit " + Bukkit.getOfflinePlayer(Variables.verifyCodes.get(finalCode)).getName() + " verknüpft!").queue());
 
