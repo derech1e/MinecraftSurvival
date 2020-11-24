@@ -1,4 +1,4 @@
-package de.thomas.utils.animation.particle.base;
+package de.thomas.utils.animation.particle.base.interfaces;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

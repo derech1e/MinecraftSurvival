@@ -3,9 +3,7 @@ package de.thomas.minecraftsurvival;
 import de.thomas.bot.BotDirectMessageListener;
 import de.thomas.bot.commands.HalloCommand;
 import de.thomas.bot.commands.OnlinePlayerCommand;
-import de.thomas.commands.GlideAreaCommand;
-import de.thomas.commands.GlideBoostCommand;
-import de.thomas.commands.SpawnLocationCommand;
+import de.thomas.commands.*;
 import de.thomas.listeners.*;
 import de.thomas.utils.RestartThread;
 import de.thomas.utils.config.ConfigLoader;
@@ -20,9 +18,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 
 import javax.security.auth.login.LoginException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Objects;
 
-public final class MinecraftSurvival extends JavaPlugin {
+public class MinecraftSurvival extends JavaPlugin {
 
     private static MinecraftSurvival INSTANCE;
     public final Logger LOGGER = getSLF4JLogger();
@@ -87,6 +87,8 @@ public final class MinecraftSurvival extends JavaPlugin {
         Objects.requireNonNull(getCommand("glidearea")).setExecutor(new GlideAreaCommand());
         Objects.requireNonNull(getCommand("glideboost")).setExecutor(new GlideBoostCommand());
         Objects.requireNonNull(getCommand("spawnlocation")).setExecutor(new SpawnLocationCommand());
+        Objects.requireNonNull(getCommand("start")).setExecutor(new StartCommand());
+        Objects.requireNonNull(getCommand("ping")).setExecutor(new PingCommand());
         LOGGER.info("All Commands registered!");
     }
 

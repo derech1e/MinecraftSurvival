@@ -1,4 +1,4 @@
-package de.thomas.utils.animation.particle.base;
+package de.thomas.utils.animation.particle.base.interfaces;
 
 
 import de.thomas.minecraftsurvival.MinecraftSurvival;

@@ -20,7 +20,7 @@ import java.util.Random;
 
 public class TitleAnimation {
 
-    private static final List<Player> playerInAnimation = new ArrayList<>();
+    public static final List<Player> playerInAnimation = new ArrayList<>();
     Player targetPlayer;
     private int titleNumber = 1;
     private int taskID;
@@ -36,21 +36,41 @@ public class TitleAnimation {
 
     public void startFirstJoinAnimation() {
         playerInAnimation.add(targetPlayer);
+        WorldBorderAnimation worldBorderAnimation = new WorldBorderAnimation(targetPlayer);
+        worldBorderAnimation.reset();
+        for (PotionEffect potionEffect : targetPlayer.getActivePotionEffects())
+            targetPlayer.removePotionEffect(potionEffect.getType());
+        targetPlayer.setBedSpawnLocation(ConfigCache.spawnLocation, true);
+        targetPlayer.getWorld().setSpawnLocation(ConfigCache.spawnLocation);
+        targetPlayer.teleport(ConfigCache.spawnLocation);
         targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 1240, 255, false, false, false));
         targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1260, 255, false, false, false));
         targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 1250, 255, false, false, false));
         targetPlayer.teleport(targetPlayer.getLocation().add(0, 4725, 0));
-        Title title_1 = new Title("§nMinecraft Survival §9#1", "Nach einem Legendärem Minigames-Server startete die §5Expedition ", 50, 60, 50);
-        Title title_2 = new Title("§nMinecraft Fette Mauer §a#2", "Nach einem Legendärem 1. Projekt, folgte das 2. mit neuen §dNachbarn §rund einer §dGroßen Mauer", 50, 60, 50);
-        Title title_3 = new Title("§nMinecraft des Vergessens §b#3", "Es konnten keine genauen angebanen in der Datenbank gefunden werden.", 50, 60, 50);
-        Title title_4 = new Title("§nMinecraft RiesenTurm §b#4", "Es entstanden nicht nur einge Lieben sondern auf Freundschaften im 3. §c<3", 50, 60, 50);
-        Title title_5 = new Title("§nMinecraft Avatar §c#5", "Diese Lieben schafften es leider nicht; jeder versuchte im 4. seine §6Kräfte§r neu zu entdecken!", 50, 60, 50);
-        Title title_6 = new Title("§nMinecraft WinterBaguette §d#6", "Doch als der §bWinter§r kam, hielten Sie zusammen und Revolutionierten die Technick.", 50, 60, 50);
-        Title title_7 = new Title("§nMinecraft Broken World §d#7", "Es war so stark, dass er Teile der Welt irreversibel zerstörte...", 50, 60, 50);
-        Title title_8 = new Title("§c§l§k!!!§r§6 Es war soweit §c§l§k!!!", "Eine neue Reise auf unbestimmte Zeit stand den entdeckern bevor...", 50, 60, 50);
+        Title title_1 = new Title("§nMinecraft Survival§r §9#1", "Nach einem Legendärem Minigames-Server startete die §5Expedition ", 50, 60, 50);
+        Title title_2 = new Title("§nMinecraft Fette-Mauer§r §a#2", "Auf das 1. Projekt, folgte das 2. mit neuen §dNachbarn §rund einer §dGroßen Mauer", 50, 60, 50);
+        Title title_3 = new Title("§nMinecraft des Vergessens§r §b#3", "Es konnten keine genauen angebanen in der Datenbank gefunden werden.", 50, 60, 50);
+        Title title_4 = new Title("§nMinecraft Riesen-Turm§r §b#4", "Es entstanden nicht nur einge Lieben sondern auch Freundschaften im 4. §c<3", 50, 60, 50);
+        Title title_5 = new Title("§nMinecraft Avatar§r §c#5", "Diese Lieben schafften es leider nicht; jeder versuchte im 5. seine §6Kräfte§r neu zu entdecken!", 50, 60, 50);
+        Title title_6 = new Title("§nMinecraft WinterBaguette§r §d#6", "Doch als der §bWinter§r kam, hielten sie zusammen und Revolutionierten die Technik.", 50, 60, 50);
+        Title title_7 = new Title("§nMinecraft Broken World§r §d#7", "Es war so stark, dass er Teile der Welt irreversibel zerstörte...", 50, 60, 50);
+        Title title_8 = new Title("§c§l§k!!!§r§6 Es war soweit §c§l§k!!!", "Eine neue Reise auf unbestimmte Zeit stand den Entdeckern bevor...", 50, 60, 50);
         Title title_9 = new Title("§6Herzlich Wilkommen zum", "§1S§2u§3r§4v§5i§6v§7a§8l§9 P§ar§bo§cj§de§ek§ft §o#8", 50, 60, 50);
-        Title title_10 = new Title("§6Viel Spaß beim Spielen!", "", 50, 60, 50);
+        Title title_10 = new Title("§6Viel Spaß beim Spielen!", "§c<3", 50, 60, 50);
 
+        ParticleAnimationHandler particleAnimationHandler = new ParticleAnimationHandler();
+        particleAnimationHandler.onFinal(() -> {
+            targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 0.5f, 0);
+            targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.5f, 0);
+            targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_WITHER_AMBIENT, 0.5f, 0);
+            targetPlayer.playSound(targetPlayer.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 0.5f, 0);
+            Bukkit.getScheduler().cancelTask(waitingID);
+            targetPlayer.sendTitle(title_10);
+            worldBorderAnimation.openWorldBorderFullDelayed();
+            playerInAnimation.remove(targetPlayer);
+            titleNumber = 1;
+            Bukkit.getScheduler().cancelTask(taskID);
+        });
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
             switch (titleNumber) {
                 case 1:
@@ -93,48 +113,37 @@ public class TitleAnimation {
                     showWaitingAnimation();
                     titleNumber++;
                     targetPlayer.playSound(targetPlayer.getLocation(), Sound.ITEM_ELYTRA_FLYING, 1, 0);
-                    new WorldBorderAnimation(targetPlayer, 5, 15).setWorldBorderInTime();
-                    new ParticleAnimationHandler(new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 8, 0, 0, 64),
-                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 2, 0, 5,64),
-                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 2, 0, 2,64),
-                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 6, 0, 3,64),
-                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 3, 0, 0,64),
-                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 5, 0, 0,64),
-                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 2, 0, 5,32),
-                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 2, 0, 2,16),
-                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 6, 0, 3,8),
-                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 3, 0, 0,16),
-                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 5, 0, 0,32),
-                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0,10,0), 0, 4, 2),
-                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0,40,0), 3, 6, 5),
-                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0,30,0), 0, 8, 4),
-                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0,20,0), 0, 8, 3),
-                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0,20,0), 2, 8, 1),
-                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0,20,0), 5, 10, 2),
+                    Bukkit.getScheduler().runTaskLater(MinecraftSurvival.getINSTANCE(), () -> targetPlayer.playSound(targetPlayer.getLocation(), Sound.ITEM_ELYTRA_FLYING, 1, 0), 20 * 20);
+                    worldBorderAnimation.setSize(15);
+                    worldBorderAnimation.setTime(5);
+                    worldBorderAnimation.setWorldBorderInTime();
+                    particleAnimationHandler.addAnimations(new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 8, 0, 0, 64),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 2, 0, 5, 64),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 2, 0, 2, 64),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 6, 0, 3, 64),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 3, 0, 0, 64),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 5, 0, 0, 64),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 2, 0, 5, 32),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 2, 0, 2, 16),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 6, 0, 3, 8),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 3, 0, 0, 16),
+                            new HelixParticleAnimationUp(ConfigCache.spawnLocation.clone(), 5, 0, 0, 32),
+                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0, 10, 0), 0, 4, 2),
+                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0, 40, 0), 3, 6, 5),
+                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0, 30, 0), 0, 8, 4),
+                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0, 20, 0), 0, 8, 3),
+                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0, 20, 0), 2, 8, 1),
+                            new HelixParticleAnimationDown(ConfigCache.spawnLocation.clone().add(0, 20, 0), 5, 8, 2),
                             new WaveParticleAnimation(ConfigCache.spawnLocation.clone()),
-                            new WaveParticleAnimation(ConfigCache.spawnLocation.clone().add(0,15,0)),
-                            new WaveParticleAnimation(ConfigCache.spawnLocation.clone().add(0,40,0))).start();
+                            new WaveParticleAnimation(ConfigCache.spawnLocation.clone().add(0, 15, 0)),
+                            new WaveParticleAnimation(ConfigCache.spawnLocation.clone().add(0, 40, 0)));
+                    particleAnimationHandler.start();
                     break;
                 case 11:
-                case 12:
-                case 13:
-                case 14:
-                case 15:
-                case 16:
+                    Bukkit.getOnlinePlayers().forEach(player -> targetPlayer.showPlayer(MinecraftSurvival.getINSTANCE(), player));
+                    Bukkit.getOnlinePlayers().forEach(player -> player.showPlayer(MinecraftSurvival.getINSTANCE(), targetPlayer));
                     titleNumber++;
                     break;
-                case 17:
-                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1,0);
-                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1,0);
-                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.ENTITY_WITHER_AMBIENT, 1,0);
-                    targetPlayer.playSound(targetPlayer.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1,0);
-                    Bukkit.getScheduler().cancelTask(waitingID);
-                    targetPlayer.sendTitle(title_10);
-                    new WorldBorderAnimation(targetPlayer).openWorldBorderFullDelayed();
-                    playerInAnimation.remove(targetPlayer);
-                    titleNumber = 1;
-                    Bukkit.getScheduler().cancelTask(taskID);
-
             }
         }, 20, 150);
     }

@@ -2,7 +2,7 @@ package de.thomas.utils.animation.particle;
 
 import com.destroystokyo.paper.ParticleBuilder;
 import de.thomas.utils.animation.particle.base.IParticleTask;
-import de.thomas.utils.animation.particle.base.ParticleOption;
+import de.thomas.utils.animation.particle.base.interfaces.ParticleOption;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 
