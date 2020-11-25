@@ -29,7 +29,7 @@ public class StartCommand implements CommandExecutor {
         }
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            Variables.freezedPlayers.removeAll(Collections.singleton(onlinePlayer.getUniqueId()));
+            Variables.frozenPlayers.removeAll(Collections.singleton(onlinePlayer.getUniqueId()));
             new TitleAnimation(onlinePlayer).startFirstJoinAnimation();
         }
         return false;

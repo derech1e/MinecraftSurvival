@@ -23,20 +23,6 @@ public class ParticleAnimationHandler implements IParticleHandlerBase {
 
     public ParticleAnimationHandler() {}
 
-    public ParticleAnimationHandler(FinalizedAnimation finalized) {
-        this(finalized, (IParticleTask) null);
-    }
-
-    public ParticleAnimationHandler(IParticleTask... particleTasks) {
-        addAnimations(particleTasks);
-        finalized = null;
-    }
-
-    public ParticleAnimationHandler(FinalizedAnimation finalized, IParticleTask... particleTasks) {
-        addAnimations(particleTasks);
-        this.finalized = finalized;
-    }
-
     @Override
     public void addAnimations(IParticleTask... particleTasks) {
         for (IParticleTask particleTask : particleTasks) {
@@ -48,7 +34,6 @@ public class ParticleAnimationHandler implements IParticleHandlerBase {
     @Override
     public void onFinal(FinalizedAnimation finalized) {
         this.finalized = finalized;
-        stop();
     }
 
     private void sort() {
@@ -64,16 +49,13 @@ public class ParticleAnimationHandler implements IParticleHandlerBase {
 
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
             if (Variables.activeTasks.size() == 0) {
+                System.out.println("Test");
                 animationAtLeast.forEach(IParticleTask::start);
                 animationAtLeast.clear();
                 finalized.onFinal();
+                Bukkit.getScheduler().cancelTask(taskID);
             }
         }, 0, 1);
-    }
-
-    public void stop() {
-        Bukkit.getScheduler().cancelTask(taskID);
-        finalized = null;
     }
 
     public void forceStop() {

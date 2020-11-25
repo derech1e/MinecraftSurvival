@@ -49,11 +49,11 @@ public class BotDirectMessageListener extends ListenerAdapter {
 
             if (Variables.verifyCodes.containsKey(code)) {
                 short finalCode = code;
-                /*if (ConfigCache.verifiedPlayers.containsValue(receivedEvent.getAuthor().getId())) {
+                if (ConfigCache.verifiedPlayers.containsValue(receivedEvent.getAuthor().getId())) {
                     receivedEvent.getAuthor().openPrivateChannel().queue((channel) ->
                             channel.sendMessage("Fehler! Du hast bereits einen Account mit " + receivedEvent.getAuthor().getName() + " Verknüpft!").queue());
                     return;
-                }*/
+                }
                 ConfigCache.verifiedPlayers.put(Variables.verifyCodes.get(code), receivedEvent.getAuthor().getId());
                 receivedEvent.getAuthor().openPrivateChannel().queue((channel) ->
                         channel.sendMessage("Du hast erfolgreich deinen Account mit " + getName(Variables.verifyCodes.get(finalCode).toString()) + " verknüpft!").queue());

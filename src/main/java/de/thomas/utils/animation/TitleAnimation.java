@@ -9,10 +9,12 @@ import de.thomas.utils.animation.particle.base.ParticleAnimationHandler;
 import de.thomas.utils.config.ConfigCache;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.Random;
 public class TitleAnimation {
 
     public static final List<Player> playerInAnimation = new ArrayList<>();
-    Player targetPlayer;
+    final Player targetPlayer;
     private int titleNumber = 1;
     private int taskID;
     private int waitingID;
@@ -42,20 +44,23 @@ public class TitleAnimation {
             targetPlayer.removePotionEffect(potionEffect.getType());
         targetPlayer.setBedSpawnLocation(ConfigCache.spawnLocation, true);
         targetPlayer.getWorld().setSpawnLocation(ConfigCache.spawnLocation);
-        targetPlayer.teleport(ConfigCache.spawnLocation);
+        Location up = ConfigCache.spawnLocation.clone();
+        up.setYaw(0);
+        up.setPitch(90);
+        targetPlayer.teleport(up);
         targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 1240, 255, false, false, false));
         targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1260, 255, false, false, false));
         targetPlayer.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 1250, 255, false, false, false));
         targetPlayer.teleport(targetPlayer.getLocation().add(0, 4725, 0));
         Title title_1 = new Title("§nMinecraft Survival§r §9#1", "Nach einem Legendärem Minigames-Server startete die §5Expedition ", 50, 60, 50);
         Title title_2 = new Title("§nMinecraft Fette-Mauer§r §a#2", "Auf das 1. Projekt, folgte das 2. mit neuen §dNachbarn §rund einer §dGroßen Mauer", 50, 60, 50);
-        Title title_3 = new Title("§nMinecraft des Vergessens§r §b#3", "Es konnten keine genauen angebanen in der Datenbank gefunden werden.", 50, 60, 50);
-        Title title_4 = new Title("§nMinecraft Riesen-Turm§r §b#4", "Es entstanden nicht nur einge Lieben sondern auch Freundschaften im 4. §c<3", 50, 60, 50);
+        Title title_3 = new Title("§nMinecraft des Vergessens§r §b#3", "Es konnten keine genauen angaben in der Datenbank gefunden werden.", 50, 60, 50);
+        Title title_4 = new Title("§nMinecraft Riesen-Turm§r §b#4", "Es entstanden nicht nur einige Lieben sondern auch Freundschaften im 4. §c<3", 50, 60, 50);
         Title title_5 = new Title("§nMinecraft Avatar§r §c#5", "Diese Lieben schafften es leider nicht; jeder versuchte im 5. seine §6Kräfte§r neu zu entdecken!", 50, 60, 50);
         Title title_6 = new Title("§nMinecraft WinterBaguette§r §d#6", "Doch als der §bWinter§r kam, hielten sie zusammen und Revolutionierten die Technik.", 50, 60, 50);
-        Title title_7 = new Title("§nMinecraft Broken World§r §d#7", "Es war so stark, dass er Teile der Welt irreversibel zerstörte...", 50, 60, 50);
+        Title title_7 = new Title("§nMinecraft Broken World§r §d#7", "Diese Erfindungen waren so stark, dass sie Teile der Welt irreversibel zerstörten...", 50, 60, 50);
         Title title_8 = new Title("§c§l§k!!!§r§6 Es war soweit §c§l§k!!!", "Eine neue Reise auf unbestimmte Zeit stand den Entdeckern bevor...", 50, 60, 50);
-        Title title_9 = new Title("§6Herzlich Wilkommen zum", "§1S§2u§3r§4v§5i§6v§7a§8l§9 P§ar§bo§cj§de§ek§ft §o#8", 50, 60, 50);
+        Title title_9 = new Title("§6Herzlich Willkommen zum", "§1S§2u§3r§4v§5i§6v§7a§8l§9 P§ar§bo§cj§de§ek§ft §o#8", 50, 60, 50);
         Title title_10 = new Title("§6Viel Spaß beim Spielen!", "§c<3", 50, 60, 50);
 
         ParticleAnimationHandler particleAnimationHandler = new ParticleAnimationHandler();
@@ -142,6 +147,8 @@ public class TitleAnimation {
                 case 11:
                     Bukkit.getOnlinePlayers().forEach(player -> targetPlayer.showPlayer(MinecraftSurvival.getINSTANCE(), player));
                     Bukkit.getOnlinePlayers().forEach(player -> player.showPlayer(MinecraftSurvival.getINSTANCE(), targetPlayer));
+                    targetPlayer.setVelocity(new Vector(0.6 * Math.random(), 1.2, 0.6 * Math.random()));
+
                     titleNumber++;
                     break;
             }

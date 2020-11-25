@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class HalloCommand extends ListenerAdapter {
 
-    private List<String> keyWords = Arrays.asList("Hallo", "Hey", "Hey Ho", "Hello", "Hi", "Tag", "HuHu", "Tach", "Morgen", "Abend", "Guten Abend", "Guten Morgen", "Guten Tag", "Guten", "Wie gehts");
+    private final List<String> keyWords = Arrays.asList("Hallo", "Hey", "Hey Ho", "Hello", "Hi", "Tag", "HuHu", "Tach", "Morgen", "Abend", "Guten Abend", "Guten Morgen", "Guten Tag", "Guten", "Wie gehts");
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {

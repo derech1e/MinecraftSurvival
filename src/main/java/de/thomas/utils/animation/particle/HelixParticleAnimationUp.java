@@ -14,8 +14,8 @@ public class HelixParticleAnimationUp extends IParticleTask {
 
     double time;
     double radius;
-    double radiusEnd;
-    double amount_p;
+    final double radiusEnd;
+    final double amount_p;
 
     public HelixParticleAnimationUp(Location location, int radius, double radiusEnd, double time, int amount) {
         super(location);

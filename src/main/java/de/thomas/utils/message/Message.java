@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 
 public class Message {
 
-    public static String PREFIX = ChatColor.GRAY + "[" + ChatColor.GOLD + "BM" + ChatColor.GREEN + "311" +ChatColor.GRAY + "]" + ChatColor.RESET + " ";
+    public static final String PREFIX = ChatColor.GRAY + "[" + ChatColor.GOLD + "BM" + ChatColor.GREEN + "311" +ChatColor.GRAY + "]" + ChatColor.RESET + " ";
     private final ErrorMessageType errorMessageType;
     private String message = PREFIX;
 
@@ -26,7 +26,7 @@ public class Message {
                 message += ChatColor.RED + "Du hast nicht genügen Berechtigungen um diesen Befehl ausführen zu können!";
                 break;
             case NOT_EXIST:
-                message += ChatColor.RED + "Dieser Befehl exsistiert nicht!";
+                message += ChatColor.RED + "Dieser Befehl existiert nicht!";
                 break;
             case NULL:
                 message += ChatColor.RED + "Ein Nicht bekannter Fehler ist aufgetreten!";

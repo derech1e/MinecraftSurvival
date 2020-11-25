@@ -8,9 +8,10 @@ import org.bukkit.Location;
 
 public abstract class IParticleTask implements IParticleAnimationBase {
 
-    public Location location;
+    public final Location location;
     public int taskID;
-    int delay = 0, amount = 1;
+    final int delay = 0;
+    final int amount = 1;
 
     public IParticleTask(Location location) {
         this.location = location;

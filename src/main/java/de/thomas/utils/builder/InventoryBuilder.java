@@ -8,7 +8,7 @@ public class InventoryBuilder {
 
     String inventoryTitle;
     int inventorySize;
-    Inventory inventory;
+    final Inventory inventory;
 
     public InventoryBuilder(String inventoryTitle) {
         this.inventoryTitle = inventoryTitle;

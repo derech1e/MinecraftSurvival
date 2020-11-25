@@ -29,11 +29,11 @@ public class GlideAreaCommand implements CommandExecutor {
 
         if (args.length == 0) {
             ConfigCache.glideAreaLocation = player.getLocation();
-            player.sendMessage(new Message(ChatColor.GRAY + "Du hast deine Position als neueun " + ChatColor.GOLD + "GlideArea-Mittelpunkt"+ ChatColor.GRAY + " gesetzt!").getMessage());
+            player.sendMessage(new Message(ChatColor.GRAY + "Du hast deine Position als neuen " + ChatColor.GOLD + "GlideArea-Mittelpunkt"+ ChatColor.GRAY + " gesetzt!").getMessage());
         } else {
             ConfigCache.glideAreaLocation = player.getLocation();
             ConfigCache.glideAreaRadius = Double.parseDouble(args[0]);
-            player.sendMessage(new Message(ChatColor.GRAY + "Du hast deine Position als neueun " + ChatColor.GOLD + "GlideArea-Mittelpunkt"+ ChatColor.GRAY + ", mit einem Radius von " + ChatColor.GOLD + ConfigCache.glideAreaRadius + ChatColor.GRAY + " gesetzt!").getMessage());
+            player.sendMessage(new Message(ChatColor.GRAY + "Du hast deine Position als neuen " + ChatColor.GOLD + "GlideArea-Mittelpunkt"+ ChatColor.GRAY + ", mit einem Radius von " + ChatColor.GOLD + ConfigCache.glideAreaRadius + ChatColor.GRAY + " gesetzt!").getMessage());
             return true;
         }
         return false;

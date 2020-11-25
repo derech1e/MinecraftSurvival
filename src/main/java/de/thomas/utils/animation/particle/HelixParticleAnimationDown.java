@@ -14,7 +14,7 @@ public class HelixParticleAnimationDown extends IParticleTask {
 
     double time;
     double radius;
-    double radiusEnd;
+    final double radiusEnd;
 
     public HelixParticleAnimationDown(Location location, double radius, double radiusEnd, double time) {
         super(location);

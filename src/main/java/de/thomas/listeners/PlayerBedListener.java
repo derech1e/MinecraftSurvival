@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
@@ -27,10 +28,10 @@ public class PlayerBedListener implements Listener {
             return;
             playerInBed.add(player);
 
-        int countToSkip = (getPlayerCountToSkip(player) - playerInBed.size());
+        int countToSkip = (getPlayerCountToSkip() - playerInBed.size());
         Bukkit.broadcastMessage(new Message(ChatColor.GOLD + player.getName() + ChatColor.WHITE + " hat sich ins Bett gelegt." + (countToSkip != 0 ? "(Noch " + countToSkip + ")" : "")).getMessage());
 
-        if (canSkip(player)) {
+        if (canSkip()) {
             taskID = Bukkit.getScheduler().runTaskLater(MinecraftSurvival.getINSTANCE(), () -> {
                 player.getWorld().setTime(0);
                 Bukkit.broadcastMessage(new Message(ChatColor.GREEN + "Guten Morgen...").getMessage());
@@ -44,22 +45,33 @@ public class PlayerBedListener implements Listener {
     public void onBedLeave(PlayerBedLeaveEvent event) {
         Player player = event.getPlayer();
         if (!inProgress) {
-            int countToSkip = (getPlayerCountToSkip(player) - playerInBed.size());
+            int countToSkip = (getPlayerCountToSkip() - playerInBed.size());
             Bukkit.broadcastMessage(new Message(ChatColor.GOLD + player.getName() + ChatColor.WHITE + " hat das Bett verlassen." + (countToSkip != 0 ? "(Noch " + countToSkip + ")" : "")).getMessage());
         }
         playerInBed.remove(player);
 
-        if (!canSkip(player)) {
+        if (!canSkip()) {
             taskID.cancel();
             inProgress = false;
         }
     }
 
-    private boolean canSkip(Player player) {
-        return playerInBed.size() >= getPlayerCountToSkip(player);
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        if(canSkip()) {
+            player.getWorld().setTime(0);
+            Bukkit.broadcastMessage(new Message(ChatColor.GREEN + "Guten Morgen...").getMessage());
+            taskID.cancel();
+            inProgress = false;
+        }
     }
 
-    private int getPlayerCountToSkip(Player player) {
-        return (int) Math.max(Math.round(33.3 * player.getWorld().getPlayerCount() / 100f), 1);
+    private boolean canSkip() {
+        return playerInBed.size() >= getPlayerCountToSkip();
+    }
+
+    private int getPlayerCountToSkip() {
+        return (int) Math.max(Math.round(33.3 * Bukkit.getOnlinePlayers().size() / 100f), 1);
     }
 }

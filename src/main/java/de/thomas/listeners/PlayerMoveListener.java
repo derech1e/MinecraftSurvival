@@ -19,7 +19,7 @@ public class PlayerMoveListener implements Listener {
         Player player = event.getPlayer();
         Collection<Player> playerInGlideArea = player.getWorld().getNearbyEntitiesByType(Player.class, ConfigCache.glideAreaLocation, ConfigCache.glideAreaRadius);
 
-        if(Variables.freezedPlayers.contains(player.getUniqueId()))
+        if(Variables.frozenPlayers.contains(player.getUniqueId()))
             event.setTo(event.getFrom());
 
         if (playerInGlideArea.contains(player))

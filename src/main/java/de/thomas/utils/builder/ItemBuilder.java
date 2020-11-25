@@ -44,8 +44,6 @@ public class ItemBuilder {
 
     /**
      * init ItemBuilder
-     *
-     * @param material
      */
     public ItemBuilder(Material material) {
         this(material, 1);
@@ -53,9 +51,6 @@ public class ItemBuilder {
 
     /**
      * init ItemBuilder
-     *
-     * @param material
-     * @param amount
      */
     public ItemBuilder(Material material, int amount) {
         this(material, amount, 0);
@@ -63,10 +58,6 @@ public class ItemBuilder {
 
     /**
      * init ItemBuilder
-     *
-     * @param material
-     * @param amount
-     * @param data
      */
     public ItemBuilder(Material material, int amount, int data) {
         this.itemStack = new ItemStack(material, amount, (byte) data);
@@ -75,8 +66,6 @@ public class ItemBuilder {
 
     /**
      * init ItemBuilder from his json object
-     *
-     * @param jsonObject
      */
     public ItemBuilder(JSONObject jsonObject) {
         String string = jsonObject.get("serialized").toString();
@@ -87,8 +76,6 @@ public class ItemBuilder {
 
     /**
      * init ItemBuilder
-     *
-     * @param itemStack
      */
     public ItemBuilder(ItemStack itemStack) {
         this.itemStack = itemStack;
@@ -97,9 +84,6 @@ public class ItemBuilder {
 
     /**
      * Set item
-     *
-     * @param material
-     * @return
      */
     public ItemBuilder setItem(Material material) {
         this.itemStack.setType(material);
@@ -108,9 +92,6 @@ public class ItemBuilder {
 
     /**
      * Set ItemStack
-     *
-     * @param itemStack
-     * @return
      */
     public ItemBuilder setItemStack(ItemStack itemStack) {
         this.itemStack = itemStack;
@@ -119,9 +100,6 @@ public class ItemBuilder {
 
     /**
      * set this.inventory value
-     *
-     * @param inventory
-     * @return
      */
     public ItemBuilder inventory(Inventory inventory) {
         this.inventory = inventory;
@@ -130,9 +108,6 @@ public class ItemBuilder {
 
     /**
      * set the display name of the item
-     *
-     * @param name
-     * @return
      */
     public ItemBuilder setName(String name) {
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -144,9 +119,6 @@ public class ItemBuilder {
 
     /**
      * Add lore from String list
-     *
-     * @param lores
-     * @return
      */
     public ItemBuilder addLore(List<String> lores) {
         ItemMeta itemMeta = itemStack.getItemMeta();
@@ -158,9 +130,6 @@ public class ItemBuilder {
 
     /**
      * Add lore from String...
-     *
-     * @param lores
-     * @return
      */
     public ItemBuilder addLore(String... lores) {
         addLore(Arrays.asList(lores));
@@ -169,11 +138,6 @@ public class ItemBuilder {
 
     /**
      * add enchant to the item
-     *
-     * @param enchantment
-     * @param value
-     * @param ignoreLevelRestriction
-     * @return
      */
     public ItemBuilder addEnchantment(Enchantment enchantment, int value, boolean ignoreLevelRestriction) {
         ItemMeta itemMeta = this.itemStack.getItemMeta();
@@ -185,9 +149,6 @@ public class ItemBuilder {
 
     /**
      * add enchants from map (use for json object)
-     *
-     * @param enchantment
-     * @return
      */
     public ItemBuilder setEnchants(Map<Enchantment, Integer> enchantment) {
         for (Map.Entry<Enchantment, Integer> entry : enchantment.entrySet()) {
@@ -199,9 +160,6 @@ public class ItemBuilder {
 
     /**
      * Remove an enchantment on the item
-     *
-     * @param enchantment
-     * @return
      */
     public ItemBuilder removeEnchant(Enchantment enchantment) {
         if (!this.getEnchantments().containsKey(enchantment))
@@ -215,9 +173,6 @@ public class ItemBuilder {
 
     /**
      * remove all enchant on item from a list
-     *
-     * @param enchantments
-     * @return
      */
     public ItemBuilder removeEnchants(List<Enchantment> enchantments) {
         for (Enchantment enchantment : enchantments) {
@@ -230,8 +185,6 @@ public class ItemBuilder {
 
     /**
      * remove all enchantment on the item
-     *
-     * @return
      */
     public ItemBuilder clearEnchants() {
         if (this.getEnchantments() == null)
@@ -243,9 +196,6 @@ public class ItemBuilder {
 
     /**
      * add ItemFlag on your item
-     *
-     * @param itemFlag
-     * @return
      */
     public ItemBuilder addItemFlag(ItemFlag itemFlag) {
         ItemMeta itemMeta = this.itemStack.getItemMeta();
@@ -257,9 +207,6 @@ public class ItemBuilder {
 
     /**
      * add ItemFlags on your item
-     *
-     * @param itemFlag
-     * @return
      */
     public ItemBuilder addItemFlag(ItemFlag... itemFlag) {
         ItemMeta itemMeta = this.itemStack.getItemMeta();
@@ -271,9 +218,6 @@ public class ItemBuilder {
 
     /**
      * add ItemFlags on your item from ItemFlag list
-     *
-     * @param itemFlag
-     * @return
      */
     public ItemBuilder addItemFlag(List<ItemFlag> itemFlag) {
         itemFlag.forEach(this::addItemFlag);
@@ -282,9 +226,6 @@ public class ItemBuilder {
 
     /**
      * remove ItemFlag on your item
-     *
-     * @param itemFlag
-     * @return
      */
     public ItemBuilder removeItemFlag(ItemFlag itemFlag) {
         ItemMeta itemMeta = this.itemStack.getItemMeta();
@@ -296,8 +237,6 @@ public class ItemBuilder {
 
     /**
      * hide enchant
-     *
-     * @return
      */
     public ItemBuilder hideEnchant() {
         ItemMeta itemMeta = this.itemStack.getItemMeta();
@@ -309,8 +248,6 @@ public class ItemBuilder {
 
     /**
      * show enchant
-     *
-     * @return
      */
     public ItemBuilder showEnchant() {
         ItemMeta itemMeta = this.itemStack.getItemMeta();
@@ -322,9 +259,6 @@ public class ItemBuilder {
 
     /**
      * Set durrability of item
-     *
-     * @param durability
-     * @return
      */
     public ItemBuilder setNewDurability(int durability) {
         itemStack.setDurability((short) durability);
@@ -333,9 +267,6 @@ public class ItemBuilder {
 
     /**
      * If your item is a player skull you can apply a special player skull texture
-     *
-     * @param playerName
-     * @return
      */
     public ItemBuilder setSkullTextureFromePlayerName(String playerName) {
         this.skullMeta = (SkullMeta) itemStack.getItemMeta();
@@ -346,9 +277,6 @@ public class ItemBuilder {
 
     /**
      * If your item is a player skull you can apply a special player skull texture
-     *
-     * @param player
-     * @return
      */
     public ItemBuilder setSkullTexture(Player player) {
         setSkullTextureFromePlayerName(player.getName());
@@ -359,9 +287,6 @@ public class ItemBuilder {
      * If your item is a player skull you can apply a texture
      * value is the base64 value of the skull texture
      * You can find the value on https://minecraft-heads.com
-     *
-     * @param value
-     * @return
      */
     public ItemBuilder setSkullTexture(String value) {
         this.skullMeta = (SkullMeta) itemStack.getItemMeta();
@@ -382,9 +307,6 @@ public class ItemBuilder {
 
     /**
      * apply potion effect type on the potion bottle
-     *
-     * @param potionEffectType
-     * @return
      */
     public ItemBuilder addPotionEffect(PotionEffectType potionEffectType) {
         addPotionEffect(potionEffectType, 10);
@@ -393,10 +315,6 @@ public class ItemBuilder {
 
     /**
      * apply potion effect type with duration on the potion bottle
-     *
-     * @param potionEffectType
-     * @param duration
-     * @return
      */
     public ItemBuilder addPotionEffect(PotionEffectType potionEffectType, int duration) {
         addPotionEffect(potionEffectType, duration, 1);
@@ -405,11 +323,6 @@ public class ItemBuilder {
 
     /**
      * apply potion effect type with duration and level on the potion bottle
-     *
-     * @param potionEffectType
-     * @param duration
-     * @param amplifier
-     * @return
      */
     public ItemBuilder addPotionEffect(PotionEffectType potionEffectType, int duration, int amplifier) {
         addPotionEffect(potionEffectType, duration, amplifier, true);
@@ -418,12 +331,6 @@ public class ItemBuilder {
 
     /**
      * apply potion effect type with duration, level and ambiance option on the potion bottle
-     *
-     * @param potionEffectType
-     * @param duration
-     * @param amplifier
-     * @param ambient
-     * @return
      */
     public ItemBuilder addPotionEffect(PotionEffectType potionEffectType, int duration, int amplifier, boolean ambient) {
         addPotionEffect(potionEffectType, duration, amplifier, ambient, false);
@@ -432,13 +339,6 @@ public class ItemBuilder {
 
     /**
      * apply potion effect type with duration, level and ambiance option on the potion bottle, can make this effect to overwrite
-     *
-     * @param potionEffectType
-     * @param duration
-     * @param amplifier
-     * @param ambient
-     * @param overwrite
-     * @return
      */
     public ItemBuilder addPotionEffect(PotionEffectType potionEffectType, int duration, int amplifier, boolean ambient, boolean overwrite) {
         this.potionMeta = (PotionMeta) this.itemStack.getItemMeta();
@@ -449,9 +349,6 @@ public class ItemBuilder {
 
     /**
      * remove specific potion effect type
-     *
-     * @param potionEffectType
-     * @return
      */
     public ItemBuilder removePotionEffect(PotionEffectType potionEffectType) {
         this.potionMeta = (PotionMeta) this.itemStack.getItemMeta();
@@ -464,9 +361,6 @@ public class ItemBuilder {
 
     /**
      * remove all potion effect from a list
-     *
-     * @param potionEffectTypes
-     * @return
      */
     public ItemBuilder removePotionEffect(List<PotionEffectType> potionEffectTypes) {
         for (PotionEffectType potionEffectType : potionEffectTypes) {
@@ -479,8 +373,6 @@ public class ItemBuilder {
 
     /**
      * clear potion effect on item
-     *
-     * @return
      */
     public ItemBuilder clearPotionEffect() {
         if (this.getPotionEffects() == null)
@@ -493,9 +385,6 @@ public class ItemBuilder {
 
     /**
      * set potion type on the potion
-     *
-     * @param potionType
-     * @return
      */
     public ItemBuilder setPotion(PotionType potionType) {
         setPotion(potionType, true);
@@ -504,10 +393,6 @@ public class ItemBuilder {
 
     /**
      * set potion type on the item with splash option
-     *
-     * @param potionType
-     * @param splash
-     * @return
      */
     public ItemBuilder setPotion(PotionType potionType, boolean splash) {
         Potion potion = new Potion(PotionType.WATER);
@@ -519,10 +404,6 @@ public class ItemBuilder {
 
     /**
      * Inject item in inventory
-     *
-     * @param inventory
-     * @param position
-     * @return
      */
     public ItemBuilder inject(Inventory inventory, int position) {
         inventory.setItem(position, toItemStack());
@@ -531,9 +412,6 @@ public class ItemBuilder {
 
     /**
      * Inject item in inventory
-     *
-     * @param inventory
-     * @return
      */
     public ItemBuilder inject(Inventory inventory) {
         inventory.addItem(toItemStack());
@@ -542,9 +420,6 @@ public class ItemBuilder {
 
     /**
      * Inject item in inventory
-     *
-     * @param position
-     * @return
      */
     public ItemBuilder inject(int position) {
         inventory.setItem(position, toItemStack());
@@ -553,8 +428,6 @@ public class ItemBuilder {
 
     /**
      * Inject item in inventory
-     *
-     * @return
      */
     public ItemBuilder inject() {
         this.inventory.addItem(toItemStack());
@@ -563,8 +436,6 @@ public class ItemBuilder {
 
     /**
      * Open inventory to the player
-     *
-     * @param player
      */
     public void open(Player player) {
         player.openInventory(inventory);
@@ -572,8 +443,6 @@ public class ItemBuilder {
 
     /**
      * get position
-     *
-     * @return
      */
     public long getPosition() {
         return (long) this.position;
@@ -581,9 +450,6 @@ public class ItemBuilder {
 
     /**
      * Set the position of the item
-     *
-     * @param position
-     * @return
      */
     public ItemBuilder setPosition(int position) {
         this.position = position;
@@ -592,8 +458,6 @@ public class ItemBuilder {
 
     /**
      * build item
-     *
-     * @return
      */
     public ItemStack toItemStack() {
         return itemStack;
@@ -602,7 +466,6 @@ public class ItemBuilder {
     /**
      * @param itemBuilder returns if two item builder are similar
      *                    This method compare type, data, and display name of items
-     * @return
      */
     public boolean isSimilar(ItemBuilder itemBuilder) {
         return hasSameMaterial(itemBuilder) && hasSameData(itemBuilder) && hasSameDisplayName(itemBuilder);
@@ -611,7 +474,6 @@ public class ItemBuilder {
     /**
      * @param itemBuilder returns if two item builder are exactly same
      *                    This method compare all parameter of items
-     * @return
      */
     public boolean isExactlySame(ItemBuilder itemBuilder) {
         return hasSameMaterial(itemBuilder) && hasSameData(itemBuilder) && hasSameDisplayName(itemBuilder)
@@ -621,7 +483,6 @@ public class ItemBuilder {
 
     /**
      * @param itemBuilder returns if two item builder has same type
-     * @return
      */
     public boolean hasSameMaterial(ItemBuilder itemBuilder) {
         return getMaterial() == itemBuilder.getMaterial();
@@ -629,7 +490,6 @@ public class ItemBuilder {
 
     /**
      * @param itemBuilder returns if two item builder has same display name
-     * @return
      */
     public boolean hasSameDisplayName(ItemBuilder itemBuilder) {
         return getDisplayName().equalsIgnoreCase(itemBuilder.getDisplayName());
@@ -637,7 +497,6 @@ public class ItemBuilder {
 
     /**
      * @param itemBuilder returns if two item builder has same enchantments
-     * @return
      */
     public boolean hasSameEnchantment(ItemBuilder itemBuilder) {
         return getEnchantments().equals(itemBuilder.getEnchantments());
@@ -645,7 +504,6 @@ public class ItemBuilder {
 
     /**
      * @param itemBuilder returns if two item builder has same item flags
-     * @return
      */
     public boolean hasSameItemFlag(ItemBuilder itemBuilder) {
         return getItemFlag().equals(itemBuilder.getItemFlag());
@@ -653,7 +511,6 @@ public class ItemBuilder {
 
     /**
      * @param itemBuilder returns if two item builder has same lore
-     * @return
      */
     public boolean hasSameLore(ItemBuilder itemBuilder) {
         if (getLore() == null)
@@ -663,7 +520,6 @@ public class ItemBuilder {
 
     /**
      * @param itemBuilder returns if two item builder has same data
-     * @return
      */
     public boolean hasSameData(ItemBuilder itemBuilder) {
         return getData() == itemBuilder.getData();
@@ -671,7 +527,6 @@ public class ItemBuilder {
 
     /**
      * @param itemBuilder returns if two item builder has same amount
-     * @return
      */
     public boolean hasSameAmount(ItemBuilder itemBuilder) {
         return getAmount() == itemBuilder.getAmount();
@@ -679,7 +534,6 @@ public class ItemBuilder {
 
     /**
      * @param itemBuilder returns if two item builder has same durability
-     * @return
      */
     public boolean hasSameDurability(ItemBuilder itemBuilder) {
         return getDurability() == itemBuilder.getDurability();
@@ -687,7 +541,6 @@ public class ItemBuilder {
 
     /**
      * @param itemBuilder returns if two item builder has same breakable stat
-     * @return
      */
     public boolean hasSameBreakableStat(ItemBuilder itemBuilder) {
         return isUnbreakable() == itemBuilder.isUnbreakable();
@@ -695,8 +548,6 @@ public class ItemBuilder {
 
     /**
      * get type
-     *
-     * @return
      */
     public Material getMaterial() {
         return itemStack.getType();
@@ -704,8 +555,6 @@ public class ItemBuilder {
 
     /**
      * get amount
-     *
-     * @return
      */
     public int getAmount() {
         return itemStack.getAmount();
@@ -713,9 +562,6 @@ public class ItemBuilder {
 
     /**
      * Set amount
-     *
-     * @param amount
-     * @return
      */
     public ItemBuilder setAmount(int amount) {
         this.itemStack.setAmount(amount);
@@ -724,8 +570,6 @@ public class ItemBuilder {
 
     /**
      * get data
-     *
-     * @return
      */
     public int getData() {
         return Objects.requireNonNull(itemStack.getData()).getData();
@@ -733,9 +577,6 @@ public class ItemBuilder {
 
     /**
      * Set data
-     *
-     * @param data
-     * @return
      */
     public ItemBuilder setData(int data) {
         this.itemStack = new ItemStack(itemStack.getType(), itemStack.getAmount(), (byte) data);
@@ -744,19 +585,14 @@ public class ItemBuilder {
 
     /**
      * get durability
-     *
-     * @return
      */
     public int getDurability() {
         return itemStack.getDurability();
     }
 
     /**
-     * Set durrability of item
+     * Set durability of item
      * /!\ 100 >= percent >= 0
-     *
-     * @param percent
-     * @return
      */
     public ItemBuilder setDurability(float percent) {
         if (percent > 100.0) {
@@ -770,8 +606,6 @@ public class ItemBuilder {
 
     /**
      * get item meta
-     *
-     * @return
      */
     public ItemMeta getItemMeta() {
         return itemMeta;
@@ -779,8 +613,6 @@ public class ItemBuilder {
 
     /**
      * get display name
-     *
-     * @return
      */
     public String getDisplayName() {
         return itemStack.hasItemMeta() && itemMeta.hasDisplayName() ? itemMeta.getDisplayName() : "";
@@ -788,8 +620,6 @@ public class ItemBuilder {
 
     /**
      * get enchant
-     *
-     * @return
      */
     public Map<Enchantment, Integer> getEnchantments() {
         return this.itemStack.hasItemMeta() && this.itemMeta.hasEnchants() ? this.itemMeta.getEnchants() : null;
@@ -797,8 +627,6 @@ public class ItemBuilder {
 
     /**
      * get lore
-     *
-     * @return
      */
     public List<String> getLore() {
         return itemStack.hasItemMeta() && itemMeta.hasLore() ? itemMeta.getLore() : null;
@@ -806,8 +634,6 @@ public class ItemBuilder {
 
     /**
      * get item flag
-     *
-     * @return
      */
     public Set<ItemFlag> getItemFlag() {
         return itemStack.hasItemMeta() && itemMeta.getItemFlags().size() > 0 ? itemMeta.getItemFlags() : null;
@@ -815,8 +641,6 @@ public class ItemBuilder {
 
     /**
      * get potion effects
-     *
-     * @return
      */
     public List<PotionEffect> getPotionEffects() {
         return this.potionMeta != null && this.potionMeta.getCustomEffects().size() > 0 ? this.potionMeta.getCustomEffects() : null;
@@ -824,8 +648,6 @@ public class ItemBuilder {
 
     /**
      * get if item is or isn't unbreakable
-     *
-     * @return
      */
     public boolean isUnbreakable() {
         return itemStack.hasItemMeta() && itemMeta.isUnbreakable();
@@ -833,7 +655,6 @@ public class ItemBuilder {
 
     /**
      * @param unbreakable Set item in unbreakable/breakable
-     * @return
      */
     public ItemBuilder setUnbreakable(boolean unbreakable) {
         if (this.itemMeta == null) {
@@ -848,8 +669,6 @@ public class ItemBuilder {
 
     /**
      * parse in json object without associate position
-     *
-     * @return
      */
     @SuppressWarnings("unchecked")
     public JSONObject toJSONObject() {
@@ -860,8 +679,6 @@ public class ItemBuilder {
 
     /**
      * Convert ItemBuilder variable into a String
-     *
-     * @return
      */
     public String toString() {
         String[] splitValues = new String[]{"{^}", "[^]", "`SECTION_TYPE`", "|", ","};
@@ -906,9 +723,6 @@ public class ItemBuilder {
 
     /**
      * Convert string variable into an ItemBuilder
-     *
-     * @param string
-     * @return
      */
     public ItemBuilder fromString(String string) {
         String[] splitValues = new String[]{"\\{\\^}", "\\[\\^]", "`SECTION_TYPE`", "\\|", ","};
@@ -938,10 +752,6 @@ public class ItemBuilder {
 
     /**
      * This method returns the item
-     *
-     * @param itemBuilder
-     * @param sectionType
-     * @param object
      */
     private void itemSection(ItemBuilder itemBuilder, String[] sectionType, String[] object) {
         Arrays.asList(object).forEach(s -> {
@@ -962,10 +772,6 @@ public class ItemBuilder {
 
     /**
      * This method returns specific properties of item from of ItemBuilder
-     *
-     * @param itemBuilder
-     * @param sectionType
-     * @param object
      */
     private void otherPropertySection(ItemBuilder itemBuilder, String[] sectionType, String[] object) {
         Arrays.asList(object).forEach(s -> {
@@ -979,10 +785,6 @@ public class ItemBuilder {
 
     /**
      * This method returns the meta of the item
-     *
-     * @param itemBuilder
-     * @param sectionType
-     * @param object
      */
     private void metaSection(ItemBuilder itemBuilder, String[] sectionType, String[] object) {
         String[] splitValues = new String[]{"\\{\\^}", "\\[\\^]", "`SECTION_TYPE`", "\\|", ","};
@@ -1020,16 +822,14 @@ public class ItemBuilder {
     }
 
     /**
-     * @param string
-     * @return
+     * Replace § to &
      */
     private String uncoloredString(String string) {
         return string.replace("§", "&");
     }
 
     /**
-     * @param string
-     * @return
+     * Replace & to §
      */
     private String coloredString(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);

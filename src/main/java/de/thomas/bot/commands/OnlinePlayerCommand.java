@@ -34,7 +34,7 @@ public class OnlinePlayerCommand extends ListenerAdapter {
 
 
     public List<String> getAlias() {
-        return Arrays.asList("mc", "minecraft", "modpack", "avatar");
+        return Arrays.asList("mc", "minecraft", "modpack", "avatar", "online");
     }
 
     public void sendMessage(TextChannel channel) {
