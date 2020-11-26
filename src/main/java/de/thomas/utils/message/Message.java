@@ -33,8 +33,4 @@ public class Message {
         }
         return message;
     }
-
-    public ErrorMessageType getErrorMessageType() {
-        return errorMessageType;
-    }
 }

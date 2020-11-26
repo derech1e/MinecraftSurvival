@@ -20,12 +20,6 @@ public class WorldBorderAnimation {
         this.time = 5;
     }
 
-    public WorldBorderAnimation(Player targetPlayer, int time, int size) {
-        this.targetPlayer = targetPlayer;
-        this.time = time;
-        this.size = size;
-    }
-
     public int getTime() {
         return time;
     }

@@ -52,7 +52,7 @@ public class WaveParticleAnimation extends IParticleTask {
             location.subtract(x, y, z);
         }
         if (time > 65) {
-            stop();
+            this.stop();
         }
     }
 }

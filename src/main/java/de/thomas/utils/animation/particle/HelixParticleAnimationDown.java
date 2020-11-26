@@ -42,7 +42,7 @@ public class HelixParticleAnimationDown extends IParticleTask {
         location.add(x, y, z);
         radius = radius + 0.01;
         if (radius >= radiusEnd) {
-            stop();
+            this.stop();
         }
     }
 }

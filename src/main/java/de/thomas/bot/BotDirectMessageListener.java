@@ -14,13 +14,14 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class BotDirectMessageListener extends ListenerAdapter {
 
     public static String getName(String uuid) {
         String url = "https://api.mojang.com/user/profiles/" + uuid.replace("-", "") + "/names";
         try {
-            String nameJson = IOUtils.toString(new URL(url));
+            String nameJson = IOUtils.toString(new URL(url), StandardCharsets.UTF_8);
             JSONArray nameValue = (JSONArray) JSONValue.parseWithException(nameJson);
             String playerSlot = nameValue.get(nameValue.size() - 1).toString();
             JSONObject nameObject = (JSONObject) JSONValue.parseWithException(playerSlot);

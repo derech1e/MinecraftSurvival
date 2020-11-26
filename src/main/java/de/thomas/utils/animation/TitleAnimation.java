@@ -22,7 +22,7 @@ import java.util.Random;
 
 public class TitleAnimation {
 
-    public static final List<Player> playerInAnimation = new ArrayList<>();
+    private static final List<Player> playerInAnimation = new ArrayList<>();
     final Player targetPlayer;
     private int titleNumber = 1;
     private int taskID;

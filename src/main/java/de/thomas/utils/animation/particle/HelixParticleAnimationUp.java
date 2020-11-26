@@ -44,7 +44,7 @@ public class HelixParticleAnimationUp extends IParticleTask {
         location.subtract(x, y, z);
         radius = radius - 0.01;
         if (radius <= radiusEnd) {
-            stop();
+            this.stop();
         }
     }
 }

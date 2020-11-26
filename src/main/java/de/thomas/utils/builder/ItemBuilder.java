@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 
+@SuppressWarnings({"UnusedReturnValue", "unused", "deprecation"})
 public class ItemBuilder {
 
     /**

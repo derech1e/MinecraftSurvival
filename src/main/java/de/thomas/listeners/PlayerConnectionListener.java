@@ -21,6 +21,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -62,7 +63,7 @@ public class PlayerConnectionListener implements Listener {
 
     @EventHandler
     public void onAsyncPreLogin(AsyncPlayerPreLoginEvent event) throws IOException, ParseException {
-        String encodedDate = IOUtils.toString(new URL("https://raw.githubusercontent.com/derech1e/baguettelauncher/master/launch_date.txt"));
+        String encodedDate = IOUtils.toString(new URL("https://raw.githubusercontent.com/derech1e/baguettelauncher/master/launch_date.txt"), StandardCharsets.UTF_8);
         DateFormat dateFormatParsable = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         DateFormat dateFormatReadable = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         Date date = dateFormatParsable.parse(encodedDate);

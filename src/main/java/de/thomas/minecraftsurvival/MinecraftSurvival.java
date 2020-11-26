@@ -100,14 +100,10 @@ public class MinecraftSurvival extends JavaPlugin {
 
     private void unregisterBot() {
         jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
-        jda.cancelRequests();
-        jda.setAutoReconnect(false);
         jda.shutdown();
-        jda = null;
     }
 
     private void registerBot() throws LoginException {
-        LOGGER.info("Try to init bot");
         jda = JDABuilder.create("NTE1NTU0ODYxMzQ2MDYyMzQ2.XWtxWA.wa6VCGxqT4A4SysUAe41cjX6774", GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES)
                 .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS).build();
         jda.getPresence().setPresence(Activity.playing("Server started neu..."), true);
@@ -115,6 +111,6 @@ public class MinecraftSurvival extends JavaPlugin {
         jda.addEventListener(new OnlinePlayerCommand());
         jda.addEventListener(new HalloCommand());
         jda.setAutoReconnect(true);
-        LOGGER.info("Bot started!");
+        LOGGER.info("Bot registered and started!");
     }
 }
