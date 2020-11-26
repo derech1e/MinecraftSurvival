@@ -5,6 +5,7 @@ api-version: 1.16
 prefix: BM311
 authors: [ Thomas ]
 description: Ein Plugin für das BM311 Survival Projekt
+load: POSTWORLD
 commands:
   glidearea:
     description: Setzte den Mittelpunkt der GlideArea

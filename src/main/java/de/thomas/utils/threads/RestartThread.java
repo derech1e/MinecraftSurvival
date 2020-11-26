@@ -1,23 +1,20 @@
-package de.thomas.utils;
+package de.thomas.utils.threads;
 
 import de.thomas.minecraftsurvival.MinecraftSurvival;
 import de.thomas.utils.message.Message;
+import de.thomas.utils.threads.base.IThreadBase;
 import org.bukkit.Bukkit;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class RestartThread {
+public class RestartThread extends IThreadBase {
 
     int seconds = 0;
-    private int taskID;
 
-    public RestartThread() {
-        startThread();
-    }
-
-    private void startThread() {
+    @Override
+    protected void startThread() {
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
             Date date = new Date();
             Calendar calendar = GregorianCalendar.getInstance();
@@ -25,9 +22,10 @@ public class RestartThread {
 
             if (calendar.get(Calendar.HOUR_OF_DAY) == 21 && calendar.get(Calendar.MINUTE) == 45) {
                 startCountdown();
-                Bukkit.getScheduler().cancelTask(taskID);
+                stopThread();
             }
         }, 20, 100);
+        super.startThread();
     }
 
     private void startCountdown() {

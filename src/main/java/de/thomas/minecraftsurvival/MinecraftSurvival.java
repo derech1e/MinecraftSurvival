@@ -5,11 +5,13 @@ import de.thomas.bot.commands.HalloCommand;
 import de.thomas.bot.commands.OnlinePlayerCommand;
 import de.thomas.commands.*;
 import de.thomas.listeners.*;
-import de.thomas.utils.RestartThread;
 import de.thomas.utils.config.ConfigLoader;
 import de.thomas.utils.message.Message;
+import de.thomas.utils.threads.BotStatusMessageThread;
+import de.thomas.utils.threads.RestartThread;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
@@ -52,9 +54,11 @@ public class MinecraftSurvival extends JavaPlugin {
 
         //Load Threads
         new RestartThread();
+        new BotStatusMessageThread();
         LOGGER.info("Started Restart Thread");
 
         //Register Bot
+        LOGGER.info("Try to register Bot");
         try {
             registerBot();
         } catch (LoginException e) {
@@ -64,6 +68,9 @@ public class MinecraftSurvival extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        LOGGER.info("Shutdown Bot...");
+        unregisterBot();
+        LOGGER.info("Successfully shutdown Bot.");
         LOGGER.info("Saving Config File...");
         ConfigLoader.saveConfig();
         LOGGER.info("Saved Config File.");
@@ -91,11 +98,19 @@ public class MinecraftSurvival extends JavaPlugin {
         LOGGER.info("All Commands registered!");
     }
 
+    private void unregisterBot() {
+        jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
+        jda.cancelRequests();
+        jda.setAutoReconnect(false);
+        jda.shutdown();
+        jda = null;
+    }
+
     private void registerBot() throws LoginException {
         LOGGER.info("Try to init bot");
-        jda = JDABuilder.create("Nzc2ODQxOTA4ODg5OTc2ODYy.X66waA.D1nzOfVglK7iDHuY08n5kSAo4wg", GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES)
+        jda = JDABuilder.create("NTE1NTU0ODYxMzQ2MDYyMzQ2.XWtxWA.wa6VCGxqT4A4SysUAe41cjX6774", GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES)
                 .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS).build();
-        jda.getPresence().setPresence(Activity.playing(getServer().getOnlinePlayers().size() + " Spieler Online"), true);
+        jda.getPresence().setPresence(Activity.playing("Server started neu..."), true);
         jda.addEventListener(new BotDirectMessageListener());
         jda.addEventListener(new OnlinePlayerCommand());
         jda.addEventListener(new HalloCommand());
