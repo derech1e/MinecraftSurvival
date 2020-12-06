@@ -36,7 +36,7 @@ public class PlayerConnectionListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         event.setJoinMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + player.getName());
-        if (!player.hasPlayedBefore() || Variables.frozenPlayers.contains(event.getPlayer().getUniqueId())) {
+        /*if (!player.hasPlayedBefore() || Variables.frozenPlayers.contains(event.getPlayer().getUniqueId())) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 99999, 255, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 255, false, false));
             player.teleport(ConfigCache.spawnLocation);
@@ -44,7 +44,7 @@ public class PlayerConnectionListener implements Listener {
                 Variables.frozenPlayers.add(event.getPlayer().getUniqueId());
             Bukkit.getOnlinePlayers().forEach(player1 -> player1.hidePlayer(MinecraftSurvival.getINSTANCE(), player));
             Bukkit.getOnlinePlayers().forEach(player1 -> player.hidePlayer(MinecraftSurvival.getINSTANCE(), player1));
-        }
+        }*/
         MinecraftSurvival.getINSTANCE().getJda().getPresence().setPresence(Activity.playing(Bukkit.getOnlinePlayers().size() + " Spieler Online (" + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")) + ")"), true);
 
     }

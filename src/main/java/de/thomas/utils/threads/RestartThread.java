@@ -20,15 +20,17 @@ public class RestartThread extends IThreadBase {
             Calendar calendar = GregorianCalendar.getInstance();
             calendar.setTime(date);
 
-            if (calendar.get(Calendar.HOUR_OF_DAY) == 21 && calendar.get(Calendar.MINUTE) == 45) {
-                startCountdown();
+            if (calendar.get(Calendar.HOUR_OF_DAY) == 20 && calendar.get(Calendar.MINUTE) >= 45) {
+                int minutes = 60 - calendar.get(Calendar.MINUTE);
+                startCountdown(minutes);
                 stopThread();
             }
         }, 20, 100);
         super.startThread();
     }
 
-    private void startCountdown() {
+    private void startCountdown(int timer) {
+        seconds = timer;
         Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
             switch (seconds) {
                 case 1:

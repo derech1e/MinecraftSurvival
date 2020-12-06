@@ -24,7 +24,7 @@ public class InventoryClickListener implements Listener {
             Player player = (Player) event.getWhoClicked();
             Location spawnLocation = player.getBedSpawnLocation() == null ? player.getWorld().getSpawnLocation() : player.getBedSpawnLocation();
             int distance = (int) Math.round(player.getLocation().distance(spawnLocation));
-            if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Spawnpunkt")) {
+            if (event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Spawnpunkt")) {
                 player.setCompassTarget(spawnLocation);
                 player.sendMessage(new Message("Du hast deinen " + ChatColor.GOLD + "Spawnpunkt" + ChatColor.WHITE + " als neues Ziel gesetzt. (" + ChatColor.GOLD + distance + " Blöcke entfernt" + ChatColor.WHITE + ")").getMessage());
                 player.closeInventory();

@@ -102,9 +102,7 @@ public class MinecraftSurvival extends JavaPlugin {
 
     private void unregisterBot() {
         jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
-        jda.getAudioManagers().clear();
-        jda.getDirectAudioController().disconnect(Objects.requireNonNull(jda.getGuildById("403290945388412948")));
-        jda.shutdownNow();
+        jda.shutdown();
     }
 
     private void registerBot() throws LoginException {
@@ -114,7 +112,7 @@ public class MinecraftSurvival extends JavaPlugin {
         jda.addEventListener(new BotDirectMessageListener());
         jda.addEventListener(new OnlinePlayerCommand());
         jda.addEventListener(new HalloCommand());
-        jda.setAutoReconnect(true);
+        jda.setAutoReconnect(false);
         LOGGER.info("Bot registered and started!");
     }
 }
