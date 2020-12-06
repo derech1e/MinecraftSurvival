@@ -20,6 +20,7 @@ public class ConfigLoader {
         INSTANCE.getConfig().addDefault("GlideArea.Location", new Location(INSTANCE.getServer().getWorld("world"), -10, 110, 10));
         INSTANCE.getConfig().addDefault("GlideArea.Radius", 15.0D);
         INSTANCE.getConfig().addDefault("GlideBoost", false);
+        INSTANCE.getConfig().addDefault("SpawnProtection", true);
         INSTANCE.getConfig().addDefault("SpawnLocation", Objects.requireNonNull(INSTANCE.getServer().getWorld("world")).getSpawnLocation());
         INSTANCE.getConfig().addDefault("Players.Verified", Collections.emptyMap());
         try {
@@ -57,6 +58,9 @@ public class ConfigLoader {
         ConfigUtils configUtilsBoost = new ConfigUtils("GlideBoost");
         ConfigCache.glideBoots = configUtilsBoost.loadGlideBoost();
 
+        ConfigUtils configUtilsSpawnProtection = new ConfigUtils("SpawnProtection");
+        ConfigCache.spawnProtection = configUtilsSpawnProtection.loadSpawnProtection();
+
         ConfigUtils configUtilsSpawnLoc = new ConfigUtils("SpawnLocation");
         ConfigCache.spawnLocation = configUtilsSpawnLoc.loadSpawnLocation();
 
@@ -70,6 +74,9 @@ public class ConfigLoader {
 
         ConfigUtils configUtilsBoost = new ConfigUtils("GlideBoost");
         configUtilsBoost.saveGlideBoost(ConfigCache.glideBoots);
+
+        ConfigUtils configUtilsSpawnProtection = new ConfigUtils("SpawnProtection");
+        configUtilsSpawnProtection.saveSpawnProtection(ConfigCache.spawnProtection);
 
         ConfigUtils configUtilsSpawnLoc = new ConfigUtils("SpawnLocation");
         configUtilsSpawnLoc.saveSpawnLocation(ConfigCache.spawnLocation);

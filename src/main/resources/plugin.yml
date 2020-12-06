@@ -21,3 +21,6 @@ commands:
 
   ping:
     description: Gibt den Ping zum Server an
+
+  spawnprotection:
+    description: Aktiviere oder Deaktiviere die Spawnprotection

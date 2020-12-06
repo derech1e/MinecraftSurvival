@@ -10,17 +10,15 @@ import java.util.Random;
 
 public class HalloCommand extends ListenerAdapter {
 
-    private final List<String> keyWords = Arrays.asList("Hallo", "Hey", "Hey Ho", "Hello", "Hi", "Tag", "HuHu", "Tach", "Morgen", "Abend", "Guten Abend", "Guten Morgen", "Guten Tag", "Guten", "Wie gehts");
+    private final List<String> keyWords = Arrays.asList("Hallo", "Hey", "Hey Ho", "Hello", "Hi", "Tag", "HuHu", "Tach", "Morgen", "Abend", "Guten Abend", "Guten Morgen", "Guten Tag", "Guten", "Wie gehts", "¡Hola mis amigos!", "Moinsen", "Moin", "Hola", "Servus", "Bonjurno");
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        String[] args = event.getMessage().getContentRaw().split(" ");
-
         if (Objects.requireNonNull(event.getMember()).getUser().isBot()) {
             return;
         }
 
-        if (keyWords.stream().anyMatch(args[0]::equalsIgnoreCase)) {
+        if (keyWords.stream().anyMatch(event.getMessage().getContentRaw()::equalsIgnoreCase)) {
             Random random = new Random();
             event.getChannel().sendMessage(keyWords.get(random.nextInt(keyWords.size())) + " " + (event.getMember().getNickname() != null ? event.getMember().getNickname() : event.getMember().getUser().getName()) + "!").queue();
         }

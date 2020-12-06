@@ -2,6 +2,7 @@ package de.thomas.listeners;
 
 import de.thomas.utils.Variables;
 import de.thomas.utils.animation.TitleAnimation;
+import de.thomas.utils.config.ConfigCache;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,9 +14,10 @@ public class EntityDamageListener implements Listener {
     public void onPlayerDamageEvent(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
-        if (Variables.frozenPlayers.contains(player.getUniqueId())) event.setCancelled(true);
+        if (Variables.frozenPlayers.contains(player.getUniqueId()) || ConfigCache.spawnProtection) event.setCancelled(true);
         if (event.getCause().equals(EntityDamageEvent.DamageCause.FALL))
-            if (Variables.glidingPlayers.contains(player) || TitleAnimation.getPlayerInAnimation().contains(player))
+            if (Variables.protectedPlayers.contains(player) || TitleAnimation.getPlayerInAnimation().contains(player)) {
                 event.setCancelled(true);
+            }
     }
 }

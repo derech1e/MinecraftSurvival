@@ -1,37 +1,55 @@
 package de.thomas.listeners;
 
+import de.thomas.minecraftsurvival.MinecraftSurvival;
 import de.thomas.utils.Variables;
+import de.thomas.utils.animation.SpawnLevitationAnimation;
 import de.thomas.utils.config.ConfigCache;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.Collection;
+import java.util.Arrays;
 
 public class PlayerMoveListener implements Listener {
-
 
     @Deprecated
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        Collection<Player> playerInGlideArea = player.getWorld().getNearbyEntitiesByType(Player.class, ConfigCache.glideAreaLocation, ConfigCache.glideAreaRadius);
 
-        if(Variables.frozenPlayers.contains(player.getUniqueId()))
+        if (Variables.frozenPlayers.contains(player.getUniqueId()))
             event.setTo(event.getFrom());
 
-        if (playerInGlideArea.contains(player))
-            if (!player.isOnGround() && player.getFallDistance() >= 3) {
-                Variables.glidingPlayers.add(player);
-                if (ConfigCache.glideBoots)
-                    player.setVelocity(player.getEyeLocation().getDirection().multiply(2));
-            }
+        Block carpet = player.getLocation().subtract(0, 0.06250, 0).getBlock();
+        Block bedrock = player.getLocation().subtract(0, 1.06250, 0).getBlock();
+        Block lantern = player.getLocation().subtract(0, 2.06250, 0).getBlock();
+
+        Material[] carpets = new Material[]{Material.RED_CARPET, Material.ORANGE_CARPET, Material.YELLOW_CARPET};
+
+        if (Arrays.stream(carpets).anyMatch(type -> type.equals(carpet.getType())) && bedrock.getType().equals(Material.BEDROCK) && lantern.getType().equals(Material.SEA_LANTERN)) {
+            new SpawnLevitationAnimation(player).start();
+        }
+
+        boolean isPlayerInSpawnArea = player.getLocation().distance(ConfigCache.glideAreaLocation) <= ConfigCache.glideAreaRadius;
+
+        if (!Variables.glidingPlayers.contains(player))
+            if (isPlayerInSpawnArea)
+                if (player.getLocation().subtract(0, 2, 0).getBlock().getType().isAir() && player.getFallDistance() >= 3) {
+                    Variables.glidingPlayers.add(player);
+                    Variables.protectedPlayers.add(player);
+                    if (ConfigCache.glideBoots)
+                        player.setVelocity(player.getEyeLocation().getDirection().multiply(2));
+                }
 
         if (Variables.glidingPlayers.contains(player))
-            if (player.isOnGround() || player.isInWater() || player.isInLava() || !player.getLocation().subtract(0,2,0).getBlock().getType().equals(Material.AIR))
+            if (player.isOnGround() || player.isInWater() || player.isInLava() || !player.getLocation().subtract(0, 2, 0).getBlock().getType().isAir()) {
                 Variables.glidingPlayers.remove(player);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(MinecraftSurvival.getINSTANCE(), () -> Variables.protectedPlayers.remove(player), 20 * 2);
+            }
 
         player.setGliding(Variables.glidingPlayers.contains(player));
     }

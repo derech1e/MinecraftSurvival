@@ -32,6 +32,7 @@ public class HelixParticleAnimationDown extends IParticleTask {
         location.subtract(x, y, z);
         ParticleBuilder particleBuilder = new ParticleBuilder(Particle.REDSTONE);
         particleBuilder.location(location);
+        particleBuilder.force(true);
         int blue = (int) (radius * 30);
         int green = (int) -(-255 + (radius * 30));
         particleBuilder.color(Color.fromRGB(0, green > 255 ? 255 : Math.max(green, 0), blue > 255 ? 255 : Math.max(blue, 0)), new Random().nextInt(5));

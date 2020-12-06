@@ -12,6 +12,7 @@ import java.util.UUID;
 public class Variables {
 
     public static final List<Player> glidingPlayers = new ArrayList<>();
+    public static final List<Player> protectedPlayers = new ArrayList<>();
     public static final String INVENTORY_NAME_COMPASS = ChatColor.GOLD + "Wähle einen Spieler";
     public static final HashMap<Short, UUID> verifyCodes = new HashMap<>();
     public static final List<IParticleTask> activeTasks = new ArrayList<>();

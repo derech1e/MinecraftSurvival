@@ -28,6 +28,7 @@ public class WaveParticleAnimation extends IParticleTask {
             location.add(x, y, z);
 
             ParticleBuilder particleBuilder_Up_Down = new ParticleBuilder(Particle.FIREWORKS_SPARK);
+            particleBuilder_Up_Down.force(true);
             particleBuilder_Up_Down.location(location);
             particleBuilder_Up_Down.extra(0.001);
             particleBuilder_Up_Down.count(1);
@@ -43,6 +44,7 @@ public class WaveParticleAnimation extends IParticleTask {
             location.add(x, y, z);
 
             ParticleBuilder particleBuilder2_Down_Up = new ParticleBuilder(Particle.SPELL_WITCH);
+            particleBuilder2_Down_Up.force(true);
             particleBuilder2_Down_Up.location(location);
             particleBuilder2_Down_Up.count(1);
             particleBuilder2_Down_Up.extra(0.001);

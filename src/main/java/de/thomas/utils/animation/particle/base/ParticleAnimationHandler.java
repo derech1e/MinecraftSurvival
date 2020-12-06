@@ -49,7 +49,6 @@ public class ParticleAnimationHandler implements IParticleHandlerBase {
 
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
             if (Variables.activeTasks.size() == 0) {
-                System.out.println("Test");
                 animationAtLeast.forEach(IParticleTask::start);
                 animationAtLeast.clear();
                 finalized.onFinal();

@@ -85,6 +85,7 @@ public class MinecraftSurvival extends JavaPlugin {
         pluginManager.registerEvents(new PlayerConnectionListener(), this);
         pluginManager.registerEvents(new EntityDamageListener(), this);
         pluginManager.registerEvents(new InventoryClickListener(), this);
+        pluginManager.registerEvents(new BlockListener(), this);
 
         LOGGER.info("All Events registered!");
     }
@@ -95,12 +96,15 @@ public class MinecraftSurvival extends JavaPlugin {
         Objects.requireNonNull(getCommand("spawnlocation")).setExecutor(new SpawnLocationCommand());
         Objects.requireNonNull(getCommand("start")).setExecutor(new StartCommand());
         Objects.requireNonNull(getCommand("ping")).setExecutor(new PingCommand());
+        Objects.requireNonNull(getCommand("spawnProtection")).setExecutor(new SpawnProtectionCommand());
         LOGGER.info("All Commands registered!");
     }
 
     private void unregisterBot() {
         jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
-        jda.shutdown();
+        jda.getAudioManagers().clear();
+        jda.getDirectAudioController().disconnect(Objects.requireNonNull(jda.getGuildById("403290945388412948")));
+        jda.shutdownNow();
     }
 
     private void registerBot() throws LoginException {

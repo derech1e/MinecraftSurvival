@@ -39,6 +39,14 @@ public class ConfigUtils {
         INSTANCE.getConfig().set(configItemName, state);
     }
 
+    public boolean loadSpawnProtection() {
+        return INSTANCE.getConfig().getBoolean(configItemName);
+    }
+
+    public void saveSpawnProtection(boolean state) {
+        INSTANCE.getConfig().set(configItemName, state);
+    }
+
     public Location loadSpawnLocation() {
         return INSTANCE.getConfig().getLocation(configItemName);
     }
