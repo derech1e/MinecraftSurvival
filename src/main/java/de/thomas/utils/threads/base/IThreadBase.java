@@ -5,16 +5,15 @@ import org.bukkit.Bukkit;
 public abstract class IThreadBase {
 
     protected IThreadBase() {
-        startThread();
     }
 
     protected int taskID;
 
-    protected void startThread() {
-
+    public void startThread() {
     }
 
-    protected void stopThread() {
+    public void stopThread() {
         Bukkit.getScheduler().cancelTask(taskID);
+        taskID = -1;
     }
 }

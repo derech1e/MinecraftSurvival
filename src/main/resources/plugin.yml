@@ -24,3 +24,10 @@ commands:
 
   spawnprotection:
     description: Aktiviere oder Deaktiviere die Spawnprotection
+
+  rlconfig:
+    description: Reloade die Config!
+
+  wegpunkt:
+    description: Setze einen Wegpunkt in deiner Welt
+    aliases: [wp]

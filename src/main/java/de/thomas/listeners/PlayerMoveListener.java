@@ -34,23 +34,25 @@ public class PlayerMoveListener implements Listener {
             new SpawnLevitationAnimation(player).start();
         }
 
-        boolean isPlayerInSpawnArea = player.getLocation().distance(ConfigCache.glideAreaLocation) <= ConfigCache.glideAreaRadius;
+        if (player.getWorld().getName().equalsIgnoreCase("world")) {
+            boolean isPlayerInSpawnArea = player.getLocation().distance(ConfigCache.glideAreaLocation) <= ConfigCache.glideAreaRadius;
 
-        if (!Variables.glidingPlayers.contains(player))
-            if (isPlayerInSpawnArea)
-                if (player.getLocation().subtract(0, 2, 0).getBlock().getType().isAir() && player.getFallDistance() >= 3) {
-                    Variables.glidingPlayers.add(player);
-                    Variables.protectedPlayers.add(player);
-                    if (ConfigCache.glideBoots)
-                        player.setVelocity(player.getEyeLocation().getDirection().multiply(2));
+            if (!Variables.glidingPlayers.contains(player))
+                if (isPlayerInSpawnArea)
+                    if (player.getLocation().subtract(0, 2, 0).getBlock().getType().isAir() && player.getFallDistance() >= 3) {
+                        Variables.glidingPlayers.add(player);
+                        Variables.protectedPlayers.add(player);
+                        if (ConfigCache.glideBoots)
+                            player.setVelocity(player.getEyeLocation().getDirection().multiply(2));
+                    }
+
+            if (Variables.glidingPlayers.contains(player))
+                if (player.isOnGround() || player.isInWater() || player.isInLava() || !player.getLocation().subtract(0, 2, 0).getBlock().getType().isAir()) {
+                    Variables.glidingPlayers.remove(player);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(MinecraftSurvival.getINSTANCE(), () -> Variables.protectedPlayers.remove(player), 20 * 2);
                 }
 
-        if (Variables.glidingPlayers.contains(player))
-            if (player.isOnGround() || player.isInWater() || player.isInLava() || !player.getLocation().subtract(0, 2, 0).getBlock().getType().isAir()) {
-                Variables.glidingPlayers.remove(player);
-                Bukkit.getScheduler().scheduleSyncDelayedTask(MinecraftSurvival.getINSTANCE(), () -> Variables.protectedPlayers.remove(player), 20 * 2);
-            }
-
-        player.setGliding(Variables.glidingPlayers.contains(player));
+            player.setGliding(Variables.glidingPlayers.contains(player));
+        }
     }
 }

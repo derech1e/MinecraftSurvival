@@ -11,13 +11,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.io.IOException;
 import java.net.URL;
@@ -45,17 +42,25 @@ public class PlayerConnectionListener implements Listener {
             Bukkit.getOnlinePlayers().forEach(player1 -> player1.hidePlayer(MinecraftSurvival.getINSTANCE(), player));
             Bukkit.getOnlinePlayers().forEach(player1 -> player.hidePlayer(MinecraftSurvival.getINSTANCE(), player1));
         }*/
-        MinecraftSurvival.getINSTANCE().getJda().getPresence().setPresence(Activity.playing(Bukkit.getOnlinePlayers().size() + " Spieler Online (" + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")) + ")"), true);
-
+        try {
+            MinecraftSurvival.getINSTANCE().getJda().getPresence().setPresence(Activity.playing(Bukkit.getOnlinePlayers().size() + " Spieler Online (" + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")) + ")"), true);
+            MinecraftSurvival.getINSTANCE().getBotStatusMessageThread().startThread();
+        } catch (IllegalStateException ignored) {
+        }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         Bukkit.getScheduler().runTaskLater(MinecraftSurvival.getINSTANCE(), () -> {
             Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
             String playerNames = "(" + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")) + ")";
-            MinecraftSurvival.getINSTANCE().getJda().getPresence().setPresence(Activity.playing(onlinePlayers.size() + " Spieler Online" + (Bukkit.getOnlinePlayers().size() != 0 ? playerNames : "")), true);
+            try {
+                MinecraftSurvival.getINSTANCE().getJda().getPresence().setPresence(Activity.playing(onlinePlayers.size() + " Spieler Online" + (Bukkit.getOnlinePlayers().size() != 0 ? playerNames : "")), true);
+            } catch (IllegalStateException ignored) {
+            }
+            if(onlinePlayers.size() == 0)
+                MinecraftSurvival.getINSTANCE().getBotStatusMessageThread().startThread();
         }, 20 * 2);
 
         event.setQuitMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + player.getName());
@@ -86,7 +91,9 @@ public class PlayerConnectionListener implements Listener {
 
     @EventHandler
     public void onServerListPing(PaperServerListPingEvent event) {
-        event.setMotd(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")));
+        boolean day = (Bukkit.getWorld("world").getTime() > 23850 || Bukkit.getWorld("world").getTime() < 12300);
+        String time = "Es ist: " + (day ? "§aTag" : "§1Nacht") + (Bukkit.getOnlinePlayers().size() != 0 ? "§r - " : "");
+        event.setMotd(time + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")));
         event.setMaxPlayers(event.getNumPlayers() + 1);
     }
 }

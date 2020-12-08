@@ -23,6 +23,7 @@ public class ConfigLoader {
         INSTANCE.getConfig().addDefault("SpawnProtection", true);
         INSTANCE.getConfig().addDefault("SpawnLocation", Objects.requireNonNull(INSTANCE.getServer().getWorld("world")).getSpawnLocation());
         INSTANCE.getConfig().addDefault("Players.Verified", Collections.emptyMap());
+        INSTANCE.getConfig().addDefault("Players.Waypoints", Collections.emptyMap());
         try {
             INSTANCE.getConfig().save(configFile);
         } catch (IOException e) {
@@ -66,6 +67,9 @@ public class ConfigLoader {
 
         ConfigUtils configUtilsVerified = new ConfigUtils("Players.Verified");
         ConfigCache.verifiedPlayers = configUtilsVerified.loadVerifiedPlayers();
+
+        ConfigUtils configUtilsWaypoints = new ConfigUtils("Players.Waypoints");
+        ConfigCache.playerWaypoints = configUtilsWaypoints.loadPlayerWaypoints();
     }
 
     private static void saveCache() {
@@ -83,5 +87,10 @@ public class ConfigLoader {
 
         ConfigUtils configUtilsVerified = new ConfigUtils("Players.Verified");
         configUtilsVerified.saveVerifiedPlayers(ConfigCache.verifiedPlayers);
+
+
+        ConfigUtils configUtilsWaypoints = new ConfigUtils("Players.Waypoints");
+        configUtilsWaypoints.savePlayerWaypoints(ConfigCache.playerWaypoints);
+
     }
 }

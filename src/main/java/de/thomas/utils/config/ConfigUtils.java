@@ -68,4 +68,18 @@ public class ConfigUtils {
         }
         return verifiedPlayers;
     }
+
+    public void savePlayerWaypoints(HashMap<UUID, Location> playerWaypoints) {
+        for (Map.Entry<UUID, Location> map : playerWaypoints.entrySet()) {
+            INSTANCE.getConfig().set("Players.Waypoints." + map.getKey().toString(), map.getValue());
+        }
+    }
+
+    public HashMap<UUID, Location> loadPlayerWaypoints() {
+        HashMap<UUID, Location> playerWaypoints = new HashMap<>();
+        for(String key : Objects.requireNonNull(INSTANCE.getConfig().getConfigurationSection("Players.Waypoints")).getKeys(false)) {
+            playerWaypoints.put(UUID.fromString(key), Objects.requireNonNull(INSTANCE.getConfig().getLocation("Players.Waypoints." + key)));
+        }
+        return playerWaypoints;
+    }
 }

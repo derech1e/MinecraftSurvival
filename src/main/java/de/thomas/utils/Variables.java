@@ -17,5 +17,6 @@ public class Variables {
     public static final HashMap<Short, UUID> verifyCodes = new HashMap<>();
     public static final List<IParticleTask> activeTasks = new ArrayList<>();
     public static final List<UUID> frozenPlayers = new ArrayList<>();
+    public static final HashMap<UUID, Player> targetCompassPlayers = new HashMap<>();
 
 }

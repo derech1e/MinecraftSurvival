@@ -14,14 +14,14 @@ public class RestartThread extends IThreadBase {
     int seconds = 0;
 
     @Override
-    protected void startThread() {
+    public void startThread() {
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
             Date date = new Date();
             Calendar calendar = GregorianCalendar.getInstance();
             calendar.setTime(date);
 
             if (calendar.get(Calendar.HOUR_OF_DAY) == 20 && calendar.get(Calendar.MINUTE) >= 45) {
-                int minutes = 60 - calendar.get(Calendar.MINUTE);
+                int minutes = (calendar.get(Calendar.MINUTE) - 45) * 60;
                 startCountdown(minutes);
                 stopThread();
             }

@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.Compression;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -28,9 +29,14 @@ public class MinecraftSurvival extends JavaPlugin {
     private static MinecraftSurvival INSTANCE;
     public final Logger LOGGER = getSLF4JLogger();
     private JDA jda;
+    private BotStatusMessageThread botStatusMessageThread;
 
     public static MinecraftSurvival getINSTANCE() {
         return INSTANCE;
+    }
+
+    public BotStatusMessageThread getBotStatusMessageThread() {
+        return botStatusMessageThread;
     }
 
     public JDA getJda() {
@@ -53,8 +59,9 @@ public class MinecraftSurvival extends JavaPlugin {
         LOGGER.info("Loaded Config File.");
 
         //Load Threads
-        new RestartThread();
-        new BotStatusMessageThread();
+        new RestartThread().startThread();
+        botStatusMessageThread = new BotStatusMessageThread();
+        botStatusMessageThread.startThread();
         LOGGER.info("Started Restart Thread");
 
         //Register Bot
@@ -97,6 +104,8 @@ public class MinecraftSurvival extends JavaPlugin {
         Objects.requireNonNull(getCommand("start")).setExecutor(new StartCommand());
         Objects.requireNonNull(getCommand("ping")).setExecutor(new PingCommand());
         Objects.requireNonNull(getCommand("spawnProtection")).setExecutor(new SpawnProtectionCommand());
+        Objects.requireNonNull(getCommand("rlconfig")).setExecutor(new ReloadConfigCommand());
+        Objects.requireNonNull(getCommand("wegpunkt")).setExecutor(new WaypointCommand());
         LOGGER.info("All Commands registered!");
     }
 
@@ -106,13 +115,17 @@ public class MinecraftSurvival extends JavaPlugin {
     }
 
     private void registerBot() throws LoginException {
-        jda = JDABuilder.create("NTE1NTU0ODYxMzQ2MDYyMzQ2.XWtxWA.wa6VCGxqT4A4SysUAe41cjX6774", GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES)
-                .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS).build();
+        JDABuilder jdabuilder = JDABuilder.create("NTE1NTU0ODYxMzQ2MDYyMzQ2.XWtxWA.wa6VCGxqT4A4SysUAe41cjX6774",
+                GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES)
+                .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS);
+        jdabuilder.setCompression(Compression.NONE);
+        jdabuilder.setBulkDeleteSplittingEnabled(false);
+        jda = jdabuilder.build();
         jda.getPresence().setPresence(Activity.playing("Server started neu..."), true);
         jda.addEventListener(new BotDirectMessageListener());
         jda.addEventListener(new OnlinePlayerCommand());
         jda.addEventListener(new HalloCommand());
-        jda.setAutoReconnect(false);
+        jda.setAutoReconnect(true);
         LOGGER.info("Bot registered and started!");
     }
 }

@@ -43,10 +43,10 @@ public class OnlinePlayerCommand extends ListenerAdapter {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setColor(new Color((int) (Math.random() * 1.6777216E7D)));
         if(Bukkit.getOnlinePlayers().size() > 0) {
-            builder.addField("Spieler:", String.valueOf(Bukkit.getOnlinePlayers().size()), true);
-            builder.addField("Spielerliste:", Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining("\n")), true);
+            builder.addField("Spieler:", String.valueOf(Bukkit.getOnlinePlayers().size()), false);
+            builder.addField("Spielerliste:", Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining("\n")), false);
         } else {
-            builder.addField("Achtung!", "Es sind keine Spieler Online!", true);
+            builder.addField("Achtung!", "Es sind keine Spieler Online!", false);
         }
         channel.sendMessage(builder.build()).complete().delete().queueAfter(15L, TimeUnit.SECONDS);
     }
