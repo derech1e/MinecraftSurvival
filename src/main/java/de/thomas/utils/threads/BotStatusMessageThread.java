@@ -10,8 +10,10 @@ public class BotStatusMessageThread extends IThreadBase {
     int counter = 0;
 
     @Override
-    protected void startThread() {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
+    public void startThread() {
+        if (taskID != -1)
+            return;
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
             switch (counter) {
                 case 1:
                     MinecraftSurvival.getINSTANCE().getJda().getPresence().setPresence(Activity.playing("92.42.46.36:311"), true);

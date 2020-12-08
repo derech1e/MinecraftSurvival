@@ -15,10 +15,11 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class PlayerBedListener implements Listener {
 
-    private final List<Player> playerInBed = new ArrayList<>();
+    private final List<UUID> playerInBed = new ArrayList<>();
     private BukkitTask taskID;
     private boolean inProgress = false;
 
@@ -27,34 +28,37 @@ public class PlayerBedListener implements Listener {
         Player player = event.getPlayer();
         if (!event.getBedEnterResult().equals(PlayerBedEnterEvent.BedEnterResult.OK))
             return;
-        playerInBed.add(player);
+        playerInBed.add(player.getUniqueId());
 
         int countToSkip = (getPlayerCountToSkip() - playerInBed.size());
         Bukkit.broadcastMessage(new Message(ChatColor.GOLD + player.getName() + ChatColor.WHITE + " hat sich ins Bett gelegt." + (countToSkip > 0 ? " (Noch " + countToSkip + ")" : "")).getMessage());
 
         if (canSkip()) {
-            taskID = Bukkit.getScheduler().runTaskLater(MinecraftSurvival.getINSTANCE(), () -> {
-                inProgress = true;
-                player.getWorld().setTime(0);
-                player.getWorld().setThundering(false);
-                player.getWorld().setStorm(false);
-                if (!(player.getWorld().getClearWeatherDuration() >= 0))
-                    player.getWorld().setClearWeatherDuration(new Random().nextInt((1680 - 1200) + 1200));
-                Bukkit.broadcastMessage(new Message(ChatColor.GREEN + "Guten Morgen...").getMessage());
-                Bukkit.getScheduler().scheduleSyncDelayedTask(MinecraftSurvival.getINSTANCE(), () -> inProgress = false, 20);
-            }, 20 * 4);
+            skipNight(false, player);
         }
+    }
 
+    private void skipNight(boolean instant, Player player) {
+        taskID = Bukkit.getScheduler().runTaskLater(MinecraftSurvival.getINSTANCE(), () -> {
+            inProgress = true;
+            if (!(player.getWorld().getTime() > 23850 || player.getWorld().getTime() < 12300)) {
+                player.getWorld().setTime(0);
+                Bukkit.broadcastMessage(new Message(ChatColor.GREEN + "Guten Morgen...").getMessage());
+            }
+            if (!player.getWorld().isClearWeather())
+                player.getWorld().setClearWeatherDuration(new Random().nextInt((16800 - 12000) + 12000));
+
+            Bukkit.getScheduler().scheduleSyncDelayedTask(MinecraftSurvival.getINSTANCE(), () -> inProgress = false, 20 * 2);
+        }, instant ? 1 : 20 * 4);
     }
 
     @EventHandler
     public void onBedLeave(PlayerBedLeaveEvent event) {
         Player player = event.getPlayer();
-
-        playerInBed.remove(player);
-
+        playerInBed.remove(player.getUniqueId());
         if (!canSkip()) {
-            taskID.cancel();
+            if (taskID != null)
+                taskID.cancel();
         }
 
         if (!inProgress) {
@@ -66,13 +70,12 @@ public class PlayerBedListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        playerInBed.remove(player);
-        if (canSkip()) {
-            player.getWorld().setTime(0);
-            Bukkit.broadcastMessage(new Message(ChatColor.GREEN + "Guten Morgen...").getMessage());
-            taskID.cancel();
-            inProgress = false;
-        }
+        playerInBed.remove(player.getUniqueId());
+        Bukkit.getScheduler().runTaskLater(MinecraftSurvival.getINSTANCE(), () -> {
+            if (canSkip()) {
+                skipNight(true, player);
+            }
+        }, 20);
     }
 
     private boolean canSkip() {

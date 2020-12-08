@@ -13,8 +13,10 @@ public class BlockListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         if (player.isOp()) return;
-        boolean isPlayerInSpawnArea = player.getLocation().distance(ConfigCache.glideAreaLocation) <= ConfigCache.glideAreaRadius;
-        event.setCancelled(isPlayerInSpawnArea);
+        if (player.getWorld().getName().equalsIgnoreCase("world")) {
+            boolean isPlayerInSpawnArea = player.getLocation().distance(ConfigCache.glideAreaLocation) <= ConfigCache.glideAreaRadius;
+            event.setCancelled(isPlayerInSpawnArea);
+        }
     }
 
 
@@ -22,7 +24,9 @@ public class BlockListener implements Listener {
     public void onBlockBreak(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         if (player.isOp()) return;
-        boolean isPlayerInSpawnArea = player.getLocation().distance(ConfigCache.glideAreaLocation) <= ConfigCache.glideAreaRadius;
-        event.setCancelled(isPlayerInSpawnArea);
+        if (player.getWorld().getName().equalsIgnoreCase("world")) {
+            boolean isPlayerInSpawnArea = player.getLocation().distance(ConfigCache.glideAreaLocation) <= ConfigCache.glideAreaRadius;
+            event.setCancelled(isPlayerInSpawnArea);
+        }
     }
 }

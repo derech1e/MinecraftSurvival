@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 public class HalloCommand extends ListenerAdapter {
@@ -14,9 +13,10 @@ public class HalloCommand extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        if (Objects.requireNonNull(event.getMember()).getUser().isBot()) {
-            return;
-        }
+        if (event.getMember() != null)
+            if (event.getMember().getUser().isBot()) {
+                return;
+            }
 
         if (keyWords.stream().anyMatch(event.getMessage().getContentRaw()::equalsIgnoreCase)) {
             Random random = new Random();
