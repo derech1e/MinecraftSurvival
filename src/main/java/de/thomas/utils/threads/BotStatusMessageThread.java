@@ -11,8 +11,6 @@ public class BotStatusMessageThread extends IThreadBase {
 
     @Override
     public void startThread() {
-        if (taskID != -1)
-            return;
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
             switch (counter) {
                 case 1:
@@ -29,6 +27,9 @@ public class BotStatusMessageThread extends IThreadBase {
                     break;
                 case 5:
                     MinecraftSurvival.getINSTANCE().getJda().getPresence().setPresence(Activity.playing("!help für Hilfe"), true);
+                    break;
+                case 6:
+                    MinecraftSurvival.getINSTANCE().getJda().getPresence().setPresence(Activity.playing("mit 0 Spielern"), true);
                     counter = 0;
                     break;
                 default:

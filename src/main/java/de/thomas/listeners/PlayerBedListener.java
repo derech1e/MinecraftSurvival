@@ -46,7 +46,7 @@ public class PlayerBedListener implements Listener {
                 Bukkit.broadcastMessage(new Message(ChatColor.GREEN + "Guten Morgen...").getMessage());
             }
             if (!player.getWorld().isClearWeather())
-                player.getWorld().setClearWeatherDuration(new Random().nextInt((16800 - 12000) + 12000));
+                player.getWorld().setClearWeatherDuration(new Random().nextInt((minToTicks(40) - minToTicks(10)) + minToTicks(10)));
 
             Bukkit.getScheduler().scheduleSyncDelayedTask(MinecraftSurvival.getINSTANCE(), () -> inProgress = false, 20 * 2);
         }, instant ? 1 : 20 * 4);
@@ -84,5 +84,9 @@ public class PlayerBedListener implements Listener {
 
     private int getPlayerCountToSkip() {
         return Math.max(Math.round(50 * Bukkit.getOnlinePlayers().size() / 100f), 1);
+    }
+
+    private int minToTicks(int min) {
+        return min * 60 * 20;
     }
 }

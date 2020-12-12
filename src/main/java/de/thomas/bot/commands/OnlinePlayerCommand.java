@@ -23,7 +23,7 @@ public class OnlinePlayerCommand extends ListenerAdapter {
             return;
         String msg = event.getMessage().getContentRaw().substring(prefix.length());
 
-        if (Objects.requireNonNull(event.getMember()).getUser().isBot())
+        if (event.getMember() != null && event.getMember().getUser().isBot())
             return;
 
         if (getAlias().contains(msg)) {

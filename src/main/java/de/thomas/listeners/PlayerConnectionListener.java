@@ -33,6 +33,7 @@ public class PlayerConnectionListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         event.setJoinMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + player.getName());
+        updateDiscordStatus();
         /*if (!player.hasPlayedBefore() || Variables.frozenPlayers.contains(event.getPlayer().getUniqueId())) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 99999, 255, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 255, false, false));
@@ -42,27 +43,12 @@ public class PlayerConnectionListener implements Listener {
             Bukkit.getOnlinePlayers().forEach(player1 -> player1.hidePlayer(MinecraftSurvival.getINSTANCE(), player));
             Bukkit.getOnlinePlayers().forEach(player1 -> player.hidePlayer(MinecraftSurvival.getINSTANCE(), player1));
         }*/
-        try {
-            MinecraftSurvival.getINSTANCE().getJda().getPresence().setPresence(Activity.playing(Bukkit.getOnlinePlayers().size() + " Spieler Online (" + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")) + ")"), true);
-            MinecraftSurvival.getINSTANCE().getBotStatusMessageThread().startThread();
-        } catch (IllegalStateException ignored) {
-        }
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        Bukkit.getScheduler().runTaskLater(MinecraftSurvival.getINSTANCE(), () -> {
-            Collection<? extends Player> onlinePlayers = Bukkit.getOnlinePlayers();
-            String playerNames = "(" + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")) + ")";
-            try {
-                MinecraftSurvival.getINSTANCE().getJda().getPresence().setPresence(Activity.playing(onlinePlayers.size() + " Spieler Online" + (Bukkit.getOnlinePlayers().size() != 0 ? playerNames : "")), true);
-            } catch (IllegalStateException ignored) {
-            }
-            if(onlinePlayers.size() == 0)
-                MinecraftSurvival.getINSTANCE().getBotStatusMessageThread().startThread();
-        }, 20 * 2);
-
+        updateDiscordStatus();
         event.setQuitMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + player.getName());
     }
 
@@ -95,5 +81,17 @@ public class PlayerConnectionListener implements Listener {
         String time = "Es ist: " + (day ? "§aTag" : "§1Nacht") + (Bukkit.getOnlinePlayers().size() != 0 ? "§r - " : "");
         event.setMotd(time + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")));
         event.setMaxPlayers(event.getNumPlayers() + 1);
+    }
+
+    private void updateDiscordStatus() {
+        Bukkit.getScheduler().runTaskLater(MinecraftSurvival.getINSTANCE(), () -> {
+            int playerSize = Bukkit.getOnlinePlayers().size();
+            if(playerSize == 0) {
+                MinecraftSurvival.getINSTANCE().getBotStatusMessageThread().startThread();
+                return;
+            }
+            MinecraftSurvival.getINSTANCE().getBotStatusMessageThread().stopThread();
+            MinecraftSurvival.getINSTANCE().getJda().getPresence().setPresence(Activity.playing("mit " + playerSize + (playerSize == 1 ? " Spieler " : " Spielern")), true);
+        },20 * 2);
     }
 }
