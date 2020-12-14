@@ -8,6 +8,7 @@ import de.thomas.listeners.*;
 import de.thomas.utils.config.ConfigLoader;
 import de.thomas.utils.message.Message;
 import de.thomas.utils.threads.BotStatusMessageThread;
+import de.thomas.utils.threads.ClockTimeThread;
 import de.thomas.utils.threads.RestartThread;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -23,6 +24,7 @@ import org.slf4j.Logger;
 
 import javax.security.auth.login.LoginException;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class MinecraftSurvival extends JavaPlugin {
 
@@ -62,6 +64,7 @@ public class MinecraftSurvival extends JavaPlugin {
         new RestartThread().startThread();
         botStatusMessageThread = new BotStatusMessageThread();
         botStatusMessageThread.startThread();
+        new ClockTimeThread().startThread();
         LOGGER.info("Started Restart Thread");
 
         //Register Bot
@@ -115,17 +118,31 @@ public class MinecraftSurvival extends JavaPlugin {
     }
 
     private void registerBot() throws LoginException {
-        JDABuilder jdabuilder = JDABuilder.create("NTE1NTU0ODYxMzQ2MDYyMzQ2.XWtxWA.wa6VCGxqT4A4SysUAe41cjX6774",
-                GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES)
-                .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS);
-        jdabuilder.setCompression(Compression.NONE);
-        jdabuilder.setBulkDeleteSplittingEnabled(false);
-        jda = jdabuilder.build();
-        jda.getPresence().setPresence(Activity.playing("Server started neu..."), true);
-        jda.addEventListener(new BotDirectMessageListener());
-        jda.addEventListener(new OnlinePlayerCommand());
-        jda.addEventListener(new HalloCommand());
-        jda.setAutoReconnect(true);
-        LOGGER.info("Bot registered and started!");
+
+        try {
+            jda = JDABuilder.create("NTE1NTU0ODYxMzQ2MDYyMzQ2.XWtxWA.wa6VCGxqT4A4SysUAe41cjX6774",
+                    GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES)
+                    .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS)
+                    .setBulkDeleteSplittingEnabled(false).setCompression(Compression.NONE).build();
+            Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+                try {
+                    jda.awaitReady();
+                } catch (InterruptedException exception) {
+                    Bukkit.getLogger().log(Level.SEVERE, "Ein Fehler beim Laden des Bots [Await Ready]", exception);
+                }
+
+                jda.getPresence().setPresence(Activity.playing("Server startet neu..."), true);
+                jda.addEventListener(new BotDirectMessageListener());
+                jda.addEventListener(new OnlinePlayerCommand());
+                jda.addEventListener(new HalloCommand());
+                jda.setAutoReconnect(true);
+                jda.getPresence().setPresence(Activity.playing("Server gestartet"), true);
+                LOGGER.info("Bot registered and started!");
+            });
+        } catch (Exception exception) {
+            Bukkit.getLogger().log(Level.SEVERE, "Ein Fehler beim Laden des Bots", exception);
+        }
+
+
     }
 }
