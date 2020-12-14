@@ -70,6 +70,9 @@ public class ConfigLoader {
 
         ConfigUtils configUtilsWaypoints = new ConfigUtils("Players.Waypoints");
         ConfigCache.playerWaypoints = configUtilsWaypoints.loadPlayerWaypoints();
+
+        ConfigUtils configUtilsClock = new ConfigUtils("Players.Clock");
+        ConfigCache.clockTime = configUtilsClock.loadPlayerClockTime();
     }
 
     private static void saveCache() {
@@ -88,9 +91,11 @@ public class ConfigLoader {
         ConfigUtils configUtilsVerified = new ConfigUtils("Players.Verified");
         configUtilsVerified.saveVerifiedPlayers(ConfigCache.verifiedPlayers);
 
-
         ConfigUtils configUtilsWaypoints = new ConfigUtils("Players.Waypoints");
         configUtilsWaypoints.savePlayerWaypoints(ConfigCache.playerWaypoints);
+
+        ConfigUtils configUtilsClock = new ConfigUtils("Players.Clock");
+        configUtilsClock.savePlayerClockTime(ConfigCache.clockTime);
 
     }
 }

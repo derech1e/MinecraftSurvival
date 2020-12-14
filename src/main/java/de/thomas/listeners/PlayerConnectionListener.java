@@ -34,6 +34,9 @@ public class PlayerConnectionListener implements Listener {
         Player player = event.getPlayer();
         event.setJoinMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + player.getName());
         updateDiscordStatus();
+        if(!ConfigCache.clockTime.containsKey(player.getUniqueId())) {
+            ConfigCache.clockTime.put(player.getUniqueId(), true);
+        }
         /*if (!player.hasPlayedBefore() || Variables.frozenPlayers.contains(event.getPlayer().getUniqueId())) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 99999, 255, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 255, false, false));

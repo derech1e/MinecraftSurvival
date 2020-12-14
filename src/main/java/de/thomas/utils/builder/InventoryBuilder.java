@@ -1,14 +1,15 @@
 package de.thomas.utils.builder;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryBuilder {
 
+    final Inventory inventory;
     String inventoryTitle;
     int inventorySize;
-    final Inventory inventory;
 
     public InventoryBuilder(String inventoryTitle) {
         this.inventoryTitle = inventoryTitle;
@@ -47,6 +48,18 @@ public class InventoryBuilder {
 
     public InventoryBuilder setItem(int slot, ItemStack itemStack) {
         inventory.setItem(slot, itemStack);
+        return this;
+    }
+
+    public InventoryBuilder setPlaceHolder(ItemStack itemStack, boolean overwrite) {
+        for (int i = 0; i < inventorySize; i++) {
+            if (overwrite)
+                inventory.setItem(i, itemStack);
+            else {
+                if(inventory.getItem(i) == null)
+                    inventory.setItem(i, itemStack);
+            }
+        }
         return this;
     }
 

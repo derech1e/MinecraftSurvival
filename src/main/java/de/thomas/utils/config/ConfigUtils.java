@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConfigUtils {
 
@@ -63,23 +65,51 @@ public class ConfigUtils {
 
     public HashMap<UUID, String> loadVerifiedPlayers() {
         HashMap<UUID, String> verifiedPlayers = new HashMap<>();
-        for(String key : Objects.requireNonNull(INSTANCE.getConfig().getConfigurationSection("Players.Verified")).getKeys(false)) {
-             verifiedPlayers.put(UUID.fromString(key), Objects.requireNonNull(INSTANCE.getConfig().getString("Players.Verified." + key)));
+        for (String key : Objects.requireNonNull(INSTANCE.getConfig().getConfigurationSection("Players.Verified")).getKeys(false)) {
+            verifiedPlayers.put(UUID.fromString(key), Objects.requireNonNull(INSTANCE.getConfig().getString("Players.Verified." + key)));
         }
         return verifiedPlayers;
     }
 
-    public void savePlayerWaypoints(HashMap<UUID, Location> playerWaypoints) {
-        for (Map.Entry<UUID, Location> map : playerWaypoints.entrySet()) {
+    public void savePlayerWaypoints(HashMap<UUID, HashMap<String, Location>> playerWaypoints) {
+        if (playerWaypoints.isEmpty()) {
+            INSTANCE.getConfig().set("Players.Waypoints", null);
+            return;
+        }
+        for (Map.Entry<UUID, HashMap<String, Location>> map : playerWaypoints.entrySet()) {
             INSTANCE.getConfig().set("Players.Waypoints." + map.getKey().toString(), map.getValue());
         }
     }
 
-    public HashMap<UUID, Location> loadPlayerWaypoints() {
-        HashMap<UUID, Location> playerWaypoints = new HashMap<>();
-        for(String key : Objects.requireNonNull(INSTANCE.getConfig().getConfigurationSection("Players.Waypoints")).getKeys(false)) {
-            playerWaypoints.put(UUID.fromString(key), Objects.requireNonNull(INSTANCE.getConfig().getLocation("Players.Waypoints." + key)));
+    public HashMap<UUID, HashMap<String, Location>> loadPlayerWaypoints() {
+        HashMap<UUID, HashMap<String, Location>> playerWaypoints = new HashMap<>();
+        HashMap<String, Location> detail = new HashMap<>();
+        try {
+            for (String uuid : Objects.requireNonNull(INSTANCE.getConfig().getConfigurationSection("Players.Waypoints")).getKeys(false)) {
+                for (String name : INSTANCE.getConfig().getConfigurationSection("Players.Waypoints." + uuid).getKeys(false)) {
+                    detail.put(name, INSTANCE.getConfig().getLocation("Players.Waypoints." + uuid + "." + name));
+                }
+                playerWaypoints.put(UUID.fromString(uuid), detail);
+            }
+        } catch (NullPointerException ex) {
+            Logger.getGlobal().log(Level.CONFIG, "Fehler beim Laden der PlayerWaypoints", ex);
+            return playerWaypoints;
         }
         return playerWaypoints;
+    }
+
+    public HashMap<UUID, Boolean> loadPlayerClockTime() {
+        HashMap<UUID, Boolean> verifiedPlayers = new HashMap<>();
+        if (INSTANCE.getConfig().getConfigurationSection("Players.Clock") != null)
+            for (String key : Objects.requireNonNull(INSTANCE.getConfig().getConfigurationSection("Players.Clock")).getKeys(false)) {
+                verifiedPlayers.put(UUID.fromString(key), INSTANCE.getConfig().getBoolean("Players.Clock." + key));
+            }
+        return verifiedPlayers;
+    }
+
+    public void savePlayerClockTime(HashMap<UUID, Boolean> clockTime) {
+        for (Map.Entry<UUID, Boolean> map : clockTime.entrySet()) {
+            INSTANCE.getConfig().set("Players.Clock." + map.getKey().toString(), map.getValue());
+        }
     }
 }

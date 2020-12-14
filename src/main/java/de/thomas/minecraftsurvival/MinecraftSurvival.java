@@ -124,7 +124,8 @@ public class MinecraftSurvival extends JavaPlugin {
                     GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES)
                     .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS)
                     .setBulkDeleteSplittingEnabled(false).setCompression(Compression.NONE).build();
-            Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
+
+            Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> {
                 try {
                     jda.awaitReady();
                 } catch (InterruptedException exception) {
@@ -138,7 +139,7 @@ public class MinecraftSurvival extends JavaPlugin {
                 jda.setAutoReconnect(true);
                 jda.getPresence().setPresence(Activity.playing("Server gestartet"), true);
                 LOGGER.info("Bot registered and started!");
-            });
+            }, 20 * 5);
         } catch (Exception exception) {
             Bukkit.getLogger().log(Level.SEVERE, "Ein Fehler beim Laden des Bots", exception);
         }
