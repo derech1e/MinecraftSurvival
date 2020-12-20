@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -43,27 +42,16 @@ public class InventoryClickListener implements Listener {
 
             Location spawnLocation = player.getWorld().getName().equals("world_nether") ? new Location(Bukkit.getWorld("world_nether"), -131, 104, 8) : (player.getBedSpawnLocation() == null ? player.getWorld().getSpawnLocation() : player.getBedSpawnLocation());
 
-            System.out.println(currentItem.getItemMeta().getDisplayName());
-
             if (currentItem.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Spawnpunkt")) {
                 replaceOrAdd(player.getUniqueId(), null);
                 setNewCompassTarget(player, spawnLocation, "den" + ChatColor.GOLD + " Spawnpunkt ", null);
-                return;
-            } else if (currentItem.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Wegpunkt")) {
-                replaceOrAdd(player.getUniqueId(), null);
-                //Location location = ConfigCache.playerWaypoints.get(player.getUniqueId());
-                //setNewCompassTarget(player, location, "den" + ChatColor.GOLD + " Wegpunkt ", null);
-                return;
             } else if (currentItem.getItemMeta().getDisplayName().equals(ChatColor.WHITE + "Einstellungen")) {
-                player.closeInventory(InventoryCloseEvent.Reason.OPEN_NEW);
-                player.updateInventory();
                 player.openInventory(DefaultInventorys.getSettings(player));
-                player.updateInventory();
-                return;
+            } else if (currentItem.getType().equals(Material.PLAYER_HEAD)) {
+                Player targetPlayer = Bukkit.getPlayer(currentItem.getItemMeta().getDisplayName().replace(String.valueOf(ChatColor.WHITE), ""));
+                replaceOrAdd(player.getUniqueId(), targetPlayer);
+                setNewCompassTarget(player, targetPlayer.getLocation(), ChatColor.AQUA + targetPlayer.getName(), targetPlayer);
             }
-            Player targetPlayer = Bukkit.getPlayer(currentItem.getItemMeta().getDisplayName().replace(String.valueOf(ChatColor.WHITE), ""));
-            replaceOrAdd(player.getUniqueId(), targetPlayer);
-            setNewCompassTarget(player, targetPlayer.getLocation(), ChatColor.AQUA + targetPlayer.getName(), targetPlayer);
 
 
         } else if (viewTitle.equals(Variables.INVENTORY_NAME_SETTINGS)) {
@@ -77,12 +65,12 @@ public class InventoryClickListener implements Listener {
             }
         } else if (viewTitle.equals(Variables.INVENTORY_NAME_WAYPOINTS)) {
             event.setCancelled(true);
-            System.out.println(currentItem.getItemMeta().getDisplayName());
             if (currentItem.getItemMeta().getDisplayName().equals(Variables.INVENTORY_NAME_WAYPOINT_ADD)) {
                 new AnvilGUI.Builder()
                         .onComplete((anvilPlayer, text) -> {
                             HashMap<String, Location> locations = ConfigCache.playerWaypoints.containsKey(anvilPlayer.getUniqueId()) ? ConfigCache.playerWaypoints.get(anvilPlayer.getUniqueId()) : new HashMap<>();
-                            if (locations.keySet().stream().noneMatch(s -> Objects.equals(text, s))) {
+                            //locations.entrySet().stream().noneMatch(stringLocationEntry -> stringLocationEntry.getKey().equals(text) && stringLocationEntry.getValue().getWorld().getName().equals(anvilPlayer.getWorld().getName()))
+                            if (locations.keySet().stream().noneMatch(s -> Objects.equals(s, text))) {
                                 locations.put(text, anvilPlayer.getLocation());
                                 if (ConfigCache.playerWaypoints.containsKey(anvilPlayer.getUniqueId()))
                                     ConfigCache.playerWaypoints.replace(anvilPlayer.getUniqueId(), locations);

@@ -4,13 +4,13 @@ import de.thomas.utils.Variables;
 import de.thomas.utils.builder.InventoryBuilder;
 import de.thomas.utils.builder.ItemBuilder;
 import de.thomas.utils.config.ConfigCache;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.Inventory;
+
+import java.util.Map;
 
 public class DefaultInventorys {
 
@@ -31,13 +31,15 @@ public class DefaultInventorys {
             player.closeInventory();
             return null;
         }
-        InventoryBuilder inventoryBuilder = new InventoryBuilder(Variables.INVENTORY_NAME_WAYPOINT_SELECT, Variables.calculateInventorySize(ConfigCache.playerWaypoints.get(player.getUniqueId()).entrySet().size()));
+        InventoryBuilder inventoryBuilder = new InventoryBuilder(Variables.INVENTORY_NAME_WAYPOINT_SELECT, Variables.calculateInventorySize((int) ConfigCache.playerWaypoints.get(player.getUniqueId()).entrySet().stream().map(Map.Entry::getValue).map(Location::getWorld).filter(world -> world.getName().equals(player.getWorld().getName())).count()));
 
         ConfigCache.playerWaypoints.get(player.getUniqueId()).forEach((name, location) -> {
-            ItemBuilder itemBuilder = new ItemBuilder(Material.PLAYER_HEAD);
-            itemBuilder.setName(name);
-            itemBuilder.setSkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2ZhZWE5NzdhZWViYTFjODM3NjY5NDEzYjg4Yzk1YzI3ZDA4ZmI0MjlmM2RmZmI0MzFhOGZhYjM2MWE5ZiJ9fX0=");
-            inventoryBuilder.addItem(itemBuilder.toItemStack());
+            if (location.getWorld().getName().equals(player.getWorld().getName())) {
+                ItemBuilder itemBuilder = new ItemBuilder(Material.PLAYER_HEAD);
+                itemBuilder.setName(name);
+                itemBuilder.setSkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2ZhZWE5NzdhZWViYTFjODM3NjY5NDEzYjg4Yzk1YzI3ZDA4ZmI0MjlmM2RmZmI0MzFhOGZhYjM2MWE5ZiJ9fX0=");
+                inventoryBuilder.addItem(itemBuilder.toItemStack());
+            }
         });
 
         //Placeholder
@@ -50,26 +52,20 @@ public class DefaultInventorys {
             player.closeInventory();
             return null;
         }
-        InventoryBuilder inventoryBuilder = new InventoryBuilder(Variables.INVENTORY_NAME_WAYPOINT_DELETE, Variables.calculateInventorySize(ConfigCache.playerWaypoints.get(player.getUniqueId()).entrySet().size()));
+        InventoryBuilder inventoryBuilder = new InventoryBuilder(Variables.INVENTORY_NAME_WAYPOINT_DELETE, Variables.calculateInventorySize((int) ConfigCache.playerWaypoints.get(player.getUniqueId()).entrySet().stream().map(Map.Entry::getValue).map(Location::getWorld).filter(world -> world.getName().equals(player.getWorld().getName())).count()));
 
         ConfigCache.playerWaypoints.get(player.getUniqueId()).forEach((name, location) -> {
-            ItemBuilder itemBuilder = new ItemBuilder(Material.PLAYER_HEAD);
-            itemBuilder.setName(name);
-            itemBuilder.setSkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2ZhZWE5NzdhZWViYTFjODM3NjY5NDEzYjg4Yzk1YzI3ZDA4ZmI0MjlmM2RmZmI0MzFhOGZhYjM2MWE5ZiJ9fX0=");
-            inventoryBuilder.addItem(itemBuilder.toItemStack());
+            if (location.getWorld().getName().equals(player.getWorld().getName())) {
+                ItemBuilder itemBuilder = new ItemBuilder(Material.PLAYER_HEAD);
+                itemBuilder.setName(name);
+                itemBuilder.setSkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2ZhZWE5NzdhZWViYTFjODM3NjY5NDEzYjg4Yzk1YzI3ZDA4ZmI0MjlmM2RmZmI0MzFhOGZhYjM2MWE5ZiJ9fX0=");
+                inventoryBuilder.addItem(itemBuilder.toItemStack());
+            }
         });
 
         //Placeholder
         inventoryBuilder.setPlaceHolder(new ItemBuilder(Material.GRAY_STAINED_GLASS).setName("").toItemStack(), false);
         return inventoryBuilder.build();
-    }
-
-    public static AnvilInventory addWayPoint(Player player) {
-        AnvilInventory inventory = (AnvilInventory) Bukkit.createInventory(player, InventoryType.ANVIL);
-        inventory.setFirstItem(new ItemBuilder(Material.PAPER).setName("Gib einen Namen an").toItemStack());
-        inventory.setMaximumRepairCost(0);
-        inventory.setRepairCost(0);
-        return inventory;
     }
 
     public static Inventory getSettings(Player player) {

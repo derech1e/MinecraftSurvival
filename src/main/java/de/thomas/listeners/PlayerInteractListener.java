@@ -3,20 +3,14 @@ package de.thomas.listeners;
 import de.thomas.utils.Variables;
 import de.thomas.utils.builder.InventoryBuilder;
 import de.thomas.utils.builder.ItemBuilder;
-import de.thomas.utils.builder.defaults.DefaultInvType;
-import de.thomas.utils.builder.defaults.DefaultInventorys;
-import de.thomas.utils.config.ConfigCache;
 import de.thomas.utils.message.Message;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-
-import java.util.Arrays;
 
 public class PlayerInteractListener implements Listener {
 
@@ -57,16 +51,6 @@ public class PlayerInteractListener implements Listener {
             spawnItemBuilder.setSkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2Y3Y2RlZWZjNmQzN2ZlY2FiNjc2YzU4NGJmNjIwODMyYWFhYzg1Mzc1ZTlmY2JmZjI3MzcyNDkyZDY5ZiJ9fX0=");
             inventoryBuilder.addItem(spawnItemBuilder.toItemStack());
 
-            ItemBuilder wayPointItemBuilder = new ItemBuilder(Material.PLAYER_HEAD);
-            wayPointItemBuilder.setName(ChatColor.GOLD + "Wegpunkt");
-            wayPointItemBuilder.setSkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2ZhZWE5NzdhZWViYTFjODM3NjY5NDEzYjg4Yzk1YzI3ZDA4ZmI0MjlmM2RmZmI0MzFhOGZhYjM2MWE5ZiJ9fX0=");
-
-            if (ConfigCache.playerWaypoints.containsKey(player.getUniqueId())) {
-                //Location location = ConfigCache.playerWaypoints.get(player.getUniqueId());
-                //if (location.getWorld().getName().equalsIgnoreCase(player.getWorld().getName()))
-                    inventoryBuilder.addItem(wayPointItemBuilder.toItemStack());
-            }
-
             player.getWorld().getPlayers().stream().filter(playerToFilter -> playerToFilter != player).forEachOrdered(filteredPlayer -> {
                 ItemBuilder itemBuilder = new ItemBuilder(Material.PLAYER_HEAD);
                 itemBuilder.setName(ChatColor.WHITE + filteredPlayer.getName());
@@ -77,7 +61,9 @@ public class PlayerInteractListener implements Listener {
             ItemBuilder itemBuilder = new ItemBuilder(Material.PLAYER_HEAD);
             itemBuilder.setName(ChatColor.WHITE + "Einstellungen");
             itemBuilder.setSkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWMyZmYyNDRkZmM5ZGQzYTJjZWY2MzExMmU3NTAyZGM2MzY3YjBkMDIxMzI5NTAzNDdiMmI0NzlhNzIzNjZkZCJ9fX0=");
-            inventoryBuilder.setItem(inventorySize -1, itemBuilder.toItemStack());
+            inventoryBuilder.setItem(inventorySize - 1, itemBuilder.toItemStack());
+            //Placeholder
+            inventoryBuilder.setPlaceHolder(new ItemBuilder(Material.GRAY_STAINED_GLASS).setName("").toItemStack(), false);
             player.openInventory(inventoryBuilder.build());
         }
     }
