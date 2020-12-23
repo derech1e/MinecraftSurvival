@@ -45,8 +45,12 @@ public class PlayerBedListener implements Listener {
                 player.getWorld().setTime(0);
                 Bukkit.broadcastMessage(new Message(ChatColor.GREEN + "Guten Morgen...").getMessage());
             }
-            if (!player.getWorld().isClearWeather())
-                player.getWorld().setClearWeatherDuration(new Random().nextInt((minToTicks(80) - minToTicks(30)) + minToTicks(30)));
+            if (!player.getWorld().isClearWeather() || player.getWorld().isThundering()) {
+                player.getWorld().setWeatherDuration(0);
+                player.getWorld().setClearWeatherDuration(new Random().nextInt((minToTicks(80) - minToTicks(30) + 1)) + minToTicks(30));
+                player.getWorld().setThundering(false);
+                player.getWorld().setStorm(false);
+            }
 
             Bukkit.getScheduler().scheduleSyncDelayedTask(MinecraftSurvival.getINSTANCE(), () -> inProgress = false, 20 * 2);
         }, instant ? 1 : 20 * 4);

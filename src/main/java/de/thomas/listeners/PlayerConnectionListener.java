@@ -22,9 +22,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PlayerConnectionListener implements Listener {
@@ -80,10 +78,12 @@ public class PlayerConnectionListener implements Listener {
 
     @EventHandler
     public void onServerListPing(PaperServerListPingEvent event) {
-        boolean day = (Bukkit.getWorld("world").getTime() > 23850 || Bukkit.getWorld("world").getTime() < 12300);
+        boolean day = (Objects.requireNonNull(Bukkit.getWorld("world")).getTime() > 23850 || Objects.requireNonNull(Bukkit.getWorld("world")).getTime() < 12300);
         String time = "Es ist: " + (day ? "§aTag" : "§1Nacht") + (Bukkit.getOnlinePlayers().size() != 0 ? "§r - " : "");
         event.setMotd(time + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")));
-        event.setMaxPlayers(event.getNumPlayers() + 1);
+        Calendar cal = Calendar.getInstance();
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        event.setMaxPlayers(Math.max(dayOfMonth, event.getNumPlayers() + 1));
     }
 
     private void updateDiscordStatus() {
