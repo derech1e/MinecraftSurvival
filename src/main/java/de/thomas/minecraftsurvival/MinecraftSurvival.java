@@ -23,7 +23,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 
-import javax.security.auth.login.LoginException;
 import java.util.Objects;
 import java.util.logging.Level;
 
@@ -66,11 +65,7 @@ public class MinecraftSurvival extends JavaPlugin {
 
         //Register Bot
         LOGGER.info("Try to register Bot");
-        try {
-            registerBot();
-        } catch (LoginException e) {
-            e.printStackTrace();
-        }
+        registerBot();
 
         //Load Threads
         new RestartThread().startThread();
@@ -114,7 +109,6 @@ public class MinecraftSurvival extends JavaPlugin {
         Objects.requireNonNull(getCommand("ping")).setExecutor(new PingCommand());
         Objects.requireNonNull(getCommand("spawnProtection")).setExecutor(new SpawnProtectionCommand());
         Objects.requireNonNull(getCommand("rlconfig")).setExecutor(new ReloadConfigCommand());
-        Objects.requireNonNull(getCommand("wegpunkt")).setExecutor(new WaypointCommand());
         LOGGER.info("All Commands registered!");
     }
 
@@ -124,8 +118,7 @@ public class MinecraftSurvival extends JavaPlugin {
         jda.shutdown();
     }
 
-    private void registerBot() throws LoginException {
-
+    private void registerBot() {
         try {
             jda = JDABuilder.create("NTE1NTU0ODYxMzQ2MDYyMzQ2.XWtxWA.wa6VCGxqT4A4SysUAe41cjX6774",
                     GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES)
@@ -150,7 +143,5 @@ public class MinecraftSurvival extends JavaPlugin {
         } catch (Exception exception) {
             Bukkit.getLogger().log(Level.SEVERE, "Ein Fehler beim Laden des Bots", exception);
         }
-
-
     }
 }

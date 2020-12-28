@@ -12,6 +12,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class SpawnLevitationAnimation {
 
@@ -40,7 +41,7 @@ public class SpawnLevitationAnimation {
 
 
         taskID_2 = Bukkit.getScheduler().scheduleSyncDelayedTask(MinecraftSurvival.getINSTANCE(), () -> {
-            targetPlayer.teleport(ConfigCache.spawnLocation.clone().add(0, 1, 0));
+            targetPlayer.teleport(Objects.requireNonNull(ConfigCache.spawnLocation).clone().add(0, 1, 0));
             stop();
         }, 25);
     }

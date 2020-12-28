@@ -31,7 +31,7 @@ public class Message {
                 break;
             case NULL:
                 message += ChatColor.RED + "Ein Nicht bekannter Fehler ist aufgetreten!";
-            case FALSE_PARM:
+            case FALSE_PARAM:
                 message += ChatColor.RED + "Ein Nicht bekannter Fehler ist aufgetreten!";
         }
         return message;

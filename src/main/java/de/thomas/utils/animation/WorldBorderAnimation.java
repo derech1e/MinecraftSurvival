@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 public class WorldBorderAnimation {
 
     private final Player targetPlayer;
@@ -21,16 +23,8 @@ public class WorldBorderAnimation {
         this.time = 5;
     }
 
-    public int getTime() {
-        return time;
-    }
-
     public void setTime(int time) {
         this.time = time;
-    }
-
-    public int getSize() {
-        return size;
     }
 
     public void setSize(int size) {
@@ -45,7 +39,7 @@ public class WorldBorderAnimation {
     public void openWorldBorderFullDelayed() {
         int time = 5;
         WorldBorder border = targetPlayer.getWorld().getWorldBorder();
-        border.setCenter(ConfigCache.spawnLocation);
+        border.setCenter(Objects.requireNonNull(ConfigCache.spawnLocation));
         border.setSize(500, time);
 
         if (taskID == null)
@@ -54,7 +48,7 @@ public class WorldBorderAnimation {
 
     public void reset() {
         WorldBorder border = targetPlayer.getWorld().getWorldBorder();
-        border.setCenter(ConfigCache.spawnLocation);
+        border.setCenter(Objects.requireNonNull(ConfigCache.spawnLocation));
         border.setSize(1);
     }
 }

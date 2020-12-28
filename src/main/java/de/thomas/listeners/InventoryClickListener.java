@@ -3,7 +3,7 @@ package de.thomas.listeners;
 import de.thomas.minecraftsurvival.MinecraftSurvival;
 import de.thomas.utils.Variables;
 import de.thomas.utils.builder.ItemBuilder;
-import de.thomas.utils.builder.defaults.DefaultInventorys;
+import de.thomas.utils.builder.defaults.DefaultInventories;
 import de.thomas.utils.config.ConfigCache;
 import de.thomas.utils.message.Message;
 import net.wesjd.anvilgui.AnvilGUI;
@@ -48,18 +48,18 @@ public class InventoryClickListener implements Listener {
                 replaceOrAdd(player.getUniqueId(), null);
                 setNewCompassTarget(player, spawnLocation, "den" + ChatColor.GOLD + " Spawnpunkt ", null);
             } else if (currentItem.getItemMeta().getDisplayName().equals(ChatColor.WHITE + "Einstellungen")) {
-                player.openInventory(DefaultInventorys.getSettings(player));
+                player.openInventory(DefaultInventories.getSettings(player));
             } else if (currentItem.getType().equals(Material.PLAYER_HEAD)) {
                 Player targetPlayer = Bukkit.getPlayer(currentItem.getItemMeta().getDisplayName().replace(String.valueOf(ChatColor.WHITE), ""));
                 replaceOrAdd(player.getUniqueId(), targetPlayer);
-                setNewCompassTarget(player, targetPlayer.getLocation(), ChatColor.AQUA + targetPlayer.getName(), targetPlayer);
+                setNewCompassTarget(player, Objects.requireNonNull(targetPlayer).getLocation(), ChatColor.AQUA + targetPlayer.getName(), targetPlayer);
             }
 
 
         } else if (viewTitle.equals(Variables.INVENTORY_NAME_SETTINGS)) {
             event.setCancelled(true);
             if (currentItem.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Wegpunkte")) {
-                player.openInventory(DefaultInventorys.getWayPointsOverview());
+                player.openInventory(DefaultInventories.getWayPointsOverview());
             } else if (currentItem.getItemMeta().getDisplayName().startsWith(ChatColor.GOLD + "Uhr")) {
                 ConfigCache.clockTime.replace(player.getUniqueId(), !ConfigCache.clockTime.get(player.getUniqueId()));
                 boolean clockState = ConfigCache.clockTime.getOrDefault(player.getUniqueId(), true);
@@ -91,14 +91,14 @@ public class InventoryClickListener implements Listener {
                         .plugin(MinecraftSurvival.getINSTANCE())
                         .open(player);
             } else if (currentItem.getItemMeta().getDisplayName().equals(Variables.INVENTORY_NAME_WAYPOINT_DELETE)) {
-                Inventory inventory = DefaultInventorys.getWayPointsDelete(player);
+                Inventory inventory = DefaultInventories.getWayPointsDelete(player);
                 if (inventory == null) {
                     player.sendMessage(new Message(ChatColor.RED + "Es gibt keine Wegpunkte zu entfernen!").getMessage());
                     return;
                 }
                 player.openInventory(inventory);
             } else if (currentItem.getItemMeta().getDisplayName().equals(Variables.INVENTORY_NAME_WAYPOINT_SELECT)) {
-                Inventory inventory = DefaultInventorys.getWayPointsSelect(player);
+                Inventory inventory = DefaultInventories.getWayPointsSelect(player);
                 if (inventory == null) {
                     player.sendMessage(new Message(ChatColor.RED + "Es gibt keine Wegpunkte zum Auswählen!").getMessage());
                     return;

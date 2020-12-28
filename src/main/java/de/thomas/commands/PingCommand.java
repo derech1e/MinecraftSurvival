@@ -31,7 +31,6 @@ public class PingCommand implements CommandExecutor {
             }
         }
         try {
-            assert player != null;
             Object entityPlayer = player.getClass().getMethod("getHandle").invoke(player);
             int ping = (int) entityPlayer.getClass().getField("ping").get(entityPlayer);
             sender.sendMessage(new Message("Dein Ping beträgt §6" + ping + "§f ms.").getMessage());

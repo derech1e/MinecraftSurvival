@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class PlayerMoveListener implements Listener {
 
@@ -36,7 +37,7 @@ public class PlayerMoveListener implements Listener {
         }
 
         if (player.getWorld().getName().equalsIgnoreCase("world")) {
-            boolean isPlayerInSpawnArea = player.getLocation().distance(ConfigCache.glideAreaLocation) <= ConfigCache.glideAreaRadius;
+            boolean isPlayerInSpawnArea = player.getLocation().distance(Objects.requireNonNull(ConfigCache.glideAreaLocation)) <= ConfigCache.glideAreaRadius;
 
             if (!Variables.glidingPlayers.contains(player))
                 if (isPlayerInSpawnArea)

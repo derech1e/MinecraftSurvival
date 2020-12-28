@@ -8,6 +8,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class BlockListener implements Listener {
 
     @EventHandler
@@ -15,7 +17,7 @@ public class BlockListener implements Listener {
         Player player = event.getPlayer();
         if (player.isOp()) return;
         if (player.getWorld().getName().equalsIgnoreCase("world")) {
-            boolean isPlayerInSpawnArea = player.getLocation().distance(ConfigCache.glideAreaLocation) <= ConfigCache.glideAreaRadius;
+            boolean isPlayerInSpawnArea = player.getLocation().distance(Objects.requireNonNull(ConfigCache.glideAreaLocation)) <= ConfigCache.glideAreaRadius;
             event.setCancelled(isPlayerInSpawnArea);
         }
     }
@@ -26,7 +28,7 @@ public class BlockListener implements Listener {
         Player player = event.getPlayer();
         if (player.isOp()) return;
         if (player.getWorld().getName().equalsIgnoreCase("world")) {
-            boolean isPlayerInSpawnArea = player.getLocation().distance(ConfigCache.glideAreaLocation) <= ConfigCache.glideAreaRadius;
+            boolean isPlayerInSpawnArea = player.getLocation().distance(Objects.requireNonNull(ConfigCache.glideAreaLocation)) <= ConfigCache.glideAreaRadius;
             event.setCancelled(isPlayerInSpawnArea);
         }
     }

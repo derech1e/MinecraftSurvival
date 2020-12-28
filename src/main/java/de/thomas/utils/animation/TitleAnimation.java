@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class TitleAnimation {
@@ -44,7 +45,7 @@ public class TitleAnimation {
         for (PotionEffect potionEffect : targetPlayer.getActivePotionEffects())
             targetPlayer.removePotionEffect(potionEffect.getType());
         targetPlayer.setBedSpawnLocation(ConfigCache.spawnLocation, true);
-        targetPlayer.getWorld().setSpawnLocation(ConfigCache.spawnLocation);
+        targetPlayer.getWorld().setSpawnLocation(Objects.requireNonNull(ConfigCache.spawnLocation));
         Location up = ConfigCache.spawnLocation.clone();
         up.setYaw(0);
         up.setPitch(90);

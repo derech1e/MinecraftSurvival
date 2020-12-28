@@ -35,7 +35,7 @@ public class GlideAreaCommand implements CommandExecutor {
             try {
                 ConfigCache.glideAreaRadius = Double.parseDouble(args[0]);
             } catch (Exception e) {
-                player.sendMessage(new Message(ErrorMessageType.FALSE_PARM).getMessage());
+                player.sendMessage(new Message(ErrorMessageType.FALSE_PARAM).getMessage());
             }
             player.sendMessage(new Message(ChatColor.GRAY + "Du hast deine Position als neuen " + ChatColor.GOLD + "GlideArea-Mittelpunkt"+ ChatColor.GRAY + ", mit einem Radius von " + ChatColor.GOLD + ConfigCache.glideAreaRadius + ChatColor.GRAY + " gesetzt!").getMessage());
             return true;

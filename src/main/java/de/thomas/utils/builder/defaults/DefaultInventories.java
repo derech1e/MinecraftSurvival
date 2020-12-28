@@ -12,9 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-
-public class DefaultInventorys {
+public class DefaultInventories {
 
     public static Inventory getWayPointsOverview() {
         InventoryBuilder inventoryBuilder = new InventoryBuilder(Variables.INVENTORY_NAME_WAYPOINTS, 9);
@@ -33,7 +31,7 @@ public class DefaultInventorys {
             player.closeInventory();
             return null;
         }
-        InventoryBuilder inventoryBuilder = new InventoryBuilder(Variables.INVENTORY_NAME_WAYPOINT_SELECT, Variables.calculateInventorySize((int) ConfigCache.playerWaypoints.get(player.getUniqueId()).entrySet().stream().map(Map.Entry::getValue).map(Location::getWorld).filter(world -> world.getName().equals(player.getWorld().getName())).count()));
+        InventoryBuilder inventoryBuilder = new InventoryBuilder(Variables.INVENTORY_NAME_WAYPOINT_SELECT, Variables.calculateInventorySize((int) ConfigCache.playerWaypoints.get(player.getUniqueId()).values().stream().map(Location::getWorld).filter(world -> world.getName().equals(player.getWorld().getName())).count()));
 
         ConfigCache.playerWaypoints.get(player.getUniqueId()).forEach((name, location) -> {
             if (location.getWorld().getName().equals(player.getWorld().getName())) {
@@ -54,7 +52,7 @@ public class DefaultInventorys {
             player.closeInventory();
             return null;
         }
-        InventoryBuilder inventoryBuilder = new InventoryBuilder(Variables.INVENTORY_NAME_WAYPOINT_DELETE, Variables.calculateInventorySize((int) ConfigCache.playerWaypoints.get(player.getUniqueId()).entrySet().stream().map(Map.Entry::getValue).map(Location::getWorld).filter(world -> world.getName().equals(player.getWorld().getName())).count()));
+        InventoryBuilder inventoryBuilder = new InventoryBuilder(Variables.INVENTORY_NAME_WAYPOINT_DELETE, Variables.calculateInventorySize((int) ConfigCache.playerWaypoints.get(player.getUniqueId()).values().stream().map(Location::getWorld).filter(world -> world.getName().equals(player.getWorld().getName())).count()));
 
         ConfigCache.playerWaypoints.get(player.getUniqueId()).forEach((name, location) -> {
             if (location.getWorld().getName().equals(player.getWorld().getName())) {

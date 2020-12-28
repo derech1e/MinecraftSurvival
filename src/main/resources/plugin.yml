@@ -27,7 +27,3 @@ commands:
 
   rlconfig:
     description: Reloade die Config!
-
-  wegpunkt:
-    description: Setze einen Wegpunkt in deiner Welt
-    aliases: [wp]

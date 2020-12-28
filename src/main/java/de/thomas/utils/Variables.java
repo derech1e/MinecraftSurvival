@@ -3,9 +3,6 @@ package de.thomas.utils;
 import de.thomas.utils.animation.particle.base.IParticleTask;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +23,6 @@ public class Variables {
     public static final List<IParticleTask> activeTasks = new ArrayList<>();
     public static final List<UUID> frozenPlayers = new ArrayList<>();
     public static final HashMap<UUID, Player> targetCompassPlayers = new HashMap<>();
-    public static final List<Player> playerWithOpenAnvilGUI = new ArrayList<>();
 
     public static int calculateInventorySize(int onlinePlayers) {
         if (onlinePlayers <= 9)

@@ -166,7 +166,7 @@ public class ItemBuilder {
      * Remove an enchantment on the item
      */
     public @NotNull ItemBuilder removeEnchant(@NotNull Enchantment enchantment) {
-        if (!this.getEnchantments().containsKey(enchantment))
+        if (!Objects.requireNonNull(Objects.requireNonNull(this.getEnchantments())).containsKey(enchantment))
             return this;
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         itemMeta.removeEnchant(enchantment);
@@ -180,7 +180,7 @@ public class ItemBuilder {
      */
     public @NotNull ItemBuilder removeEnchants(@NotNull List<Enchantment> enchantments) {
         for (Enchantment enchantment : enchantments) {
-            if (!this.getEnchantments().containsKey(enchantment))
+            if (!Objects.requireNonNull(this.getEnchantments()).containsKey(enchantment))
                 continue;
             this.removeEnchant(enchantment);
         }
@@ -503,14 +503,14 @@ public class ItemBuilder {
      * @param itemBuilder returns if two item builder has same enchantments
      */
     public boolean hasSameEnchantment(@NotNull ItemBuilder itemBuilder) {
-        return getEnchantments().equals(itemBuilder.getEnchantments());
+        return Objects.requireNonNull(getEnchantments()).equals(itemBuilder.getEnchantments());
     }
 
     /**
      * @param itemBuilder returns if two item builder has same item flags
      */
     public boolean hasSameItemFlag(@NotNull ItemBuilder itemBuilder) {
-        return getItemFlag().equals(itemBuilder.getItemFlag());
+        return Objects.requireNonNull(getItemFlag()).equals(itemBuilder.getItemFlag());
     }
 
     /**
@@ -713,8 +713,8 @@ public class ItemBuilder {
         itemBuilderString.append(splitValues[0]);
         if (this.itemStack.hasItemMeta()) {
             itemBuilderString.append("meta: ").append(splitValues[2]).append(splitValues[1]);
-            if (getDisplayName() != null)
-                itemBuilderString.append("name: ").append(getDisplayName()).append(splitValues[1]);
+            getDisplayName();
+            itemBuilderString.append("name: ").append(getDisplayName()).append(splitValues[1]);
             if (getEnchantments() != null) {
                 itemBuilderString.append("enchants: ");
                 getEnchantments().forEach((enchantment, integer) -> itemBuilderString.append("enchantType: ")

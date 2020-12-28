@@ -16,6 +16,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -24,7 +26,10 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class PlayerConnectionListener implements Listener {
@@ -34,19 +39,21 @@ public class PlayerConnectionListener implements Listener {
         Player player = event.getPlayer();
         event.setJoinMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + player.getName());
         updateDiscordStatus();
-        if(!ConfigCache.clockTime.containsKey(player.getUniqueId())) {
+        if (!ConfigCache.clockTime.containsKey(player.getUniqueId())) {
             ConfigCache.clockTime.put(player.getUniqueId(), true);
         }
         RecipeManager.discoverRecipe(player);
-        /*if (!player.hasPlayedBefore() || Variables.frozenPlayers.contains(event.getPlayer().getUniqueId())) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 99999, 255, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 255, false, false));
-            player.teleport(ConfigCache.spawnLocation);
-            if (!Variables.frozenPlayers.contains(event.getPlayer().getUniqueId()))
-                Variables.frozenPlayers.add(event.getPlayer().getUniqueId());
-            Bukkit.getOnlinePlayers().forEach(player1 -> player1.hidePlayer(MinecraftSurvival.getINSTANCE(), player));
-            Bukkit.getOnlinePlayers().forEach(player1 -> player.hidePlayer(MinecraftSurvival.getINSTANCE(), player1));
-        }*/
+
+        if (ConfigCache.spawnProtection)
+            if (!player.hasPlayedBefore() || Variables.frozenPlayers.contains(event.getPlayer().getUniqueId())) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 99999, 255, false, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 255, false, false));
+                player.teleport(Objects.requireNonNull(ConfigCache.spawnLocation));
+                if (!Variables.frozenPlayers.contains(event.getPlayer().getUniqueId()))
+                    Variables.frozenPlayers.add(event.getPlayer().getUniqueId());
+                Bukkit.getOnlinePlayers().forEach(player1 -> player1.hidePlayer(MinecraftSurvival.getINSTANCE(), player));
+                Bukkit.getOnlinePlayers().forEach(player1 -> player.hidePlayer(MinecraftSurvival.getINSTANCE(), player1));
+            }
     }
 
     @EventHandler
@@ -92,12 +99,12 @@ public class PlayerConnectionListener implements Listener {
     private void updateDiscordStatus() {
         Bukkit.getScheduler().runTaskLater(MinecraftSurvival.getINSTANCE(), () -> {
             int playerSize = Bukkit.getOnlinePlayers().size();
-            if(playerSize == 0) {
+            if (playerSize == 0) {
                 MinecraftSurvival.getINSTANCE().getBotStatusMessageThread().startThread();
                 return;
             }
             MinecraftSurvival.getINSTANCE().getBotStatusMessageThread().stopThread();
             MinecraftSurvival.getINSTANCE().getJda().getPresence().setPresence(Activity.playing("mit " + playerSize + (playerSize == 1 ? " Spieler " : " Spielern")), true);
-        },20 * 2);
+        }, 20 * 2);
     }
 }

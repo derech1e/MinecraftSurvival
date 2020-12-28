@@ -88,7 +88,7 @@ public class ConfigUtils {
         HashMap<String, Location> detail = new HashMap<>();
         try {
             for (String uuid : Objects.requireNonNull(INSTANCE.getConfig().getConfigurationSection("Players.Waypoints")).getKeys(false)) {
-                for (String name : INSTANCE.getConfig().getConfigurationSection("Players.Waypoints." + uuid).getKeys(false)) {
+                for (String name : Objects.requireNonNull(Objects.requireNonNull(INSTANCE.getConfig().getConfigurationSection("Players.Waypoints." + uuid))).getKeys(false)) {
                     detail.put(name, INSTANCE.getConfig().getLocation("Players.Waypoints." + uuid + "." + name));
                 }
                 playerWaypoints.put(UUID.fromString(uuid), detail);
