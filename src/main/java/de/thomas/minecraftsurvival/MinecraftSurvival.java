@@ -101,6 +101,7 @@ public class MinecraftSurvival extends JavaPlugin {
         pluginManager.registerEvents(new InventoryClickListener(), this);
         pluginManager.registerEvents(new BlockListener(), this);
         pluginManager.registerEvents(new EntityDeathListener(), this);
+        pluginManager.registerEvents(new CraftItemListener(), this);
 
         LOGGER.info("All Events registered!");
     }
