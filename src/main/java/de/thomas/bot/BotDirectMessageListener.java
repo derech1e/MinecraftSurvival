@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 
 public class BotDirectMessageListener extends ListenerAdapter {
 
-    public static String getName(String uuid) {
+    public static String getName(@NotNull String uuid) {
         String url = "https://api.mojang.com/user/profiles/" + uuid.replace("-", "") + "/names";
         try {
             String nameJson = IOUtils.toString(new URL(url), StandardCharsets.UTF_8);
@@ -26,7 +26,7 @@ public class BotDirectMessageListener extends ListenerAdapter {
             String playerSlot = nameValue.get(nameValue.size() - 1).toString();
             JSONObject nameObject = (JSONObject) JSONValue.parseWithException(playerSlot);
             return nameObject.get("name").toString();
-        } catch (IOException | ParseException e) {
+        } catch (@NotNull IOException | ParseException e) {
             return "error";
         }
     }

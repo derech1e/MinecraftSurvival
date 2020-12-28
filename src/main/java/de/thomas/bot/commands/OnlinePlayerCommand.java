@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 public class OnlinePlayerCommand extends ListenerAdapter {
 
     @Override
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+    public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
         String prefix = "!";
         if (!event.getMessage().getContentRaw().contains(prefix))
             return;
@@ -33,11 +34,11 @@ public class OnlinePlayerCommand extends ListenerAdapter {
     }
 
 
-    public List<String> getAlias() {
+    public @NotNull List<String> getAlias() {
         return Arrays.asList("mc", "minecraft", "modpack", "avatar", "online");
     }
 
-    public void sendMessage(TextChannel channel) {
+    public void sendMessage(@NotNull TextChannel channel) {
         channel.sendMessage("Suche...").complete().delete().queueAfter(1L, TimeUnit.SECONDS);
 
         EmbedBuilder builder = new EmbedBuilder();

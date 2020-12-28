@@ -9,6 +9,7 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -49,7 +50,7 @@ public class SpawnLevitationAnimation {
         Bukkit.getScheduler().cancelTask(taskID_2);
     }
 
-    public ArrayList<Location> getCircle(double radius, int amount) {
+    public @NotNull ArrayList<Location> getCircle(double radius, int amount) {
         double increment = (2 * Math.PI) / amount;
         ArrayList<Location> locations = new ArrayList<>();
         for (int i = 0; i < amount; i++) {

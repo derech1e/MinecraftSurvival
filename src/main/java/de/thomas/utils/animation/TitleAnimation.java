@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class TitleAnimation {
         this.targetPlayer = targetPlayer;
     }
 
-    public static List<Player> getPlayerInAnimation() {
+    public static @NotNull List<Player> getPlayerInAnimation() {
         return playerInAnimation;
     }
 

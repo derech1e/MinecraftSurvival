@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;
@@ -34,7 +35,7 @@ public class PingCommand implements CommandExecutor {
             Object entityPlayer = player.getClass().getMethod("getHandle").invoke(player);
             int ping = (int) entityPlayer.getClass().getField("ping").get(entityPlayer);
             sender.sendMessage(new Message("Dein Ping beträgt §6" + ping + "§f ms.").getMessage());
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | NoSuchFieldException e) {
+        } catch (@NotNull IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | NoSuchFieldException e) {
             e.printStackTrace();
         }
 

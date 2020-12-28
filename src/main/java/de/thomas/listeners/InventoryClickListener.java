@@ -18,6 +18,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -27,7 +29,7 @@ public class InventoryClickListener implements Listener {
 
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
+    public void onInventoryClick(@NotNull InventoryClickEvent event) {
         if (event.getClickedInventory() == null || event.getCurrentItem() == null)
             return;
 
@@ -123,7 +125,7 @@ public class InventoryClickListener implements Listener {
         }
     }
 
-    private void setNewCompassTarget(Player player, Location location, String message, Player targetPlayer) {
+    private void setNewCompassTarget(@NotNull Player player, @Nullable Location location, String message, @Nullable Player targetPlayer) {
         if (location != null) {
             int distance = (int) Math.round(player.getLocation().distance(location));
             player.setCompassTarget(location);

@@ -6,6 +6,7 @@ import de.thomas.utils.animation.particle.base.interfaces.FinalizedAnimation;
 import de.thomas.utils.animation.particle.base.interfaces.ParticleOption;
 import de.thomas.utils.animation.particle.base.interfaces.IParticleHandlerBase;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +25,7 @@ public class ParticleAnimationHandler implements IParticleHandlerBase {
     public ParticleAnimationHandler() {}
 
     @Override
-    public void addAnimations(IParticleTask... particleTasks) {
+    public void addAnimations(IParticleTask @NotNull ... particleTasks) {
         for (IParticleTask particleTask : particleTasks) {
             ParticleOption particleOption = particleTask.getClass().getAnnotation(ParticleOption.class);
             allAnimations.put(particleTask, particleOption);

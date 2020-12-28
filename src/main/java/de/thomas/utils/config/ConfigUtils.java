@@ -2,6 +2,8 @@ package de.thomas.utils.config;
 
 import de.thomas.minecraftsurvival.MinecraftSurvival;
 import org.bukkit.Location;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +22,7 @@ public class ConfigUtils {
         this.configItemName = configItemName;
     }
 
-    public Location loadGlideAreaLocation() {
+    public @Nullable Location loadGlideAreaLocation() {
         return INSTANCE.getConfig().getLocation(configItemName + ".Location");
     }
 
@@ -49,7 +51,7 @@ public class ConfigUtils {
         INSTANCE.getConfig().set(configItemName, state);
     }
 
-    public Location loadSpawnLocation() {
+    public @Nullable Location loadSpawnLocation() {
         return INSTANCE.getConfig().getLocation(configItemName);
     }
 
@@ -57,13 +59,13 @@ public class ConfigUtils {
         INSTANCE.getConfig().set(configItemName, configLocation);
     }
 
-    public void saveVerifiedPlayers(HashMap<UUID, String> players) {
+    public void saveVerifiedPlayers(@NotNull HashMap<UUID, String> players) {
         for (Map.Entry<UUID, String> map : players.entrySet()) {
             INSTANCE.getConfig().set("Players.Verified." + map.getKey().toString(), map.getValue());
         }
     }
 
-    public HashMap<UUID, String> loadVerifiedPlayers() {
+    public @NotNull HashMap<UUID, String> loadVerifiedPlayers() {
         HashMap<UUID, String> verifiedPlayers = new HashMap<>();
         for (String key : Objects.requireNonNull(INSTANCE.getConfig().getConfigurationSection("Players.Verified")).getKeys(false)) {
             verifiedPlayers.put(UUID.fromString(key), Objects.requireNonNull(INSTANCE.getConfig().getString("Players.Verified." + key)));
@@ -71,7 +73,7 @@ public class ConfigUtils {
         return verifiedPlayers;
     }
 
-    public void savePlayerWaypoints(HashMap<UUID, HashMap<String, Location>> playerWaypoints) {
+    public void savePlayerWaypoints(@NotNull HashMap<UUID, HashMap<String, Location>> playerWaypoints) {
         if (playerWaypoints.isEmpty()) {
             INSTANCE.getConfig().set("Players.Waypoints", null);
             return;
@@ -81,7 +83,7 @@ public class ConfigUtils {
         }
     }
 
-    public HashMap<UUID, HashMap<String, Location>> loadPlayerWaypoints() {
+    public @NotNull HashMap<UUID, HashMap<String, Location>> loadPlayerWaypoints() {
         HashMap<UUID, HashMap<String, Location>> playerWaypoints = new HashMap<>();
         HashMap<String, Location> detail = new HashMap<>();
         try {
@@ -98,7 +100,7 @@ public class ConfigUtils {
         return playerWaypoints;
     }
 
-    public HashMap<UUID, Boolean> loadPlayerClockTime() {
+    public @NotNull HashMap<UUID, Boolean> loadPlayerClockTime() {
         HashMap<UUID, Boolean> verifiedPlayers = new HashMap<>();
         if (INSTANCE.getConfig().getConfigurationSection("Players.Clock") != null)
             for (String key : Objects.requireNonNull(INSTANCE.getConfig().getConfigurationSection("Players.Clock")).getKeys(false)) {
@@ -107,7 +109,7 @@ public class ConfigUtils {
         return verifiedPlayers;
     }
 
-    public void savePlayerClockTime(HashMap<UUID, Boolean> clockTime) {
+    public void savePlayerClockTime(@NotNull HashMap<UUID, Boolean> clockTime) {
         for (Map.Entry<UUID, Boolean> map : clockTime.entrySet()) {
             INSTANCE.getConfig().set("Players.Clock." + map.getKey().toString(), map.getValue());
         }

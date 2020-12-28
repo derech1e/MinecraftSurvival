@@ -16,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
 public class PlayerConnectionListener implements Listener {
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
+    public void onJoin(@NotNull PlayerJoinEvent event) {
         Player player = event.getPlayer();
         event.setJoinMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + player.getName());
         updateDiscordStatus();
@@ -49,7 +50,7 @@ public class PlayerConnectionListener implements Listener {
     }
 
     @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
+    public void onQuit(@NotNull PlayerQuitEvent event) {
         Player player = event.getPlayer();
         updateDiscordStatus();
         event.setQuitMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "-" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + player.getName());
@@ -57,7 +58,7 @@ public class PlayerConnectionListener implements Listener {
 
 
     @EventHandler
-    public void onAsyncPreLogin(AsyncPlayerPreLoginEvent event) throws IOException, ParseException {
+    public void onAsyncPreLogin(@NotNull AsyncPlayerPreLoginEvent event) throws IOException, ParseException {
         String encodedDate = IOUtils.toString(new URL("https://raw.githubusercontent.com/derech1e/baguettelauncher/master/launch_date.txt"), StandardCharsets.UTF_8);
         DateFormat dateFormatParsable = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         DateFormat dateFormatReadable = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -79,7 +80,7 @@ public class PlayerConnectionListener implements Listener {
     }
 
     @EventHandler
-    public void onServerListPing(PaperServerListPingEvent event) {
+    public void onServerListPing(@NotNull PaperServerListPingEvent event) {
         boolean day = (Objects.requireNonNull(Bukkit.getWorld("world")).getTime() > 23850 || Objects.requireNonNull(Bukkit.getWorld("world")).getTime() < 12300);
         String time = "Es ist: " + (day ? "§aTag" : "§1Nacht") + (Bukkit.getOnlinePlayers().size() != 0 ? "§r - " : "");
         event.setMotd(time + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")));

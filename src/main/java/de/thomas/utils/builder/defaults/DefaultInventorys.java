@@ -9,6 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -26,7 +28,7 @@ public class DefaultInventorys {
         return inventoryBuilder.build();
     }
 
-    public static Inventory getWayPointsSelect(Player player) {
+    public static @Nullable Inventory getWayPointsSelect(@NotNull Player player) {
         if (!ConfigCache.playerWaypoints.containsKey(player.getUniqueId())) {
             player.closeInventory();
             return null;
@@ -47,7 +49,7 @@ public class DefaultInventorys {
         return inventoryBuilder.build();
     }
 
-    public static Inventory getWayPointsDelete(Player player) {
+    public static @Nullable Inventory getWayPointsDelete(@NotNull Player player) {
         if (!ConfigCache.playerWaypoints.containsKey(player.getUniqueId())) {
             player.closeInventory();
             return null;
@@ -68,7 +70,7 @@ public class DefaultInventorys {
         return inventoryBuilder.build();
     }
 
-    public static Inventory getSettings(Player player) {
+    public static Inventory getSettings(@NotNull Player player) {
         InventoryBuilder inventoryBuilder = new InventoryBuilder(Variables.INVENTORY_NAME_SETTINGS, 9);
         //Placeholder
         inventoryBuilder.setPlaceHolder(new ItemBuilder(Material.GRAY_STAINED_GLASS).setName("").toItemStack(), false);

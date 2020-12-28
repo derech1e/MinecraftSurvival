@@ -6,11 +6,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class BlockListener implements Listener {
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent event) {
+    public void onBlockBreak(@NotNull BlockBreakEvent event) {
         Player player = event.getPlayer();
         if (player.isOp()) return;
         if (player.getWorld().getName().equalsIgnoreCase("world")) {
@@ -21,7 +22,7 @@ public class BlockListener implements Listener {
 
 
     @EventHandler
-    public void onBlockBreak(BlockPlaceEvent event) {
+    public void onBlockBreak(@NotNull BlockPlaceEvent event) {
         Player player = event.getPlayer();
         if (player.isOp()) return;
         if (player.getWorld().getName().equalsIgnoreCase("world")) {

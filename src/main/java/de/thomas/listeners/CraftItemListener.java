@@ -7,11 +7,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class CraftItemListener implements Listener {
 
     @EventHandler
-    public void onCraft(CraftItemEvent event) {
+    public void onCraft(@NotNull CraftItemEvent event) {
         if (event.getRecipe().getResult().equals(new ItemStack(Material.ARMOR_STAND))) {
             RecipeManager.discoverRecipe((Player) event.getWhoClicked());
         }

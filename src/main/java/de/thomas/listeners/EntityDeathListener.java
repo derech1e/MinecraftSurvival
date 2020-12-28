@@ -7,11 +7,12 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class EntityDeathListener implements Listener {
 
     @EventHandler
-    public void onEntityDeath(EntityDeathEvent event) {
+    public void onEntityDeath(@NotNull EntityDeathEvent event) {
         if (event.getEntityType() == EntityType.ARMOR_STAND) {
             if (event.getDrops().size() != 0) {
                 event.getDrops().clear();
@@ -21,7 +22,7 @@ public class EntityDeathListener implements Listener {
         }
     }
 
-    private String generateArmorStandName(boolean isSmall, boolean hasArms) {
+    private @NotNull String generateArmorStandName(boolean isSmall, boolean hasArms) {
         return isSmall & hasArms ? "Small Armor Stand with Arms" : isSmall & !hasArms ? "Small Armor Stand" : hasArms ? "Armor Stand with Arms" : "Armor Stand";
     }
 }

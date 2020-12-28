@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class PlayerBedListener implements Listener {
     private boolean inProgress = false;
 
     @EventHandler
-    public void onBedEnter(PlayerBedEnterEvent event) {
+    public void onBedEnter(@NotNull PlayerBedEnterEvent event) {
         Player player = event.getPlayer();
         if (!event.getBedEnterResult().equals(PlayerBedEnterEvent.BedEnterResult.OK))
             return;
@@ -38,7 +39,7 @@ public class PlayerBedListener implements Listener {
         }
     }
 
-    private void skipNight(boolean instant, Player player) {
+    private void skipNight(boolean instant, @NotNull Player player) {
         taskID = Bukkit.getScheduler().runTaskLater(MinecraftSurvival.getINSTANCE(), () -> {
             inProgress = true;
             if (!(player.getWorld().getTime() > 23850 || player.getWorld().getTime() < 12300)) {
@@ -54,7 +55,7 @@ public class PlayerBedListener implements Listener {
     }
 
     @EventHandler
-    public void onBedLeave(PlayerBedLeaveEvent event) {
+    public void onBedLeave(@NotNull PlayerBedLeaveEvent event) {
         Player player = event.getPlayer();
         playerInBed.remove(player.getUniqueId());
         if (!canSkip()) {
@@ -69,7 +70,7 @@ public class PlayerBedListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
+    public void onPlayerQuit(@NotNull PlayerQuitEvent event) {
         Player player = event.getPlayer();
         playerInBed.remove(player.getUniqueId());
         Bukkit.getScheduler().runTaskLater(MinecraftSurvival.getINSTANCE(), () -> {

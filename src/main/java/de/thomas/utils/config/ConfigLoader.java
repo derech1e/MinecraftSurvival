@@ -4,6 +4,7 @@ package de.thomas.utils.config;
 import de.thomas.minecraftsurvival.MinecraftSurvival;
 import org.bukkit.Location;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +36,7 @@ public class ConfigLoader {
         setupConfig();
         try {
             INSTANCE.getConfig().load(configFile);
-        } catch (IOException | InvalidConfigurationException e) {
+        } catch (@NotNull IOException | InvalidConfigurationException e) {
             INSTANCE.LOGGER.error("Ein Fehler beim Laden der Config ist aufgetreten!", e);
         }
         cacheConfig();

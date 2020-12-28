@@ -6,11 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.WorldBorder;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.Nullable;
 
 public class WorldBorderAnimation {
 
     private final Player targetPlayer;
-    private BukkitTask taskID = null;
+    private @Nullable BukkitTask taskID = null;
     private int time;
     private int size;
 
