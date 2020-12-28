@@ -15,7 +15,7 @@ public class EntityDeathListener implements Listener {
     public void onEntityDeath(@NotNull EntityDeathEvent event) {
         if (event.getEntityType() == EntityType.ARMOR_STAND) {
             if (event.getDrops().size() != 0) {
-                event.getDrops().clear();
+                event.getDrops().removeIf(itemStack -> itemStack.getType().equals(Material.ARMOR_STAND));
                 ArmorStand armorStand = (ArmorStand) event.getEntity();
                 event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), new ItemBuilder(Material.ARMOR_STAND).setArmorStandSmall(armorStand.isSmall()).showArmorStandArms(armorStand.hasArms()).setName("§f" + generateArmorStandName(armorStand.isSmall(), armorStand.hasArms())).toItemStack());
             }
