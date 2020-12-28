@@ -6,6 +6,7 @@ import de.thomas.bot.commands.OnlinePlayerCommand;
 import de.thomas.commands.*;
 import de.thomas.listeners.*;
 import de.thomas.utils.config.ConfigLoader;
+import de.thomas.utils.crafting.RecipeManager;
 import de.thomas.utils.message.Message;
 import de.thomas.utils.threads.BotStatusMessageThread;
 import de.thomas.utils.threads.ClockTimeThread;
@@ -59,6 +60,9 @@ public class MinecraftSurvival extends JavaPlugin {
         LOGGER.info("Load Config File...");
         ConfigLoader.loadConfig();
         LOGGER.info("Loaded Config File.");
+
+        //Load Recipes
+        RecipeManager.registerRecipes(getServer());
 
         //Load Threads
         new RestartThread().startThread();

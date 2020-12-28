@@ -1,5 +1,6 @@
 package de.thomas.utils.builder;
 
+import com.destroystokyo.paper.inventory.meta.ArmorStandMeta;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.bukkit.ChatColor;
@@ -665,6 +666,20 @@ public class ItemBuilder {
         }
         this.itemMeta.setUnbreakable(unbreakable);
         this.itemStack.setItemMeta(this.itemMeta);
+        return this;
+    }
+
+    public ItemBuilder showArmorStandArms(boolean state) {
+        ArmorStandMeta armorStandMeta = (ArmorStandMeta) itemStack.getItemMeta();
+        armorStandMeta.setShowArms(state);
+        this.itemStack.setItemMeta(armorStandMeta);
+        return this;
+    }
+
+    public ItemBuilder setArmorStandSmall(boolean state) {
+        ArmorStandMeta armorStandMeta = (ArmorStandMeta) itemStack.getItemMeta();
+        armorStandMeta.setSmall(state);
+        this.itemStack.setItemMeta(armorStandMeta);
         return this;
     }
 
