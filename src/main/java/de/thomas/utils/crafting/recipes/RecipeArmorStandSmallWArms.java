@@ -1,5 +1,6 @@
 package de.thomas.utils.crafting.recipes;
 
+import de.thomas.minecraftsurvival.MinecraftSurvival;
 import de.thomas.utils.builder.ItemBuilder;
 import de.thomas.utils.crafting.RecipeValues;
 import org.bukkit.Material;
@@ -9,7 +10,7 @@ import org.bukkit.inventory.ShapedRecipe;
 public class RecipeArmorStandSmallWArms extends ShapedRecipe implements RecipeValues {
 
     public RecipeArmorStandSmallWArms() {
-        super(NamespacedKey.randomKey(), new ItemBuilder(Material.ARMOR_STAND).showArmorStandArms(true).setArmorStandSmall(true).toItemStack());
+        super(new NamespacedKey(MinecraftSurvival.getINSTANCE(),"armorstand_small_with_arms"), new ItemBuilder(Material.ARMOR_STAND).showArmorStandArms(true).setArmorStandSmall(true).setName("§fSmall Armor Stand with Arms").toItemStack());
         initValues();
     }
 

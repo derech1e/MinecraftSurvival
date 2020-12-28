@@ -64,13 +64,6 @@ public class MinecraftSurvival extends JavaPlugin {
         //Load Recipes
         RecipeManager.registerRecipes(getServer());
 
-        //Load Threads
-        new RestartThread().startThread();
-        botStatusMessageThread = new BotStatusMessageThread();
-        botStatusMessageThread.startThread();
-        new ClockTimeThread().startThread();
-        LOGGER.info("Started Restart Thread");
-
         //Register Bot
         LOGGER.info("Try to register Bot");
         try {
@@ -78,6 +71,13 @@ public class MinecraftSurvival extends JavaPlugin {
         } catch (LoginException e) {
             e.printStackTrace();
         }
+
+        //Load Threads
+        new RestartThread().startThread();
+        new ClockTimeThread().startThread();
+        botStatusMessageThread = new BotStatusMessageThread();
+        botStatusMessageThread.startThread();
+        LOGGER.info("Started Restart Thread");
     }
 
     @Override
@@ -100,6 +100,7 @@ public class MinecraftSurvival extends JavaPlugin {
         pluginManager.registerEvents(new EntityDamageListener(), this);
         pluginManager.registerEvents(new InventoryClickListener(), this);
         pluginManager.registerEvents(new BlockListener(), this);
+        pluginManager.registerEvents(new EntityDeathListener(), this);
 
         LOGGER.info("All Events registered!");
     }
@@ -117,6 +118,7 @@ public class MinecraftSurvival extends JavaPlugin {
     }
 
     private void unregisterBot() {
+        jda.getPresence().setPresence(Activity.playing("Server startet neu..."), true);
         jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
         jda.shutdown();
     }
