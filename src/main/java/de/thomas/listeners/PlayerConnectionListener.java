@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
 import de.thomas.minecraftsurvival.MinecraftSurvival;
 import de.thomas.utils.Variables;
 import de.thomas.utils.config.ConfigCache;
+import de.thomas.utils.crafting.RecipeManager;
 import net.dv8tion.jda.api.entities.Activity;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
@@ -35,6 +36,7 @@ public class PlayerConnectionListener implements Listener {
         if(!ConfigCache.clockTime.containsKey(player.getUniqueId())) {
             ConfigCache.clockTime.put(player.getUniqueId(), true);
         }
+        RecipeManager.discoverRecipe(player);
         /*if (!player.hasPlayedBefore() || Variables.frozenPlayers.contains(event.getPlayer().getUniqueId())) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 99999, 255, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 255, false, false));

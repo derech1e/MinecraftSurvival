@@ -4,10 +4,12 @@ import de.thomas.utils.crafting.recipes.RecipeArmorStandSmall;
 import de.thomas.utils.crafting.recipes.RecipeArmorStandSmallWArms;
 import de.thomas.utils.crafting.recipes.RecipeArmorStandWArms;
 import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RecipeManager {
 
@@ -17,6 +19,10 @@ public class RecipeManager {
         shapedRecipeList.add(new RecipeArmorStandWArms());
         shapedRecipeList.add(new RecipeArmorStandSmallWArms());
         shapedRecipeList.add(new RecipeArmorStandSmall());
+    }
+
+    public static void discoverRecipe(Player player) {
+        player.discoverRecipes(shapedRecipeList.stream().map(ShapedRecipe::getKey).collect(Collectors.toList()));
     }
 
     public static void registerRecipes(Server server) {
