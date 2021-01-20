@@ -39,6 +39,10 @@ public class PlayerMoveListener implements Listener {
         if (player.getWorld().getName().equalsIgnoreCase("world")) {
             boolean isPlayerInSpawnArea = player.getLocation().distance(Objects.requireNonNull(ConfigCache.glideAreaLocation)) <= ConfigCache.glideAreaRadius;
 
+            if (player.getInventory().getArmorContents() != null)
+                if (Arrays.stream(player.getInventory().getArmorContents()).anyMatch(itemStack -> itemStack.getType().equals(Material.ELYTRA)))
+                    return;
+
             if (!Variables.glidingPlayers.contains(player))
                 if (isPlayerInSpawnArea)
                     if (player.getLocation().subtract(0, 2, 0).getBlock().getType().isAir() && player.getFallDistance() >= 3) {
