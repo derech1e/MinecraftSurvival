@@ -3,6 +3,7 @@ package de.thomas.minecraftsurvival;
 import de.thomas.bot.BotDirectMessageListener;
 import de.thomas.bot.commands.HalloCommand;
 import de.thomas.bot.commands.OnlinePlayerCommand;
+import de.thomas.bot.log.UserChannelListener;
 import de.thomas.commands.*;
 import de.thomas.listeners.*;
 import de.thomas.utils.config.ConfigLoader;
@@ -120,8 +121,8 @@ public class MinecraftSurvival extends JavaPlugin {
     private void registerBot() {
         try {
             jda = JDABuilder.create("NTE1NTU0ODYxMzQ2MDYyMzQ2.XWtxWA.wa6VCGxqT4A4SysUAe41cjX6774",
-                    GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES)
-                    .disableCache(CacheFlag.ACTIVITY, CacheFlag.VOICE_STATE, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS)
+                    GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_VOICE_STATES)
+                    .disableCache(CacheFlag.ACTIVITY, CacheFlag.EMOTE, CacheFlag.CLIENT_STATUS)
                     .setBulkDeleteSplittingEnabled(false).setCompression(Compression.NONE).build();
 
             Bukkit.getScheduler().runTaskLaterAsynchronously(this, () -> {
@@ -135,6 +136,7 @@ public class MinecraftSurvival extends JavaPlugin {
                 jda.addEventListener(new BotDirectMessageListener());
                 jda.addEventListener(new OnlinePlayerCommand());
                 jda.addEventListener(new HalloCommand());
+                jda.addEventListener(new UserChannelListener());
                 jda.setAutoReconnect(true);
                 jda.getPresence().setPresence(Activity.playing("Server gestartet"), true);
                 LOGGER.info("Bot registered and started!");

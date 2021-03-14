@@ -91,9 +91,9 @@ public class PlayerConnectionListener implements Listener {
         boolean day = (Objects.requireNonNull(Bukkit.getWorld("world")).getTime() > 23850 || Objects.requireNonNull(Bukkit.getWorld("world")).getTime() < 12300);
         String time = "Es ist: " + (day ? "§aTag" : "§1Nacht") + (Bukkit.getOnlinePlayers().size() != 0 ? "§r - " : "");
         event.setMotd(time + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")));
-        Calendar cal = Calendar.getInstance();
-        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        event.setMaxPlayers(Math.max(dayOfMonth, event.getNumPlayers() + 1));
+        //Calendar cal = Calendar.getInstance();
+        //int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        //event.setMaxPlayers(Math.max(dayOfMonth, event.getNumPlayers() + 1));
     }
 
     private void updateDiscordStatus() {
