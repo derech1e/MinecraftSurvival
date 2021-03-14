@@ -32,43 +32,38 @@ public class BotDirectMessageListener extends ListenerAdapter {
     }
 
     @Override
-    public void onGenericEvent(@NotNull GenericEvent event) {
-        if (event instanceof PrivateMessageReceivedEvent) {
-            PrivateMessageReceivedEvent receivedEvent = (PrivateMessageReceivedEvent) event;
-            String message = receivedEvent.getMessage().getContentRaw();
-            short code = 0;
+    public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent receivedEvent) {
+        String message = receivedEvent.getMessage().getContentRaw();
+        short code = 0;
+        try {
+            code = Short.parseShort(message);
+        } catch (NumberFormatException ignored) {
             try {
-                code = Short.parseShort(message);
-            } catch (NumberFormatException ignored) {
-                try {
-                    receivedEvent.getAuthor().openPrivateChannel().queue((channel) ->
-                            channel.sendMessage("Dies ist kein Gültiger Code. Tut mir leid :(").queue());
-                    return;
-                } catch (Exception ignored1) {
-                }
-            }
-
-            if (Variables.verifyCodes.containsKey(code)) {
-                short finalCode = code;
-                if (ConfigCache.verifiedPlayers.containsValue(receivedEvent.getAuthor().getId())) {
-                    receivedEvent.getAuthor().openPrivateChannel().queue((channel) ->
-                            channel.sendMessage("Fehler! Du hast bereits einen Account mit " + receivedEvent.getAuthor().getName() + " Verknüpft!").queue());
-                    return;
-                }
-                ConfigCache.verifiedPlayers.put(Variables.verifyCodes.get(code), receivedEvent.getAuthor().getId());
                 receivedEvent.getAuthor().openPrivateChannel().queue((channel) ->
-                        channel.sendMessage("Du hast erfolgreich deinen Account mit " + getName(Variables.verifyCodes.get(finalCode).toString()) + " verknüpft!").queue());
-
-                Variables.verifyCodes.remove(code);
+                        channel.sendMessage("Dies ist kein Gültiger Code. Tut mir leid :(").queue());
                 return;
-            } else {
-                try {
-                    receivedEvent.getAuthor().openPrivateChannel().queue((channel) ->
-                            channel.sendMessage("Dies ist kein Gültiger Code. Tut mir leid :(").queue());
-                } catch (Exception ignored) {
-                }
+            } catch (Exception ignored1) {
             }
         }
-        super.onGenericEvent(event);
+
+        if (Variables.verifyCodes.containsKey(code)) {
+            short finalCode = code;
+            if (ConfigCache.verifiedPlayers.containsValue(receivedEvent.getAuthor().getId())) {
+                receivedEvent.getAuthor().openPrivateChannel().queue((channel) ->
+                        channel.sendMessage("Fehler! Du hast bereits einen Account mit " + receivedEvent.getAuthor().getName() + " Verknüpft!").queue());
+                return;
+            }
+            ConfigCache.verifiedPlayers.put(Variables.verifyCodes.get(code), receivedEvent.getAuthor().getId());
+            receivedEvent.getAuthor().openPrivateChannel().queue((channel) ->
+                    channel.sendMessage("Du hast erfolgreich deinen Account mit " + getName(Variables.verifyCodes.get(finalCode).toString()) + " verknüpft!").queue());
+
+            Variables.verifyCodes.remove(code);
+        } else {
+            try {
+                receivedEvent.getAuthor().openPrivateChannel().queue((channel) ->
+                        channel.sendMessage("Dies ist kein Gültiger Code. Tut mir leid :(").queue());
+            } catch (Exception ignored) {
+            }
+        }
     }
 }

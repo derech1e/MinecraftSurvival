@@ -24,13 +24,25 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.slf4j.Logger;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
+import java.util.logging.SimpleFormatter;
 
 public class MinecraftSurvival extends JavaPlugin {
 
     private static MinecraftSurvival INSTANCE;
     public final Logger LOGGER = getSLF4JLogger();
+    public static java.util.logging.Logger logger = java.util.logging.Logger.getLogger("UserChannelLogger");
+    static FileHandler fh;
+
     private JDA jda;
     private BotStatusMessageThread botStatusMessageThread;
 
@@ -48,6 +60,21 @@ public class MinecraftSurvival extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+            try {
+                String timeStamp = new SimpleDateFormat().format(new Date());
+                File file = new File(getDataFolder(), "channelLogs");
+                file.mkdirs();
+                Path path = Paths.get(file.getAbsolutePath() + File.separator + "%u.%g_" + timeStamp.replace(":", "_").replace(" ", "_").replace("/", ".") + ".log");
+                fh = new FileHandler(path.toAbsolutePath().toString(), 30000, 4);
+                logger.addHandler(fh);
+                SimpleFormatter formatter = new SimpleFormatter();
+                fh.setFormatter(formatter);
+
+            } catch (SecurityException | IOException e) {
+                e.printStackTrace();
+            }
+
         LOGGER.info("Enabled Plugin " + Message.PREFIX);
         INSTANCE = this;
         LOGGER.info("Start to Init registries.");
