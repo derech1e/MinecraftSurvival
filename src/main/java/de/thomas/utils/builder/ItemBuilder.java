@@ -3,6 +3,8 @@ package de.thomas.utils.builder;
 import com.destroystokyo.paper.inventory.meta.ArmorStandMeta;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import de.thomas.utils.message.Message;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -17,7 +19,6 @@ import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONObject;
 
@@ -49,21 +50,21 @@ public class ItemBuilder {
     /**
      * init ItemBuilder
      */
-    public ItemBuilder(@NotNull Material material) {
+    public ItemBuilder(Material material) {
         this(material, 1);
     }
 
     /**
      * init ItemBuilder
      */
-    public ItemBuilder(@NotNull Material material, int amount) {
+    public ItemBuilder(Material material, int amount) {
         this(material, amount, 0);
     }
 
     /**
      * init ItemBuilder
      */
-    public ItemBuilder(@NotNull Material material, int amount, int data) {
+    public ItemBuilder(Material material, int amount, int data) {
         this.itemStack = new ItemStack(material, amount, (byte) data);
         this.itemMeta = itemStack.getItemMeta();
     }
@@ -71,7 +72,7 @@ public class ItemBuilder {
     /**
      * init ItemBuilder from his json object
      */
-    public ItemBuilder(@NotNull JSONObject jsonObject) {
+    public ItemBuilder(JSONObject jsonObject) {
         String string = jsonObject.get("serialized").toString();
         this.itemStack = fromString(string).toItemStack();
         this.itemMeta = itemStack.getItemMeta();
@@ -81,7 +82,7 @@ public class ItemBuilder {
     /**
      * init ItemBuilder
      */
-    public ItemBuilder(@NotNull ItemStack itemStack) {
+    public ItemBuilder(ItemStack itemStack) {
         this.itemStack = itemStack;
         this.itemMeta = itemStack.getItemMeta();
     }
@@ -89,7 +90,7 @@ public class ItemBuilder {
     /**
      * Set item
      */
-    public @NotNull ItemBuilder setItem(@NotNull Material material) {
+    public ItemBuilder setItem(Material material) {
         this.itemStack.setType(material);
         return this;
     }
@@ -97,7 +98,7 @@ public class ItemBuilder {
     /**
      * Set ItemStack
      */
-    public @NotNull ItemBuilder setItemStack(ItemStack itemStack) {
+    public ItemBuilder setItemStack(ItemStack itemStack) {
         this.itemStack = itemStack;
         return this;
     }
@@ -105,7 +106,7 @@ public class ItemBuilder {
     /**
      * set this.inventory value
      */
-    public @NotNull ItemBuilder inventory(Inventory inventory) {
+    public ItemBuilder inventory(Inventory inventory) {
         this.inventory = inventory;
         return this;
     }
@@ -113,9 +114,9 @@ public class ItemBuilder {
     /**
      * set the display name of the item
      */
-    public @NotNull ItemBuilder setName(String name) {
+    public ItemBuilder setName(String name) {
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(name);
+        itemMeta.displayName(new Message(name, false).getMessage());
         itemStack.setItemMeta(itemMeta);
         this.itemMeta = itemMeta;
         return this;
@@ -124,7 +125,7 @@ public class ItemBuilder {
     /**
      * Add lore from String list
      */
-    public @NotNull ItemBuilder addLore(List<String> lores) {
+    public ItemBuilder addLore(List<String> lores) {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setLore(lores);
         itemStack.setItemMeta(itemMeta);
@@ -135,7 +136,7 @@ public class ItemBuilder {
     /**
      * Add lore from String...
      */
-    public @NotNull ItemBuilder addLore(String... lores) {
+    public ItemBuilder addLore(String... lores) {
         addLore(Arrays.asList(lores));
         return this;
     }
@@ -143,7 +144,7 @@ public class ItemBuilder {
     /**
      * add enchant to the item
      */
-    public @NotNull ItemBuilder addEnchantment(@NotNull Enchantment enchantment, int value, boolean ignoreLevelRestriction) {
+    public ItemBuilder addEnchantment(Enchantment enchantment, int value, boolean ignoreLevelRestriction) {
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         itemMeta.addEnchant(enchantment, value, ignoreLevelRestriction);
         this.itemStack.setItemMeta(itemMeta);
@@ -154,7 +155,7 @@ public class ItemBuilder {
     /**
      * add enchants from map (use for json object)
      */
-    public @NotNull ItemBuilder setEnchants(@NotNull Map<Enchantment, Integer> enchantment) {
+    public ItemBuilder setEnchants(Map<Enchantment, Integer> enchantment) {
         for (Map.Entry<Enchantment, Integer> entry : enchantment.entrySet()) {
             Enchantment enchant = entry.getKey();
             addEnchantment(enchant, entry.getValue(), entry.getValue() > enchant.getMaxLevel());
@@ -165,7 +166,7 @@ public class ItemBuilder {
     /**
      * Remove an enchantment on the item
      */
-    public @NotNull ItemBuilder removeEnchant(@NotNull Enchantment enchantment) {
+    public ItemBuilder removeEnchant(Enchantment enchantment) {
         if (!Objects.requireNonNull(Objects.requireNonNull(this.getEnchantments())).containsKey(enchantment))
             return this;
         ItemMeta itemMeta = this.itemStack.getItemMeta();
@@ -178,7 +179,7 @@ public class ItemBuilder {
     /**
      * remove all enchant on item from a list
      */
-    public @NotNull ItemBuilder removeEnchants(@NotNull List<Enchantment> enchantments) {
+    public ItemBuilder removeEnchants(List<Enchantment> enchantments) {
         for (Enchantment enchantment : enchantments) {
             if (!Objects.requireNonNull(this.getEnchantments()).containsKey(enchantment))
                 continue;
@@ -190,7 +191,7 @@ public class ItemBuilder {
     /**
      * remove all enchantment on the item
      */
-    public @NotNull ItemBuilder clearEnchants() {
+    public ItemBuilder clearEnchants() {
         if (this.getEnchantments() == null)
             return this;
         for (Enchantment enchantment : this.getEnchantments().keySet())
@@ -201,7 +202,7 @@ public class ItemBuilder {
     /**
      * add ItemFlag on your item
      */
-    public @NotNull ItemBuilder addItemFlag(ItemFlag itemFlag) {
+    public ItemBuilder addItemFlag(ItemFlag itemFlag) {
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         itemMeta.addItemFlags(itemFlag);
         itemStack.setItemMeta(itemMeta);
@@ -212,7 +213,7 @@ public class ItemBuilder {
     /**
      * add ItemFlags on your item
      */
-    public @NotNull ItemBuilder addItemFlag(ItemFlag... itemFlag) {
+    public ItemBuilder addItemFlag(ItemFlag... itemFlag) {
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         itemMeta.addItemFlags(itemFlag);
         itemStack.setItemMeta(itemMeta);
@@ -223,7 +224,7 @@ public class ItemBuilder {
     /**
      * add ItemFlags on your item from ItemFlag list
      */
-    public @NotNull ItemBuilder addItemFlag(@NotNull List<ItemFlag> itemFlag) {
+    public ItemBuilder addItemFlag(List<ItemFlag> itemFlag) {
         itemFlag.forEach(this::addItemFlag);
         return this;
     }
@@ -231,7 +232,7 @@ public class ItemBuilder {
     /**
      * remove ItemFlag on your item
      */
-    public @NotNull ItemBuilder removeItemFlag(ItemFlag itemFlag) {
+    public ItemBuilder removeItemFlag(ItemFlag itemFlag) {
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         itemMeta.removeItemFlags(itemFlag);
         itemStack.setItemMeta(itemMeta);
@@ -242,7 +243,7 @@ public class ItemBuilder {
     /**
      * hide enchant
      */
-    public @NotNull ItemBuilder hideEnchant() {
+    public ItemBuilder hideEnchant() {
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemStack.setItemMeta(itemMeta);
@@ -253,7 +254,7 @@ public class ItemBuilder {
     /**
      * show enchant
      */
-    public @NotNull ItemBuilder showEnchant() {
+    public ItemBuilder showEnchant() {
         ItemMeta itemMeta = this.itemStack.getItemMeta();
         itemMeta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemStack.setItemMeta(itemMeta);
@@ -264,7 +265,7 @@ public class ItemBuilder {
     /**
      * Set durrability of item
      */
-    public @NotNull ItemBuilder setNewDurability(int durability) {
+    public ItemBuilder setNewDurability(int durability) {
         itemStack.setDurability((short) durability);
         return this;
     }
@@ -272,7 +273,7 @@ public class ItemBuilder {
     /**
      * If your item is a player skull you can apply a special player skull texture
      */
-    public @NotNull ItemBuilder setSkullTextureFromePlayerName(String playerName) {
+    public ItemBuilder setSkullTextureFromePlayerName(String playerName) {
         this.skullMeta = (SkullMeta) itemStack.getItemMeta();
         this.skullMeta.setOwner(playerName);
         itemStack.setItemMeta(skullMeta);
@@ -282,7 +283,7 @@ public class ItemBuilder {
     /**
      * If your item is a player skull you can apply a special player skull texture
      */
-    public @NotNull ItemBuilder setSkullTexture(@NotNull Player player) {
+    public ItemBuilder setSkullTexture(Player player) {
         setSkullTextureFromePlayerName(player.getName());
         return this;
     }
@@ -292,7 +293,7 @@ public class ItemBuilder {
      * value is the base64 value of the skull texture
      * You can find the value on https://minecraft-heads.com
      */
-    public @NotNull ItemBuilder setSkullTexture(String value) {
+    public ItemBuilder setSkullTexture(String value) {
         this.skullMeta = (SkullMeta) itemStack.getItemMeta();
         GameProfile gameProfile = new GameProfile(UUID.randomUUID(), null);
         gameProfile.getProperties().put("textures", new Property("textures", value));
@@ -301,7 +302,7 @@ public class ItemBuilder {
             Field gameProfileField = skullMeta.getClass().getDeclaredField("profile");
             gameProfileField.setAccessible(true);
             gameProfileField.set(skullMeta, gameProfile);
-        } catch (@NotNull IllegalAccessException | NoSuchFieldException error) {
+        } catch (IllegalAccessException | NoSuchFieldException error) {
             error.printStackTrace();
         }
 
@@ -312,7 +313,7 @@ public class ItemBuilder {
     /**
      * apply potion effect type on the potion bottle
      */
-    public @NotNull ItemBuilder addPotionEffect(@NotNull PotionEffectType potionEffectType) {
+    public ItemBuilder addPotionEffect(PotionEffectType potionEffectType) {
         addPotionEffect(potionEffectType, 10);
         return this;
     }
@@ -320,7 +321,7 @@ public class ItemBuilder {
     /**
      * apply potion effect type with duration on the potion bottle
      */
-    public @NotNull ItemBuilder addPotionEffect(@NotNull PotionEffectType potionEffectType, int duration) {
+    public ItemBuilder addPotionEffect(PotionEffectType potionEffectType, int duration) {
         addPotionEffect(potionEffectType, duration, 1);
         return this;
     }
@@ -328,7 +329,7 @@ public class ItemBuilder {
     /**
      * apply potion effect type with duration and level on the potion bottle
      */
-    public @NotNull ItemBuilder addPotionEffect(@NotNull PotionEffectType potionEffectType, int duration, int amplifier) {
+    public ItemBuilder addPotionEffect(PotionEffectType potionEffectType, int duration, int amplifier) {
         addPotionEffect(potionEffectType, duration, amplifier, true);
         return this;
     }
@@ -336,7 +337,7 @@ public class ItemBuilder {
     /**
      * apply potion effect type with duration, level and ambiance option on the potion bottle
      */
-    public @NotNull ItemBuilder addPotionEffect(@NotNull PotionEffectType potionEffectType, int duration, int amplifier, boolean ambient) {
+    public ItemBuilder addPotionEffect(PotionEffectType potionEffectType, int duration, int amplifier, boolean ambient) {
         addPotionEffect(potionEffectType, duration, amplifier, ambient, false);
         return this;
     }
@@ -344,7 +345,7 @@ public class ItemBuilder {
     /**
      * apply potion effect type with duration, level and ambiance option on the potion bottle, can make this effect to overwrite
      */
-    public @NotNull ItemBuilder addPotionEffect(@NotNull PotionEffectType potionEffectType, int duration, int amplifier, boolean ambient, boolean overwrite) {
+    public ItemBuilder addPotionEffect(PotionEffectType potionEffectType, int duration, int amplifier, boolean ambient, boolean overwrite) {
         this.potionMeta = (PotionMeta) this.itemStack.getItemMeta();
         this.potionMeta.addCustomEffect(new PotionEffect(potionEffectType, duration, amplifier, ambient), overwrite);
         this.itemStack.setItemMeta(this.potionMeta);
@@ -354,7 +355,7 @@ public class ItemBuilder {
     /**
      * remove specific potion effect type
      */
-    public @NotNull ItemBuilder removePotionEffect(@NotNull PotionEffectType potionEffectType) {
+    public ItemBuilder removePotionEffect(PotionEffectType potionEffectType) {
         this.potionMeta = (PotionMeta) this.itemStack.getItemMeta();
         if (this.potionMeta == null || !this.potionMeta.hasCustomEffect(potionEffectType))
             return this;
@@ -366,7 +367,7 @@ public class ItemBuilder {
     /**
      * remove all potion effect from a list
      */
-    public @NotNull ItemBuilder removePotionEffect(@NotNull List<PotionEffectType> potionEffectTypes) {
+    public ItemBuilder removePotionEffect(List<PotionEffectType> potionEffectTypes) {
         for (PotionEffectType potionEffectType : potionEffectTypes) {
             if (this.potionMeta == null || !this.potionMeta.hasCustomEffect(potionEffectType))
                 continue;
@@ -378,7 +379,7 @@ public class ItemBuilder {
     /**
      * clear potion effect on item
      */
-    public @NotNull ItemBuilder clearPotionEffect() {
+    public ItemBuilder clearPotionEffect() {
         if (this.getPotionEffects() == null)
             return this;
         for (PotionEffect potionEffect : this.getPotionEffects()) {
@@ -390,7 +391,7 @@ public class ItemBuilder {
     /**
      * set potion type on the potion
      */
-    public @NotNull ItemBuilder setPotion(@NotNull PotionType potionType) {
+    public ItemBuilder setPotion(PotionType potionType) {
         setPotion(potionType, true);
         return this;
     }
@@ -398,7 +399,7 @@ public class ItemBuilder {
     /**
      * set potion type on the item with splash option
      */
-    public @NotNull ItemBuilder setPotion(@NotNull PotionType potionType, boolean splash) {
+    public ItemBuilder setPotion(PotionType potionType, boolean splash) {
         Potion potion = new Potion(PotionType.WATER);
         potion.setSplash(splash);
         potion.setType(potionType);
@@ -409,7 +410,7 @@ public class ItemBuilder {
     /**
      * Inject item in inventory
      */
-    public @NotNull ItemBuilder inject(@NotNull Inventory inventory, int position) {
+    public ItemBuilder inject(Inventory inventory, int position) {
         inventory.setItem(position, toItemStack());
         return this;
     }
@@ -417,7 +418,7 @@ public class ItemBuilder {
     /**
      * Inject item in inventory
      */
-    public @NotNull ItemBuilder inject(@NotNull Inventory inventory) {
+    public ItemBuilder inject(Inventory inventory) {
         inventory.addItem(toItemStack());
         return this;
     }
@@ -425,7 +426,7 @@ public class ItemBuilder {
     /**
      * Inject item in inventory
      */
-    public @NotNull ItemBuilder inject(int position) {
+    public ItemBuilder inject(int position) {
         inventory.setItem(position, toItemStack());
         return this;
     }
@@ -433,7 +434,7 @@ public class ItemBuilder {
     /**
      * Inject item in inventory
      */
-    public @NotNull ItemBuilder inject() {
+    public ItemBuilder inject() {
         this.inventory.addItem(toItemStack());
         return this;
     }
@@ -441,7 +442,7 @@ public class ItemBuilder {
     /**
      * Open inventory to the player
      */
-    public void open(@NotNull Player player) {
+    public void open(Player player) {
         player.openInventory(inventory);
     }
 
@@ -455,7 +456,7 @@ public class ItemBuilder {
     /**
      * Set the position of the item
      */
-    public @NotNull ItemBuilder setPosition(int position) {
+    public ItemBuilder setPosition(int position) {
         this.position = position;
         return this;
     }
@@ -471,7 +472,7 @@ public class ItemBuilder {
      * @param itemBuilder returns if two item builder are similar
      *                    This method compare type, data, and display name of items
      */
-    public boolean isSimilar(@NotNull ItemBuilder itemBuilder) {
+    public boolean isSimilar(ItemBuilder itemBuilder) {
         return hasSameMaterial(itemBuilder) && hasSameData(itemBuilder) && hasSameDisplayName(itemBuilder);
     }
 
@@ -479,7 +480,7 @@ public class ItemBuilder {
      * @param itemBuilder returns if two item builder are exactly same
      *                    This method compare all parameter of items
      */
-    public boolean isExactlySame(@NotNull ItemBuilder itemBuilder) {
+    public boolean isExactlySame(ItemBuilder itemBuilder) {
         return hasSameMaterial(itemBuilder) && hasSameData(itemBuilder) && hasSameDisplayName(itemBuilder)
                 && hasSameAmount(itemBuilder) && hasSameDurability(itemBuilder) && hasSameEnchantment(itemBuilder)
                 && hasSameItemFlag(itemBuilder) && hasSameLore(itemBuilder) && hasSameBreakableStat(itemBuilder);
@@ -488,35 +489,35 @@ public class ItemBuilder {
     /**
      * @param itemBuilder returns if two item builder has same type
      */
-    public boolean hasSameMaterial(@NotNull ItemBuilder itemBuilder) {
+    public boolean hasSameMaterial(ItemBuilder itemBuilder) {
         return getMaterial() == itemBuilder.getMaterial();
     }
 
     /**
      * @param itemBuilder returns if two item builder has same display name
      */
-    public boolean hasSameDisplayName(@NotNull ItemBuilder itemBuilder) {
+    public boolean hasSameDisplayName(ItemBuilder itemBuilder) {
         return getDisplayName().equalsIgnoreCase(itemBuilder.getDisplayName());
     }
 
     /**
      * @param itemBuilder returns if two item builder has same enchantments
      */
-    public boolean hasSameEnchantment(@NotNull ItemBuilder itemBuilder) {
+    public boolean hasSameEnchantment(ItemBuilder itemBuilder) {
         return Objects.requireNonNull(getEnchantments()).equals(itemBuilder.getEnchantments());
     }
 
     /**
      * @param itemBuilder returns if two item builder has same item flags
      */
-    public boolean hasSameItemFlag(@NotNull ItemBuilder itemBuilder) {
+    public boolean hasSameItemFlag(ItemBuilder itemBuilder) {
         return Objects.requireNonNull(getItemFlag()).equals(itemBuilder.getItemFlag());
     }
 
     /**
      * @param itemBuilder returns if two item builder has same lore
      */
-    public boolean hasSameLore(@NotNull ItemBuilder itemBuilder) {
+    public boolean hasSameLore(ItemBuilder itemBuilder) {
         if (getLore() == null)
             return false;
         return getLore().equals(itemBuilder.getLore());
@@ -525,35 +526,35 @@ public class ItemBuilder {
     /**
      * @param itemBuilder returns if two item builder has same data
      */
-    public boolean hasSameData(@NotNull ItemBuilder itemBuilder) {
+    public boolean hasSameData(ItemBuilder itemBuilder) {
         return getData() == itemBuilder.getData();
     }
 
     /**
      * @param itemBuilder returns if two item builder has same amount
      */
-    public boolean hasSameAmount(@NotNull ItemBuilder itemBuilder) {
+    public boolean hasSameAmount(ItemBuilder itemBuilder) {
         return getAmount() == itemBuilder.getAmount();
     }
 
     /**
      * @param itemBuilder returns if two item builder has same durability
      */
-    public boolean hasSameDurability(@NotNull ItemBuilder itemBuilder) {
+    public boolean hasSameDurability(ItemBuilder itemBuilder) {
         return getDurability() == itemBuilder.getDurability();
     }
 
     /**
      * @param itemBuilder returns if two item builder has same breakable stat
      */
-    public boolean hasSameBreakableStat(@NotNull ItemBuilder itemBuilder) {
+    public boolean hasSameBreakableStat(ItemBuilder itemBuilder) {
         return isUnbreakable() == itemBuilder.isUnbreakable();
     }
 
     /**
      * get type
      */
-    public @NotNull Material getMaterial() {
+    public Material getMaterial() {
         return itemStack.getType();
     }
 
@@ -567,7 +568,7 @@ public class ItemBuilder {
     /**
      * Set amount
      */
-    public @NotNull ItemBuilder setAmount(int amount) {
+    public ItemBuilder setAmount(int amount) {
         this.itemStack.setAmount(amount);
         return this;
     }
@@ -582,7 +583,7 @@ public class ItemBuilder {
     /**
      * Set data
      */
-    public @NotNull ItemBuilder setData(int data) {
+    public ItemBuilder setData(int data) {
         this.itemStack = new ItemStack(itemStack.getType(), itemStack.getAmount(), (byte) data);
         return this;
     }
@@ -598,7 +599,7 @@ public class ItemBuilder {
      * Set durability of item
      * /!\ 100 >= percent >= 0
      */
-    public @NotNull ItemBuilder setDurability(float percent) {
+    public ItemBuilder setDurability(float percent) {
         if (percent > 100.0) {
             return this;
         } else if (percent < 0.0) {
@@ -618,7 +619,7 @@ public class ItemBuilder {
     /**
      * get display name
      */
-    public @NotNull String getDisplayName() {
+    public String getDisplayName() {
         return itemStack.hasItemMeta() && itemMeta.hasDisplayName() ? itemMeta.getDisplayName() : "";
     }
 
@@ -671,14 +672,14 @@ public class ItemBuilder {
         return this;
     }
 
-    public @NotNull ItemBuilder showArmorStandArms(boolean state) {
+    public ItemBuilder showArmorStandArms(boolean state) {
         ArmorStandMeta armorStandMeta = (ArmorStandMeta) itemStack.getItemMeta();
         armorStandMeta.setShowArms(state);
         this.itemStack.setItemMeta(armorStandMeta);
         return this;
     }
 
-    public @NotNull ItemBuilder setArmorStandSmall(boolean state) {
+    public ItemBuilder setArmorStandSmall(boolean state) {
         ArmorStandMeta armorStandMeta = (ArmorStandMeta) itemStack.getItemMeta();
         armorStandMeta.setSmall(state);
         this.itemStack.setItemMeta(armorStandMeta);
@@ -689,7 +690,7 @@ public class ItemBuilder {
      * parse in json object without associate position
      */
     @SuppressWarnings("unchecked")
-    public @NotNull JSONObject toJSONObject() {
+    public JSONObject toJSONObject() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("serialized", toString());
         return jsonObject;
@@ -698,7 +699,7 @@ public class ItemBuilder {
     /**
      * Convert ItemBuilder variable into a String
      */
-    public @NotNull String toString() {
+    public String toString() {
         String[] splitValues = new String[]{"{^}", "[^]", "`SECTION_TYPE`", "|", ","};
         StringBuilder itemBuilderString = new StringBuilder();
         itemBuilderString.append("item: ").append(splitValues[2]).append(splitValues[1])
@@ -742,7 +743,7 @@ public class ItemBuilder {
     /**
      * Convert string variable into an ItemBuilder
      */
-    public @NotNull ItemBuilder fromString(@NotNull String string) {
+    public ItemBuilder fromString(String string) {
         String[] splitValues = new String[]{"\\{\\^}", "\\[\\^]", "`SECTION_TYPE`", "\\|", ","};
         ItemBuilder itemBuilder = new ItemBuilder();
         String[] sections = string.split(splitValues[0]);
@@ -771,7 +772,7 @@ public class ItemBuilder {
     /**
      * This method returns the item
      */
-    private void itemSection(@NotNull ItemBuilder itemBuilder, String[] sectionType, String[] object) {
+    private void itemSection(ItemBuilder itemBuilder, String[] sectionType, String[] object) {
         Arrays.asList(object).forEach(s -> {
             if (!s.equalsIgnoreCase(sectionType[0])) {
                 if (s.startsWith("type: "))
@@ -791,7 +792,7 @@ public class ItemBuilder {
     /**
      * This method returns specific properties of item from of ItemBuilder
      */
-    private void otherPropertySection(@NotNull ItemBuilder itemBuilder, String[] sectionType, String[] object) {
+    private void otherPropertySection(ItemBuilder itemBuilder, String[] sectionType, String[] object) {
         Arrays.asList(object).forEach(s -> {
             if (!s.equalsIgnoreCase(sectionType[0])) {
                 if (s.startsWith("position: ")) {
@@ -804,7 +805,7 @@ public class ItemBuilder {
     /**
      * This method returns the meta of the item
      */
-    private void metaSection(@NotNull ItemBuilder itemBuilder, String[] sectionType, String[] object) {
+    private void metaSection(ItemBuilder itemBuilder, String[] sectionType, String[] object) {
         String[] splitValues = new String[]{"\\{\\^}", "\\[\\^]", "`SECTION_TYPE`", "\\|", ","};
         Arrays.asList(object).forEach(s -> {
             if (!s.equalsIgnoreCase(sectionType[0])) {
@@ -842,14 +843,14 @@ public class ItemBuilder {
     /**
      * Replace § to &
      */
-    private @NotNull String uncoloredString(@NotNull String string) {
+    private String uncoloredString(String string) {
         return string.replace("§", "&");
     }
 
     /**
      * Replace & to §
      */
-    private @NotNull String coloredString(@NotNull String string) {
+    private String coloredString(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);
     }
 

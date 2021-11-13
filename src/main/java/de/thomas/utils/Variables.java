@@ -1,28 +1,30 @@
 package de.thomas.utils;
 
-import de.thomas.utils.animation.particle.base.IParticleTask;
+import de.thomas.utils.config.context.PlayerContext;
+import de.thomas.utils.config.context.WayPoint;
+import de.thomas.utils.message.Message;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
 public class Variables {
 
-    public static final List<Player> glidingPlayers = new ArrayList<>();
-    public static final List<Player> protectedPlayers = new ArrayList<>();
-    public static final String INVENTORY_NAME_COMPASS = ChatColor.GOLD + "Wähle einen Spieler";
-    public static final String INVENTORY_NAME_SETTINGS = ChatColor.DARK_GRAY + "Einstellungen";
-    public static final String INVENTORY_NAME_WAYPOINTS = ChatColor.GOLD + "Wegpunkte";
-    public static final String INVENTORY_NAME_WAYPOINT_SELECT = ChatColor.GOLD + "Auswählen";
-    public static final String INVENTORY_NAME_WAYPOINT_ADD = ChatColor.GREEN + "Hinzufügen";
-    public static final String INVENTORY_NAME_WAYPOINT_DELETE = ChatColor.RED + "Entfernen";
-    public static final HashMap<Short, UUID> verifyCodes = new HashMap<>();
-    public static final List<IParticleTask> activeTasks = new ArrayList<>();
-    public static final List<UUID> frozenPlayers = new ArrayList<>();
+    public static final Component INVENTORY_NAME_COMPASS = new Message(ChatColor.GOLD + "Wähle einen Spieler", false).getMessage();
+    public static final Component INVENTORY_NAME_SETTINGS = new Message(ChatColor.DARK_GRAY + "Einstellungen", false).getMessage();
+    public static final Component INVENTORY_NAME_WAYPOINTS = new Message(ChatColor.GOLD + "Wegpunkte", false).getMessage();
+    public static final Component INVENTORY_NAME_WAYPOINT_SELECT = new Message(ChatColor.GOLD + "Auswählen", false).getMessage();
+    public static final Component INVENTORY_NAME_WAYPOINT_ADD = new Message(ChatColor.GREEN + "Hinzufügen", false).getMessage();
+    public static final Component INVENTORY_NAME_WAYPOINT_DELETE = new Message(ChatColor.RED + "Entfernen", false).getMessage();
     public static final HashMap<UUID, Player> targetCompassPlayers = new HashMap<>();
+    public static final HashMap<UUID, PlayerContext> playerConfigData = new HashMap<>();
 
     public static int calculateInventorySize(int onlinePlayers) {
         if (onlinePlayers <= 9)
@@ -37,5 +39,14 @@ public class Variables {
             return 45;
         else
             return 54;
+    }
+
+    public static String locationToString(Location location) {
+        return String.format("%s;%s;%s;%s;%s;%s", location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+    }
+
+    public static Location stringToLocation(String location) {
+        String[] params = location.split(";");
+        return new Location(Bukkit.getWorld(params[0]), Double.parseDouble(params[1]), Double.parseDouble(params[2]), Double.parseDouble(params[3]), Float.parseFloat(params[4]), Float.parseFloat(params[5]));
     }
 }

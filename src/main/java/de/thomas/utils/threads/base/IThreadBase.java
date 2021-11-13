@@ -6,6 +6,7 @@ public abstract class IThreadBase {
 
     protected int taskID;
     private boolean isRunning;
+
     protected IThreadBase() {
     }
 

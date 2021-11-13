@@ -1,29 +1,10 @@
 name: MinecraftSurvival
 version: ${project.version}
 main: de.thomas.minecraftsurvival.MinecraftSurvival
-api-version: 1.16
-prefix: BM311
+api-version: 1.17
 authors: [ Thomas ]
-description: Ein Plugin für das BM311 Survival Projekt
+description: Ein Plugin für das Survival Projekt
 load: POSTWORLD
 commands:
-  glidearea:
-    description: Setzte den Mittelpunkt der GlideArea
-
-  glideboost:
-    description: Aktiviere oder Deaktiviere den GlideBoost
-
-  spawnlocation:
-    description: Setze den Weltenspawn
-
-  start:
-    description: Starte das Projekt
-
   ping:
     description: Gibt den Ping zum Server an
-
-  spawnprotection:
-    description: Aktiviere oder Deaktiviere die Spawnprotection
-
-  rlconfig:
-    description: Reloade die Config!

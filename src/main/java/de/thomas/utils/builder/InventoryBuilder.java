@@ -1,17 +1,17 @@
 package de.thomas.utils.builder;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 public class InventoryBuilder {
 
-    final @NotNull Inventory inventory;
-    final String inventoryTitle;
+    final Inventory inventory;
+    final Component inventoryTitle;
     final int inventorySize;
 
-    public InventoryBuilder(@NotNull String inventoryTitle, int inventorySize) {
+    public InventoryBuilder(Component inventoryTitle, int inventorySize) {
         this.inventoryTitle = inventoryTitle;
         this.inventorySize = inventorySize;
         this.inventory = Bukkit.createInventory(null, inventorySize, inventoryTitle);
@@ -36,7 +36,7 @@ public class InventoryBuilder {
         inventory.addItem(itemStack);
     }
 
-    public @NotNull Inventory build() {
+    public Inventory build() {
         return inventory;
     }
 }

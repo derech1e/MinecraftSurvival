@@ -11,12 +11,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.jetbrains.annotations.NotNull;
 
 public class PlayerInteractListener implements Listener {
 
     @EventHandler
-    public void onInteract(@NotNull PlayerInteractEvent event) {
+    public void onInteract(PlayerInteractEvent event) {
         if (!(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)))
             return;
         Player player = event.getPlayer();
@@ -32,15 +31,15 @@ public class PlayerInteractListener implements Listener {
                     distance = (int) Math.round(Variables.targetCompassPlayers.get(player.getUniqueId()).getLocation().distance(player.getLocation()));
 
                 if (distance > 10)
-                    player.sendMessage(new Message("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel!").getMessage());
+                    player.sendMessage(new Message("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel!", true).getMessageAsString());
                 else {
                     double playerHeightToTarget = player.getLocation().getY() - player.getCompassTarget().getY();
                     if (playerHeightToTarget <= -4)
-                        player.sendMessage(new Message("Schau mal nach" + ChatColor.GOLD + " oben" + ChatColor.WHITE + ". Dein Ziel befindet sich über dir!").getMessage());
+                        player.sendMessage(new Message("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel! (Oben)", true).getMessageAsString());
                     else if (playerHeightToTarget >= 4)
-                        player.sendMessage(new Message("Schau mal nach" + ChatColor.GOLD + " unten" + ChatColor.WHITE + ". Dein Ziel befindet sich unter dir!").getMessage());
+                        player.sendMessage(new Message("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel! (Unten)", true).getMessageAsString());
                     else
-                        player.sendMessage(new Message("Schau mal nach um. Dein Ziel befindet sich auf " + ChatColor.GOLD + " gleicher Höhe" + ChatColor.WHITE + "!").getMessage());
+                        player.sendMessage(new Message("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel!", true).getMessageAsString());
                 }
                 return;
             }
@@ -54,7 +53,7 @@ public class PlayerInteractListener implements Listener {
 
             player.getWorld().getPlayers().stream().filter(playerToFilter -> playerToFilter != player).forEachOrdered(filteredPlayer -> {
                 ItemBuilder itemBuilder = new ItemBuilder(Material.PLAYER_HEAD);
-                itemBuilder.setName(ChatColor.WHITE + filteredPlayer.getName());
+                itemBuilder.setName(ChatColor.RESET + filteredPlayer.getName());
                 itemBuilder.setSkullTexture(filteredPlayer);
                 inventoryBuilder.addItem(itemBuilder.toItemStack());
             });

@@ -1,10 +1,11 @@
 package de.thomas.utils.threads;
 
 import de.thomas.minecraftsurvival.MinecraftSurvival;
-import de.thomas.utils.config.ConfigCache;
+import de.thomas.utils.Variables;
 import de.thomas.utils.threads.base.IThreadBase;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,10 +16,10 @@ public class ClockTimeThread extends IThreadBase {
     @Override
     public void startThread() {
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> Bukkit.getOnlinePlayers().forEach(player -> {
-            if (ConfigCache.clockTime.get(player.getUniqueId())) {
+            if (MinecraftSurvival.getINSTANCE().configuration.getClockStateByPlayer(player)) {
                 DateFormat dateFormatReadable = new SimpleDateFormat("HH:mm:ss");
-                player.sendActionBar(ChatColor.GRAY + dateFormatReadable.format(new Date()));
+                player.sendActionBar(Component.text(dateFormatReadable.format(new Date()), NamedTextColor.GRAY));
             }
-        }), 20, 20);
+        }), 0, 20);
     }
 }
