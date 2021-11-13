@@ -1,16 +1,21 @@
 package de.thomas.listeners;
 
+import com.destroystokyo.paper.ParticleBuilder;
 import de.thomas.utils.Variables;
 import de.thomas.utils.builder.InventoryBuilder;
 import de.thomas.utils.builder.ItemBuilder;
 import de.thomas.utils.message.Message;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+
+import java.util.Random;
 
 public class PlayerInteractListener implements Listener {
 
@@ -24,6 +29,38 @@ public class PlayerInteractListener implements Listener {
         if (event.getItem() != null && event.getItem().getType().equals(Material.COMPASS)) {
             if (!player.isSneaking()) {
                 int distance;
+
+                // particle effects for targetLocation
+                ParticleBuilder particleBuilder = new ParticleBuilder(Particle.REDSTONE);
+                particleBuilder.color(new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255));
+                particleBuilder.count(1);
+                double min = player.getLocation().getY() - 20;
+                double max = player.getLocation().getY() + 20;
+
+                int radius = 2;
+                int particles = 40;
+                float curve = 8;
+                int strands = 5 + new Random().nextInt(10);
+                double rotation = Math.PI / 3;
+                for (double i = 1; i <= strands; i++) {
+                    for (double j = 1; j <= particles; j++) {
+                        float ratio = (float) j / particles;
+                        double angle = curve * ratio * 2 * Math.PI / strands + (2 * Math.PI * i / strands) + rotation;
+                        double x = Math.cos(angle) * ratio * radius;
+                        double z = Math.sin(angle) * ratio * radius;
+                        Location location = new Location(player.getCompassTarget().getWorld(), player.getCompassTarget().getX(), player.getLocation().getY(), player.getCompassTarget().getZ());
+                        particleBuilder.location(location.clone().add(0, 20, 0).add(x, j / 10, z));
+                        particleBuilder.receivers(player);
+                        particleBuilder.spawn();
+                    }
+                }
+
+                particleBuilder.color(255, 20, 80);
+                for (double i = min; i < max; i = i + 0.25) {
+                    particleBuilder.location(player.getCompassTarget().getWorld(), player.getCompassTarget().getX(), i, player.getCompassTarget().getZ());
+                    particleBuilder.receivers(player);
+                    particleBuilder.spawn();
+                }
 
                 if (Variables.targetCompassPlayers.get(player.getUniqueId()) == null)
                     distance = (int) Math.round(player.getCompassTarget().distance(player.getLocation()));
