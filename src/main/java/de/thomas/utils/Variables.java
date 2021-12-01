@@ -1,18 +1,14 @@
 package de.thomas.utils;
 
 import de.thomas.utils.config.context.PlayerContext;
-import de.thomas.utils.config.context.WayPoint;
 import de.thomas.utils.message.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 public class Variables {

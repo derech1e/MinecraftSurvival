@@ -6,8 +6,8 @@ import org.bukkit.ChatColor;
 
 public class Message {
 
-    public String PREFIX = ChatColor.GRAY + "[" + ChatColor.GOLD + "M" + ChatColor.GREEN + "S" + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
     private final ErrorMessageType errorMessageType;
+    public String PREFIX = ChatColor.GRAY + "[" + ChatColor.GOLD + "M" + ChatColor.GREEN + "S" + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
     private String message = PREFIX;
     private boolean prefix = false;
 

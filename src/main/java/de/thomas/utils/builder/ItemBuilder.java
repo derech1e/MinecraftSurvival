@@ -4,7 +4,6 @@ import com.destroystokyo.paper.inventory.meta.ArmorStandMeta;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import de.thomas.utils.message.Message;
-import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
