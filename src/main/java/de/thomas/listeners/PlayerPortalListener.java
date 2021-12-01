@@ -20,7 +20,6 @@ public class PlayerPortalListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPortal(PlayerTeleportEvent event) {
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
-            event.getPlayer().sendMessage(event.getFrom().getWorld().getEnvironment().name() + "_" + event.getTo().getWorld().getEnvironment().name());
             switch (event.getTo().getWorld().getEnvironment()) {
                 case NETHER -> {
                     Location location = event.getFrom();
