@@ -21,7 +21,7 @@ public class RestartThread extends IThreadBase {
             Calendar calendar = GregorianCalendar.getInstance();
             calendar.setTime(date);
 
-            if (calendar.get(Calendar.HOUR_OF_DAY) == 20 && calendar.get(Calendar.MINUTE) >= 45) {
+            if (calendar.get(Calendar.HOUR_OF_DAY) == 23 && calendar.get(Calendar.MINUTE) >= 45) {
                 int minutes = (calendar.get(Calendar.MINUTE) - 45) * 60;
                 startCountdown(minutes);
                 stopThread();
