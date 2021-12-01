@@ -24,6 +24,7 @@ public class PlayerPortalListener implements Listener {
                 case NETHER -> {
                     Location location = event.getFrom();
                     location.setYaw(location.getYaw() + 180);
+                    location.add(0, 0.5, 0);
                     playerPortalLocationMap.put(event.getPlayer().getUniqueId(), location);
                 }
                 case NORMAL -> event.setTo(playerPortalLocationMap.getOrDefault(event.getPlayer().getUniqueId(), event.getTo()));
