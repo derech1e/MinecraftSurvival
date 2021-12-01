@@ -11,7 +11,7 @@
     <name>MinecraftSurvival</name>
     <description>Ein Plugin für das Survival Projekt</description>
     <properties>
-        <java.version>16</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
