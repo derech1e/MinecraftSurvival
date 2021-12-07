@@ -66,7 +66,6 @@ public class InventoryClickListener implements Listener {
             if (currentItem.getItemMeta().displayName().toString().equals(new Message(ChatColor.GOLD + "Wegpunkte", false).getMessage().toString())) {
                 player.openInventory(DefaultInventories.getWayPointsOverview());
             } else if (PlainTextComponentSerializer.plainText().serialize(currentItem.getItemMeta().displayName()).startsWith(ChatColor.GOLD + "Uhr")) {
-                player.sendMessage("a");
                 boolean clockState = configuration.getClockStateByPlayer(player, !configuration.getClockStateByPlayer(player));
                 event.getClickedInventory().setItem(6, new ItemBuilder(Material.PLAYER_HEAD).setSkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODQ3N2RhZmM4YzllYTA3OTk2MzMzODE3OTM4NjZkMTQ2YzlhMzlmYWQ0YzY2ODRlNzExN2Q5N2U5YjZjMyJ9fX0=").setName(ChatColor.GOLD + "Uhrzeit: " + (clockState ? ChatColor.GREEN + "AN" : ChatColor.RED + "AUS")).toItemStack());
             }
