@@ -106,7 +106,7 @@ public class InventoryClickListener implements Listener {
         } else if (viewTitle.toString().equals(Variables.INVENTORY_NAME_WAYPOINT_SELECT.toString())) {
             WayPoint wayPoint = configuration.getWorldWayPoints(player).get(event.getSlot());
             if (currentItem.getItemMeta().displayName().toString().equals(new Message(wayPoint.name(), false).getMessage().toString())) {
-                setNewCompassTarget(player, wayPoint.location(), "den Wegpunkt " + ChatColor.GOLD + wayPoint.location(), null);
+                setNewCompassTarget(player, wayPoint.location(), "den Wegpunkt " + ChatColor.GOLD + wayPoint.name(), null);
             }
 
             // Inventory Waypoints Delete
