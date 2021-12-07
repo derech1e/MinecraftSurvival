@@ -28,7 +28,7 @@ public class PlayerConnectionListener implements Listener {
 
         PlayerContext playerContext = MinecraftSurvival.getINSTANCE().configuration.get(player.getUniqueId().toString(), PlayerContext.class);
         if (playerContext == null) {
-            playerContext = new PlayerContext(true, new ArrayList<>());
+            playerContext = new PlayerContext(false, new ArrayList<>());
         }
         Variables.playerConfigData.put(player.getUniqueId(), playerContext);
         MinecraftSurvival.getINSTANCE().configuration.set(player.getUniqueId().toString(), playerContext);
