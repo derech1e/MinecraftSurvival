@@ -47,7 +47,9 @@ public class InventoryClickListener implements Listener {
 
             if (currentItem.getItemMeta() == null || currentItem.getItemMeta().displayName() == null) return;
 
-            Location spawnLocation = player.getBedSpawnLocation() == null ? player.getWorld().getSpawnLocation() : player.getBedSpawnLocation();
+            Location spawnLocation =
+                    player.getWorld().getName().equals("world_nether") ? Variables.playerPortalLocationSpawnMap.get(player.getUniqueId()) :
+                    player.getBedSpawnLocation() == null ? player.getWorld().getSpawnLocation() : player.getBedSpawnLocation();
 
             if (currentItem.getItemMeta().displayName().toString().equals(new Message(ChatColor.GOLD + "Spawnpunkt", false).getMessage().toString())) {
                 replaceOrAdd(player.getUniqueId(), null);
@@ -124,7 +126,7 @@ public class InventoryClickListener implements Listener {
         if (location != null) {
             int distance = (int) Math.round(player.getLocation().distance(location));
             player.setCompassTarget(location);
-            player.sendMessage(new Message("Du hast " + message + ChatColor.WHITE + " als dein neues Ziel gesetzt. (" + distance + ChatColor.GOLD + (distance > 1 ? " Blöcke entfernt" : " Block entfernt") + ChatColor.WHITE + ")", true).getMessageAsString());
+            player.sendMessage(new Message("Du hast " + message + ChatColor.WHITE + " als dein neues Ziel gesetzt. (" + ChatColor.GOLD + distance + (distance > 1 ? " Blöcke entfernt" : " Block entfernt") + ChatColor.WHITE + ")", true).getMessageAsString());
             player.closeInventory();
 
             if (targetPlayer != null)

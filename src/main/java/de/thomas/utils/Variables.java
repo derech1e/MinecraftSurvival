@@ -21,6 +21,8 @@ public class Variables {
     public static final Component INVENTORY_NAME_WAYPOINT_DELETE = new Message(ChatColor.RED + "Entfernen", false).getMessage();
     public static final HashMap<UUID, Player> targetCompassPlayers = new HashMap<>();
     public static final HashMap<UUID, PlayerContext> playerConfigData = new HashMap<>();
+    public static final HashMap<UUID, Location> playerPortalLocationMap = new HashMap<>();
+    public static final HashMap<UUID, Location> playerPortalLocationSpawnMap = new HashMap<>();
 
     public static int calculateInventorySize(int onlinePlayers) {
         if (onlinePlayers <= 9)
