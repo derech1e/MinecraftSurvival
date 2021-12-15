@@ -47,11 +47,11 @@ public class InventoryClickListener implements Listener {
 
             if (currentItem.getItemMeta() == null || currentItem.getItemMeta().displayName() == null) return;
 
-            Location spawnLocation = player.getBedSpawnLocation() == null ? getSpawnLocationOfWorldFromPlayer(player) : player.getBedSpawnLocation();
+            Location spawnLocation = player.getBedSpawnLocation() == null ? player.getWorld().getSpawnLocation() : player.getBedSpawnLocation();
 
             if (currentItem.getItemMeta().displayName().toString().equals(new Message(ChatColor.GOLD + "Spawnpunkt", false).getMessage().toString())) {
                 replaceOrAdd(player.getUniqueId(), null);
-                setNewCompassTarget(player, spawnLocation, "den" + ChatColor.GOLD + " Spawnpunkt ", null);
+                setNewCompassTarget(player, spawnLocation, "den" + ChatColor.GOLD + " Spawnpunkt", null);
             } else if (currentItem.getItemMeta().displayName().toString().equals(new Message(ChatColor.WHITE + "Einstellungen", false).getMessage().toString())) {
                 player.openInventory(DefaultInventories.getSettings(player));
             } else if (currentItem.getType().equals(Material.PLAYER_HEAD)) {
@@ -124,7 +124,7 @@ public class InventoryClickListener implements Listener {
         if (location != null) {
             int distance = (int) Math.round(player.getLocation().distance(location));
             player.setCompassTarget(location);
-            player.sendMessage(new Message("Du hast " + message + ChatColor.WHITE + " als dein neues Ziel gesetzt. (" + ChatColor.GOLD + (distance > 1 ? " Blöcke entfernt" : " Block entfernt") + ChatColor.WHITE + ")", true).getMessageAsString());
+            player.sendMessage(new Message("Du hast " + message + ChatColor.WHITE + " als dein neues Ziel gesetzt. (" + distance + ChatColor.GOLD + (distance > 1 ? " Blöcke entfernt" : " Block entfernt") + ChatColor.WHITE + ")", true).getMessageAsString());
             player.closeInventory();
 
             if (targetPlayer != null)
@@ -136,9 +136,5 @@ public class InventoryClickListener implements Listener {
         if (Variables.targetCompassPlayers.containsKey(uuid))
             Variables.targetCompassPlayers.replace(uuid, value);
         else Variables.targetCompassPlayers.put(uuid, value);
-    }
-
-    private Location getSpawnLocationOfWorldFromPlayer(Player player) {
-        return player.getWorld().getSpawnLocation();
     }
 }
