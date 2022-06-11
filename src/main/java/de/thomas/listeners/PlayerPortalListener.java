@@ -23,7 +23,7 @@ public class PlayerPortalListener implements Listener {
                     location.add(0, 0.5, 0);
                     Variables.playerPortalLocationMap.put(event.getPlayer().getUniqueId(), location);
                     Variables.playerPortalLocationSpawnMap.put(event.getPlayer().getUniqueId(), event.getTo());
-                    event.getPlayer().sendMessage(location.toString());
+//                    event.getPlayer().sendMessage(location.toString());
                 }
                 case NORMAL -> event.setTo(Variables.playerPortalLocationMap.getOrDefault(event.getPlayer().getUniqueId(), event.getTo()));
             }

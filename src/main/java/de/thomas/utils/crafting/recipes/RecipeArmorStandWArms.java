@@ -19,6 +19,6 @@ public class RecipeArmorStandWArms extends ShapedRecipe {
     public void initValues() {
         this.shape("   ", "YZY", "   ");
         this.setIngredient('Y', Material.STICK);
-        this.setIngredient('Z', Material.ARMOR_STAND);
+        this.setIngredient('Z',  new ItemBuilder(Material.ARMOR_STAND).toItemStack());
     }
 }

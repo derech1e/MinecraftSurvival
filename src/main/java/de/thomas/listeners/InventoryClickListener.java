@@ -8,6 +8,8 @@ import de.thomas.utils.config.Configuration;
 import de.thomas.utils.config.context.WayPoint;
 import de.thomas.utils.message.Message;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
@@ -49,17 +51,15 @@ public class InventoryClickListener implements Listener {
 
             Location spawnLocation =
                     player.getWorld().getName().equals("world_nether") ? Variables.playerPortalLocationSpawnMap.get(player.getUniqueId()) :
-                    player.getBedSpawnLocation() == null ? player.getWorld().getSpawnLocation() : player.getBedSpawnLocation();
+                            player.getBedSpawnLocation() == null ? player.getWorld().getSpawnLocation() : player.getBedSpawnLocation();
 
             if (currentItem.getItemMeta().displayName().toString().equals(new Message(ChatColor.GOLD + "Spawnpunkt", false).getMessage().toString())) {
-                replaceOrAdd(player.getUniqueId(), null);
                 setNewCompassTarget(player, spawnLocation, "den" + ChatColor.GOLD + " Spawnpunkt", null);
             } else if (currentItem.getItemMeta().displayName().toString().equals(new Message(ChatColor.WHITE + "Einstellungen", false).getMessage().toString())) {
                 player.openInventory(DefaultInventories.getSettings(player));
             } else if (currentItem.getType().equals(Material.PLAYER_HEAD)) {
-                Player targetPlayer = Bukkit.getPlayer(currentItem.getItemMeta().displayName().toString());
-                replaceOrAdd(player.getUniqueId(), targetPlayer);
-                setNewCompassTarget(player, Objects.requireNonNull(targetPlayer).getLocation(), ChatColor.AQUA + targetPlayer.getName(), targetPlayer);
+                Player targetPlayer = Bukkit.getPlayer(ChatColor.stripColor(((TextComponent) currentItem.getItemMeta().displayName()).content()));
+                setNewCompassTarget(player, targetPlayer.getLocation(), ChatColor.AQUA + targetPlayer.getName(), targetPlayer);
             }
 
             // Inventory Settings
@@ -124,6 +124,7 @@ public class InventoryClickListener implements Listener {
 
     private void setNewCompassTarget(Player player, @Nullable Location location, String message, @Nullable Player targetPlayer) {
         if (location != null) {
+            Variables.targetCompassPlayers.put(player.getUniqueId(), targetPlayer);
             int distance = (int) Math.round(player.getLocation().distance(location));
             player.setCompassTarget(location);
             player.sendMessage(new Message("Du hast " + message + ChatColor.WHITE + " als dein neues Ziel gesetzt. (" + ChatColor.GOLD + distance + (distance > 1 ? " Blöcke entfernt" : " Block entfernt") + ChatColor.WHITE + ")", true).getMessageAsString());
@@ -132,11 +133,5 @@ public class InventoryClickListener implements Listener {
             if (targetPlayer != null)
                 targetPlayer.sendMessage(new Message(ChatColor.AQUA + player.getName() + ChatColor.WHITE + " hat dich als sein neues Compass-Ziel gesetzt. (" + ChatColor.GOLD + distance + " Blöcke entfernt " + ChatColor.WHITE + ")", true).getMessageAsString());
         }
-    }
-
-    private void replaceOrAdd(UUID uuid, Player value) {
-        if (Variables.targetCompassPlayers.containsKey(uuid))
-            Variables.targetCompassPlayers.replace(uuid, value);
-        else Variables.targetCompassPlayers.put(uuid, value);
     }
 }

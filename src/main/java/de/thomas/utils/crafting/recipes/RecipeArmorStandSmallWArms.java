@@ -19,6 +19,6 @@ public class RecipeArmorStandSmallWArms extends ShapedRecipe {
         this.shape("XXX", "YZY", "XXX");
         this.setIngredient('X', Material.GOLD_NUGGET);
         this.setIngredient('Y', Material.STICK);
-        this.setIngredient('Z', Material.ARMOR_STAND);
+        this.setIngredient('Z',  new ItemBuilder(Material.ARMOR_STAND).toItemStack());
     }
 }
