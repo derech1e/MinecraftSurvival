@@ -30,7 +30,10 @@ public class Configuration extends AbstractConfiguration {
     }
 
     public boolean getClockStateByPlayer(Player player) {
-        return Variables.playerConfigData.get(player.getUniqueId()).isClock();
+        if (Variables.playerConfigData.containsKey(player.getUniqueId()))
+            return Variables.playerConfigData.get(player.getUniqueId()).isClock();
+        else
+            return false;
     }
 
     public void addWayPoint(Player player, String name) {
@@ -60,9 +63,8 @@ public class Configuration extends AbstractConfiguration {
         return Variables.playerConfigData.get(player.getUniqueId()).getWaypoints().stream().filter(wayPoint -> wayPoint.location().getWorld().getName().equals(player.getWorld().getName())).collect(Collectors.toList());
     }
 
-    public List<WayPoint> setWaypoints(Player player, List<WayPoint> wayPoints) {
+    public void setWaypoints(Player player, List<WayPoint> wayPoints) {
         Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(getClockStateByPlayer(player), wayPoints));
-        return wayPoints;
     }
 
     public boolean getClockStateByPlayer(Player player, boolean state) {
