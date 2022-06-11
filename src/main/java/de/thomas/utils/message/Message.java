@@ -23,8 +23,10 @@ public class Message {
 
     public String getMessageAsString() {
         switch (errorMessageType) {
-            case NOT_A_PLAYER -> message += ChatColor.RED + "Du musst ein Spieler sein um diesen Befehl ausführen zu können!";
-            case NOT_ENOUGH_PERMISSION -> message += ChatColor.RED + "Du hast nicht genügen Berechtigungen um diesen Befehl ausführen zu können!";
+            case NOT_A_PLAYER ->
+                    message += ChatColor.RED + "Du musst ein Spieler sein um diesen Befehl ausführen zu können!";
+            case NOT_ENOUGH_PERMISSION ->
+                    message += ChatColor.RED + "Du hast nicht genügen Berechtigungen um diesen Befehl ausführen zu können!";
             case NOT_EXIST -> message += ChatColor.RED + "Dieser Befehl existiert nicht!";
             case NULL, FALSE_PARAM -> message += ChatColor.RED + "Ein Nicht bekannter Fehler ist aufgetreten!";
         }
@@ -36,10 +38,14 @@ public class Message {
             PREFIX = "";
 
         return switch (errorMessageType) {
-            case NOT_A_PLAYER -> Component.text(PREFIX).append(Component.text("Du musst ein Spieler sein um diesen Befehl ausführen zu können!", NamedTextColor.RED));
-            case NOT_ENOUGH_PERMISSION -> Component.text(PREFIX).append(Component.text("Du hast nicht genügen Berechtigungen um diesen Befehl ausführen zu können!", NamedTextColor.RED));
-            case NOT_EXIST -> Component.text(PREFIX).append(Component.text("Dieser Befehl existiert nicht!", NamedTextColor.RED));
-            case NULL, FALSE_PARAM -> Component.text(PREFIX).append(Component.text("Ein Nicht bekannter Fehler ist aufgetreten!", NamedTextColor.RED));
+            case NOT_A_PLAYER ->
+                    Component.text(PREFIX).append(Component.text("Du musst ein Spieler sein um diesen Befehl ausführen zu können!", NamedTextColor.RED));
+            case NOT_ENOUGH_PERMISSION ->
+                    Component.text(PREFIX).append(Component.text("Du hast nicht genügen Berechtigungen um diesen Befehl ausführen zu können!", NamedTextColor.RED));
+            case NOT_EXIST ->
+                    Component.text(PREFIX).append(Component.text("Dieser Befehl existiert nicht!", NamedTextColor.RED));
+            case NULL, FALSE_PARAM ->
+                    Component.text(PREFIX).append(Component.text("Ein Nicht bekannter Fehler ist aufgetreten!", NamedTextColor.RED));
             default -> Component.text(message);
         };
     }

@@ -26,7 +26,8 @@ public class PlayerPortalListener implements Listener {
                     Variables.targetCompassPlayers.put(event.getPlayer().getUniqueId(), null);
                     event.getPlayer().setCompassTarget(location);
                 }
-                case NORMAL -> event.setTo(Variables.playerPortalLocationMap.getOrDefault(event.getPlayer().getUniqueId(), event.getTo()));
+                case NORMAL ->
+                        event.setTo(Variables.playerPortalLocationMap.getOrDefault(event.getPlayer().getUniqueId(), event.getTo()));
             }
         }
     }

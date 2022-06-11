@@ -34,13 +34,20 @@ public class RestartThread extends IThreadBase {
         seconds = timer;
         Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
             switch (seconds) {
-                case 1 -> Bukkit.broadcast(new Message(ChatColor.RED + "Noch 15 Minuten bis zum Server Neustart", true).getMessage());
-                case 300 -> Bukkit.broadcast(new Message(ChatColor.RED + "Noch 10 Minuten bis zum Server Neustart", true).getMessage());
-                case 600 -> Bukkit.broadcast(new Message(ChatColor.RED + "Noch 5 Minuten bis zum Server Neustart", true).getMessage());
-                case 840 -> Bukkit.broadcast(new Message(ChatColor.RED + "Noch 60 Sekunden bis zum Server Neustart", true).getMessage());
-                case 890 -> Bukkit.broadcast(new Message(ChatColor.RED + "Noch 10 Sekunden bis zum Server Neustart", true).getMessage());
-                case 895, 896, 897, 898 -> Bukkit.broadcast(new Message(ChatColor.RED + "Noch " + (900 - seconds) + " Sekunden bis zum Server Neustart", true).getMessage());
-                case 899 -> Bukkit.broadcast(new Message(ChatColor.RED + "Noch " + (900 - seconds) + " Sekunde bis zum Server Neustart", true).getMessage());
+                case 1 ->
+                        Bukkit.broadcast(new Message(ChatColor.RED + "Noch 15 Minuten bis zum Server Neustart", true).getMessage());
+                case 300 ->
+                        Bukkit.broadcast(new Message(ChatColor.RED + "Noch 10 Minuten bis zum Server Neustart", true).getMessage());
+                case 600 ->
+                        Bukkit.broadcast(new Message(ChatColor.RED + "Noch 5 Minuten bis zum Server Neustart", true).getMessage());
+                case 840 ->
+                        Bukkit.broadcast(new Message(ChatColor.RED + "Noch 60 Sekunden bis zum Server Neustart", true).getMessage());
+                case 890 ->
+                        Bukkit.broadcast(new Message(ChatColor.RED + "Noch 10 Sekunden bis zum Server Neustart", true).getMessage());
+                case 895, 896, 897, 898 ->
+                        Bukkit.broadcast(new Message(ChatColor.RED + "Noch " + (900 - seconds) + " Sekunden bis zum Server Neustart", true).getMessage());
+                case 899 ->
+                        Bukkit.broadcast(new Message(ChatColor.RED + "Noch " + (900 - seconds) + " Sekunde bis zum Server Neustart", true).getMessage());
                 case 900 -> {
                     Bukkit.broadcast(new Message(ChatColor.RED + "Der Server startet jetzt neu!", true).getMessage());
                     Bukkit.savePlayers();

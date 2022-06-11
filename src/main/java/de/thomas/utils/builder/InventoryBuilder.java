@@ -7,12 +7,10 @@ import org.bukkit.inventory.ItemStack;
 
 public class InventoryBuilder {
 
-    final Inventory inventory;
-    final Component inventoryTitle;
-    final int inventorySize;
+    private final int inventorySize;
+    private final Inventory inventory;
 
     public InventoryBuilder(Component inventoryTitle, int inventorySize) {
-        this.inventoryTitle = inventoryTitle;
         this.inventorySize = inventorySize;
         this.inventory = Bukkit.createInventory(null, inventorySize, inventoryTitle);
     }

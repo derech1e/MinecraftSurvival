@@ -11,7 +11,14 @@ import org.bukkit.inventory.ShapedRecipe;
 public class RecipeArmorStandSmallWArms extends ShapedRecipe {
 
     public RecipeArmorStandSmallWArms() {
-        super(new NamespacedKey(MinecraftSurvival.getINSTANCE(), "armorstand_small_with_arms"), new ItemBuilder(Material.ARMOR_STAND).addItemFlag(ItemFlag.HIDE_ENCHANTS).addEnchantment(Enchantment.DURABILITY, 1, true).showArmorStandArms(true).setArmorStandSmall(true).setName("§fSmall Armor Stand with Arms").toItemStack());
+        super(new NamespacedKey(MinecraftSurvival.getINSTANCE(), "armorstand_small_with_arms"),
+                new ItemBuilder(Material.ARMOR_STAND)
+                        .addItemFlag(ItemFlag.HIDE_ENCHANTS)
+                        .addEnchantment(Enchantment.DURABILITY, 1, true)
+                        .showArmorStandArms(true)
+                        .setArmorStandSmall(true)
+                        .setName("§fSmall Armor Stand with Arms")
+                        .toItemStack());
         initValues();
     }
 
@@ -19,6 +26,6 @@ public class RecipeArmorStandSmallWArms extends ShapedRecipe {
         this.shape("XXX", "YZY", "XXX");
         this.setIngredient('X', Material.GOLD_NUGGET);
         this.setIngredient('Y', Material.STICK);
-        this.setIngredient('Z',  new ItemBuilder(Material.ARMOR_STAND).toItemStack());
+        this.setIngredient('Z', new ItemBuilder(Material.ARMOR_STAND).toItemStack());
     }
 }

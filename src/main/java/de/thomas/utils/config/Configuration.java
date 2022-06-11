@@ -11,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -45,7 +46,7 @@ public class Configuration extends AbstractConfiguration {
     public void removeWayPoint(Player player, int index, Inventory inventory) {
         int redundantIndex = 0;
         for (int i = 0; i < index; i++) {
-            if (!inventory.getItem(i).getType().equals(Material.PLAYER_HEAD)) {
+            if (!Objects.requireNonNull(inventory.getItem(i)).getType().equals(Material.PLAYER_HEAD)) {
                 redundantIndex++;
             }
         }

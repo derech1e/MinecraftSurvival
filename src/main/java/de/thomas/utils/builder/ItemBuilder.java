@@ -290,7 +290,7 @@ public class ItemBuilder {
     /**
      * If your item is a player skull you can apply a texture
      * value is the base64 value of the skull texture
-     * You can find the value on https://minecraft-heads.com
+     * You can find the value on <a href="https://minecraft-heads.com">https://minecraft-heads.com</a>
      */
     public ItemBuilder setSkullTexture(String value) {
         this.skullMeta = (SkullMeta) itemStack.getItemMeta();
