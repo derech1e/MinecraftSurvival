@@ -2,8 +2,8 @@ package de.thomas.listeners;
 
 import de.thomas.minecraftsurvival.MinecraftSurvival;
 import de.thomas.utils.message.Message;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

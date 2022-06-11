@@ -1,7 +1,7 @@
 name: MinecraftSurvival
 version: ${project.version}
 main: de.thomas.minecraftsurvival.MinecraftSurvival
-api-version: 1.17
+api-version: 1.18
 authors: [ Thomas ]
 description: Ein Plugin für das Survival Projekt
 load: POSTWORLD
