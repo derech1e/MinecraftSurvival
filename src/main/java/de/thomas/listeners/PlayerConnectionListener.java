@@ -3,11 +3,15 @@ package de.thomas.listeners;
 import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
 import de.thomas.minecraftsurvival.MinecraftSurvival;
 import de.thomas.utils.Variables;
+import de.thomas.utils.builder.ItemBuilder;
 import de.thomas.utils.config.context.PlayerContext;
 import de.thomas.utils.crafting.RecipeManager;
 import de.thomas.utils.message.Message;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,7 +38,10 @@ public class PlayerConnectionListener implements Listener {
         MinecraftSurvival.getINSTANCE().configuration.set(player.getUniqueId().toString(), playerContext);
         MinecraftSurvival.getINSTANCE().configuration.save();
 
-        RecipeManager.discoverRecipe(player);
+        if (!player.hasPlayedBefore()) {
+            RecipeManager.discoverRecipe(player);
+            new ItemBuilder(Material.COMPASS).setName("§6Der weise Wegweiser").addLore("HILFE: ICH DREHE GLEICH DURCH HIER").inject(player.getInventory());
+        }
     }
 
     @EventHandler
@@ -49,7 +56,12 @@ public class PlayerConnectionListener implements Listener {
     @EventHandler
     public void onServerListPing(PaperServerListPingEvent event) {
         boolean day = (Objects.requireNonNull(Bukkit.getWorld("world")).getTime() > 23850 || Objects.requireNonNull(Bukkit.getWorld("world")).getTime() < 12300);
-        String time = "Es ist: " + (day ? "§aTag" : "§1Nacht") + (Bukkit.getOnlinePlayers().size() != 0 ? "§r - " : "");
-        event.motd(new Message(time + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")), false).getMessage());
+        String time = "Es ist: " + (day ? "<green>Tag</green>" : "<dark_aqua>Nacht</dark_aqua>") + (Bukkit.getOnlinePlayers().size() != 0 ? "<reset> - " : "");
+        Component message = MiniMessage.miniMessage().deserialize(new Message("<rainbow>Survival Projekt #2022</rainbow><br>" + time + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")), false).getMessageAsString());
+        event.motd(message);
+        event.setHidePlayers(true);
+        event.setMaxPlayers(event.getNumPlayers());
     }
+
+
 }

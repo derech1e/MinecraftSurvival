@@ -5,17 +5,14 @@ import de.thomas.utils.Variables;
 import de.thomas.utils.builder.InventoryBuilder;
 import de.thomas.utils.builder.ItemBuilder;
 import de.thomas.utils.message.Message;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.Random;
+import java.util.*;
 
 public class PlayerInteractListener implements Listener {
 
@@ -42,14 +39,21 @@ public class PlayerInteractListener implements Listener {
                 float curve = 8;
                 int strands = 5 + new Random().nextInt(10);
                 double rotation = Math.PI / 3;
+
+                Location location = new Location(player.getCompassTarget().getWorld(), player.getCompassTarget().getX(), player.getLocation().getY(), player.getCompassTarget().getZ());
+                if (player.getWorld().getEnvironment() == World.Environment.NETHER) {
+                    location = Variables.playerPortalLocationSpawnMap.get(player.getUniqueId());
+                    location.setY(player.getLocation().getY());
+                }
+
                 for (double i = 1; i <= strands; i++) {
                     for (double j = 1; j <= particles; j++) {
                         float ratio = (float) j / particles;
                         double angle = curve * ratio * 2 * Math.PI / strands + (2 * Math.PI * i / strands) + rotation;
                         double x = Math.cos(angle) * ratio * radius;
                         double z = Math.sin(angle) * ratio * radius;
-                        Location location = new Location(player.getCompassTarget().getWorld(), player.getCompassTarget().getX(), player.getLocation().getY(), player.getCompassTarget().getZ());
-                        particleBuilder.location(location.clone().add(0, 20, 0).add(x, j / 10, z));
+
+                        particleBuilder.location(location.clone().add(0, 15, 0).add(x, j / 10, z));
                         particleBuilder.receivers(player);
                         particleBuilder.spawn();
                     }
@@ -57,16 +61,23 @@ public class PlayerInteractListener implements Listener {
 
                 particleBuilder.color(255, 20, 80);
                 for (double i = min; i < max; i = i + 0.25) {
-                    particleBuilder.location(player.getCompassTarget().getWorld(), player.getCompassTarget().getX(), i, player.getCompassTarget().getZ());
+                    location.setY(i);
+                    do {
+                        location.subtract(0, 1, 0);
+                    } while (!location.getBlock().getType().isAir());
+                    particleBuilder.location(location);
                     particleBuilder.receivers(player);
                     particleBuilder.spawn();
                 }
 
                 if (Variables.targetCompassPlayers.get(player.getUniqueId()) == null)
-                    distance = (int) Math.round(player.getCompassTarget().distance(player.getLocation()));
+                    if (player.getWorld().getEnvironment() == World.Environment.NETHER) {
+                        distance = (int) Math.round(Variables.playerPortalLocationSpawnMap.get(player.getUniqueId()).distance(player.getLocation()));
+                    } else {
+                        distance = (int) Math.round(player.getCompassTarget().distance(player.getLocation()));
+                    }
                 else
                     distance = (int) Math.round(Variables.targetCompassPlayers.get(player.getUniqueId()).getLocation().distance(player.getLocation()));
-
                 if (distance > 10)
                     player.sendMessage(new Message("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel!", true).getMessageAsString());
                 else {

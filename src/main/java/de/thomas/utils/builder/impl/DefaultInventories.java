@@ -1,4 +1,4 @@
-package de.thomas.utils.builder.defaults;
+package de.thomas.utils.builder.impl;
 
 import de.thomas.minecraftsurvival.MinecraftSurvival;
 import de.thomas.utils.Variables;

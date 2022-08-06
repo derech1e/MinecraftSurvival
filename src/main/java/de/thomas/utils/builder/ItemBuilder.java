@@ -1,9 +1,10 @@
 package de.thomas.utils.builder;
 
 import com.destroystokyo.paper.inventory.meta.ArmorStandMeta;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 import de.thomas.utils.message.Message;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -272,9 +273,9 @@ public class ItemBuilder {
     /**
      * If your item is a player skull you can apply a special player skull texture
      */
-    public ItemBuilder setSkullTextureFromePlayerName(String playerName) {
+    public ItemBuilder setSkullTextureFromPlayerName(String playerName) {
         this.skullMeta = (SkullMeta) itemStack.getItemMeta();
-        this.skullMeta.setOwner(playerName);
+        this.skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(playerName));
         itemStack.setItemMeta(skullMeta);
         return this;
     }
@@ -283,7 +284,7 @@ public class ItemBuilder {
      * If your item is a player skull you can apply a special player skull texture
      */
     public ItemBuilder setSkullTexture(Player player) {
-        setSkullTextureFromePlayerName(player.getName());
+        setSkullTextureFromPlayerName(player.getName());
         return this;
     }
 
@@ -292,19 +293,11 @@ public class ItemBuilder {
      * value is the base64 value of the skull texture
      * You can find the value on <a href="https://minecraft-heads.com">https://minecraft-heads.com</a>
      */
-    public ItemBuilder setSkullTexture(String value) {
+    public ItemBuilder setSkullTexture(String base64) {
         this.skullMeta = (SkullMeta) itemStack.getItemMeta();
-        GameProfile gameProfile = new GameProfile(UUID.randomUUID(), null);
-        gameProfile.getProperties().put("textures", new Property("textures", value));
-
-        try {
-            Field gameProfileField = skullMeta.getClass().getDeclaredField("profile");
-            gameProfileField.setAccessible(true);
-            gameProfileField.set(skullMeta, gameProfile);
-        } catch (IllegalAccessException | NoSuchFieldException error) {
-            error.printStackTrace();
-        }
-
+        PlayerProfile profile = Bukkit.createProfile(new UUID(base64.hashCode(), base64.hashCode()));
+        profile.setProperty(new ProfileProperty("textures", base64));
+        skullMeta.setPlayerProfile(profile);
         itemStack.setItemMeta(skullMeta);
         return this;
     }

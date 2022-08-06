@@ -30,7 +30,7 @@ public class PlayerBedListener implements Listener {
             return;
         playerInBed.add(player.getUniqueId());
 
-        int countToSkip = (getPlayerCountToSkip() - playerInBed.size());
+        int countToSkip = getPlayerCountToSkip() - playerInBed.size();
         Bukkit.broadcast(new Message(ChatColor.GOLD + player.getName() + ChatColor.WHITE + " hat sich ins Bett gelegt." + (countToSkip > 0 ? " (Noch " + countToSkip + ")" : ""), true).getMessage());
 
         if (canSkip()) {
@@ -43,7 +43,7 @@ public class PlayerBedListener implements Listener {
             inProgress = true;
             if (!(player.getWorld().getTime() > 23850 || player.getWorld().getTime() < 12300)) {
                 player.getWorld().setTime(0);
-                Bukkit.broadcast(new Message(ChatColor.GREEN + "Guten Morgen...", true).getMessage());
+                Bukkit.broadcast(new Message(ChatColor.GREEN + "Guten Morgen :)", true).getMessage());
             }
             if (!player.getWorld().isClearWeather() || player.getWorld().isThundering()) {
                 player.getWorld().setClearWeatherDuration(new Random().nextInt((minToTicks(80) - minToTicks(30) + 1)) + minToTicks(30));

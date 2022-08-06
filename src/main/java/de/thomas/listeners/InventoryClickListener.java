@@ -3,7 +3,7 @@ package de.thomas.listeners;
 import de.thomas.minecraftsurvival.MinecraftSurvival;
 import de.thomas.utils.Variables;
 import de.thomas.utils.builder.ItemBuilder;
-import de.thomas.utils.builder.defaults.DefaultInventories;
+import de.thomas.utils.builder.impl.DefaultInventories;
 import de.thomas.utils.config.Configuration;
 import de.thomas.utils.config.context.WayPoint;
 import de.thomas.utils.message.Message;
@@ -30,7 +30,7 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getClickedInventory() == null || event.getCurrentItem() == null)
+        if (event.getClickedInventory() == null || event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null)
             return;
 
         Player player = (Player) event.getWhoClicked();

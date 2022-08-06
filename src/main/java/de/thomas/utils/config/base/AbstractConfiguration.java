@@ -136,7 +136,6 @@ public abstract class AbstractConfiguration implements JsonConfiguration {
         root.addProperty(key, value);
     }
 
-
     @Override
     public void setByte(String key, byte value) {
         root.addProperty(key, value);
