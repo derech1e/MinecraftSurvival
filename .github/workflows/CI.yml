@@ -18,10 +18,21 @@ jobs:
           java-version: 18
 
       - name: Build with Maven
-        run: mvn -B clean package --file pom.xml
+        run: | 
+          mvn -B clean package --file pom.xml
+          mkdir staging && cp target/*.jar staging
+
+      - name: Caching Maven
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: MinecraftSurvival
-          path: target/
+          path: |
+            target
+            staging
