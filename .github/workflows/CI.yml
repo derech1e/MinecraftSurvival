@@ -21,7 +21,9 @@ jobs:
         run: mvn -B clean package --file pom.xml
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: MinecraftSurvival
-          path: target/
+          path: |
+            target/
+            /
