@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -23,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import org.json.simple.JSONObject;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 
 
@@ -460,6 +462,11 @@ public class ItemBuilder {
         return itemStack;
     }
 
+    public ItemStack toSizedItemStack() {
+        setSize(itemStack);
+        return itemStack;
+    }
+
     /**
      * @param itemBuilder returns if two item builder are similar
      *                    This method compare type, data, and display name of items
@@ -577,6 +584,13 @@ public class ItemBuilder {
      */
     public ItemBuilder setData(int data) {
         this.itemStack = new ItemStack(itemStack.getType(), itemStack.getAmount(), (byte) data);
+        return this;
+    }
+
+    public ItemBuilder setCustomModelData(int data) {
+        ItemMeta itemMeta = this.itemStack.getItemMeta();
+        itemMeta.setCustomModelData(data);
+        this.itemStack.setItemMeta(itemMeta);
         return this;
     }
 
@@ -830,6 +844,36 @@ public class ItemBuilder {
                 }
             }
         });
+    }
+
+    private void setSize(ItemStack stack) {
+        Material material = stack.getType();
+        try {
+            Class<?> cbclass = getNMSClass("org.bukkit.craftbukkit", "util.CraftMagicNumbers");
+            Method m = cbclass.getDeclaredMethod("getItem", Material.class);
+            Class<?> result = m.invoke(stack, material).getClass();
+            if (!result.getCanonicalName().split("\\.")[result.getCanonicalName().split("\\.").length - 1].toLowerCase().equalsIgnoreCase("item")) {
+                while (!result.getCanonicalName().split("\\.")[result.getCanonicalName().split("\\.").length - 1].toLowerCase().equalsIgnoreCase("item")) {
+                    result = result.getSuperclass();
+                }
+            }
+            Object myItem = getNMSClass("net.minecraft.server", "Items").getDeclaredField(material.name()).get(null);
+            Field f = result.getDeclaredField("maxStackSize");
+            f.setAccessible(true);
+            f.setInt(myItem, 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected Class<?> getNMSClass(String path, String name) {
+        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+        try {
+            return Class.forName(path + "." + version + "." + name);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**

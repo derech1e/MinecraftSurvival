@@ -34,7 +34,7 @@ public class Configuration extends AbstractConfiguration {
         if (Variables.playerConfigData.containsKey(player.getUniqueId()))
             return Variables.playerConfigData.get(player.getUniqueId()).isClock();
         else
-            return false;
+            return true;
     }
 
     public void addWayPoint(Player player, String name) {

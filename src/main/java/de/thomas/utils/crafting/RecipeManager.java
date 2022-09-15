@@ -1,8 +1,9 @@
 package de.thomas.utils.crafting;
 
-import de.thomas.utils.crafting.recipes.RecipeArmorStandSmall;
-import de.thomas.utils.crafting.recipes.RecipeArmorStandSmallWArms;
-import de.thomas.utils.crafting.recipes.RecipeArmorStandWArms;
+import de.thomas.utils.crafting.recipes.armorstand.RecipeArmorStandSmall;
+import de.thomas.utils.crafting.recipes.armorstand.RecipeArmorStandSmallWArms;
+import de.thomas.utils.crafting.recipes.armorstand.RecipeArmorStandWArms;
+import de.thomas.utils.crafting.recipes.bread.RecipeBreadAsBaguette;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ShapedRecipe;
@@ -19,6 +20,7 @@ public class RecipeManager {
         shapedRecipeList.add(new RecipeArmorStandWArms());
         shapedRecipeList.add(new RecipeArmorStandSmallWArms());
         shapedRecipeList.add(new RecipeArmorStandSmall());
+        shapedRecipeList.add(new RecipeBreadAsBaguette());
     }
 
     public static void discoverRecipe(Player player) {

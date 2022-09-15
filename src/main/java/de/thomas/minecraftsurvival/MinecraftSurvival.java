@@ -56,6 +56,7 @@ public class MinecraftSurvival extends JavaPlugin {
         pluginManager.registerEvents(new EntityDeathListener(), this);
         pluginManager.registerEvents(new PlayerPortalListener(), this);
         pluginManager.registerEvents(new PlayerMoveListener(), this);
+        pluginManager.registerEvents(new PlayerEatListener(), this);
     }
 
     private void registerCommands() {
