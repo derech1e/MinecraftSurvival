@@ -13,10 +13,11 @@ import java.util.List;
  * @author derech1e
  * @since 10.11.2021
  **/
-public record PlayerContext(boolean clock, List<WayPoint> waypoints) implements JsonConfigSerializable {
+public record PlayerContext(boolean clock, List<WayPoint> waypoints, int baguetteCounter) implements JsonConfigSerializable {
 
     public static PlayerContext deserialize(JsonObject object) {
         boolean clock = object.get("clock").getAsBoolean();
+        int baguetteCounter = object.get("baguetteCounter").getAsInt();
         List<WayPoint> waypoints = new ArrayList<>();
         object.get("waypoints").getAsJsonArray().forEach(waypoint -> {
             JsonObject waypointObject = waypoint.getAsJsonObject();
@@ -25,7 +26,7 @@ public record PlayerContext(boolean clock, List<WayPoint> waypoints) implements 
             Location location = Variables.stringToLocation(waypointObject.get("location").getAsString());
             waypoints.add(new WayPoint(id, name, location));
         });
-        return new PlayerContext(clock, waypoints);
+        return new PlayerContext(clock, waypoints, baguetteCounter);
     }
 
     public boolean isClock() {
@@ -36,9 +37,14 @@ public record PlayerContext(boolean clock, List<WayPoint> waypoints) implements 
         return waypoints;
     }
 
+    public int getBaguetteCounter() {
+        return baguetteCounter;
+    }
+
     @Override
     public void serialize(JsonObject object) {
         object.addProperty("clock", this.clock);
+        object.addProperty("baguetteCounter", this.baguetteCounter);
         JsonArray waypoints = new JsonArray();
         this.waypoints.forEach(waypoint -> {
             JsonObject waypointObject = new JsonObject();

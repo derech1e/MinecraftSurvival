@@ -1,14 +1,22 @@
 package de.thomas.utils;
 
+import de.thomas.utils.builder.ItemBuilder;
+import de.thomas.utils.config.context.BaguetteContext;
 import de.thomas.utils.config.context.PlayerContext;
+import de.thomas.utils.crafting.recipes.bread.RecipeBreadAsBaguette;
 import de.thomas.utils.message.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.Random;
 import java.util.UUID;
 
 public class Variables {
@@ -23,6 +31,8 @@ public class Variables {
     public static final HashMap<UUID, PlayerContext> playerConfigData = new HashMap<>();
     public static final HashMap<UUID, Location> playerPortalLocationMap = new HashMap<>();
     public static final HashMap<UUID, Location> playerPortalLocationSpawnMap = new HashMap<>();
+
+    public static final String TOTAL_BAGUETTE_COUNTER_CONFIG_NAME = "totalBaguetteCounter";
 
     public static int calculateInventorySize(int onlinePlayers) {
         if (onlinePlayers <= 9)

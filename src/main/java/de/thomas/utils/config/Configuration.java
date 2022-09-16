@@ -1,8 +1,10 @@
 package de.thomas.utils.config;
 
+import com.google.errorprone.annotations.Var;
 import com.google.gson.JsonObject;
 import de.thomas.utils.Variables;
 import de.thomas.utils.config.base.AbstractConfiguration;
+import de.thomas.utils.config.context.BaguetteContext;
 import de.thomas.utils.config.context.PlayerContext;
 import de.thomas.utils.config.context.WayPoint;
 import org.bukkit.Material;
@@ -37,6 +39,17 @@ public class Configuration extends AbstractConfiguration {
             return true;
     }
 
+    public int getBaguetteCounterByPlayer(Player player) {
+        if (Variables.playerConfigData.containsKey(player.getUniqueId()))
+            return Variables.playerConfigData.get(player.getUniqueId()).getBaguetteCounter();
+        else
+            return 0;
+    }
+
+    public void addBaguetteCounter(Player player) {
+        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(getClockStateByPlayer(player), getWayPoints(player), getBaguetteCounterByPlayer(player) + 1));
+    }
+
     public void addWayPoint(Player player, String name) {
         List<WayPoint> wayPoints = getWayPoints(player);
         wayPoints.add(new WayPoint(name, player.getLocation()));
@@ -65,11 +78,11 @@ public class Configuration extends AbstractConfiguration {
     }
 
     public void setWaypoints(Player player, List<WayPoint> wayPoints) {
-        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(getClockStateByPlayer(player), wayPoints));
+        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(getClockStateByPlayer(player), wayPoints, getBaguetteCounterByPlayer(player)));
     }
 
-    public boolean getClockStateByPlayer(Player player, boolean state) {
-        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(state, getWayPoints(player)));
+    public boolean updateClockStateByPlayer(Player player, boolean state) {
+        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(state, getWayPoints(player), getBaguetteCounterByPlayer(player)));
         return state;
     }
 }

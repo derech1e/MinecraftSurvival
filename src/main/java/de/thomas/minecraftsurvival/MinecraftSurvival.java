@@ -2,7 +2,9 @@ package de.thomas.minecraftsurvival;
 
 import de.thomas.commands.PingCommand;
 import de.thomas.listeners.*;
+import de.thomas.utils.Variables;
 import de.thomas.utils.config.Configuration;
+import de.thomas.utils.config.context.BaguetteContext;
 import de.thomas.utils.crafting.RecipeManager;
 import de.thomas.utils.threads.ClockTimeThread;
 import de.thomas.utils.threads.RestartThread;
@@ -16,7 +18,6 @@ public class MinecraftSurvival extends JavaPlugin {
 
     private static MinecraftSurvival INSTANCE;
     public Configuration configuration;
-
     public static MinecraftSurvival getINSTANCE() {
         return INSTANCE;
     }
@@ -56,7 +57,8 @@ public class MinecraftSurvival extends JavaPlugin {
         pluginManager.registerEvents(new EntityDeathListener(), this);
         pluginManager.registerEvents(new PlayerPortalListener(), this);
         pluginManager.registerEvents(new PlayerMoveListener(), this);
-        pluginManager.registerEvents(new PlayerEatListener(), this);
+        pluginManager.registerEvents(new PlayerItemConsumeListener(), this);
+        pluginManager.registerEvents(new CraftItemListener(), this);
     }
 
     private void registerCommands() {
