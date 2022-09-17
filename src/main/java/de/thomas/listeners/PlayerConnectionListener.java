@@ -7,6 +7,7 @@ import de.thomas.utils.builder.ItemBuilder;
 import de.thomas.utils.config.context.PlayerContext;
 import de.thomas.utils.crafting.RecipeManager;
 import de.thomas.utils.message.Message;
+import de.thomas.utils.resourcepack.ResourcePack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
@@ -28,11 +29,12 @@ public class PlayerConnectionListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        Variables.resourcePack.setResourcePack(player.getUniqueId());
         event.joinMessage(new Message(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + player.getName(), false).getMessage());
 
         PlayerContext playerContext = MinecraftSurvival.getINSTANCE().configuration.get(player.getUniqueId().toString(), PlayerContext.class);
         if (playerContext == null) {
-            playerContext = new PlayerContext(false, new ArrayList<>(), 0);
+            playerContext = new PlayerContext(true, new ArrayList<>(), 0);
         }
         Variables.playerConfigData.put(player.getUniqueId(), playerContext);
         MinecraftSurvival.getINSTANCE().configuration.set(player.getUniqueId().toString(), playerContext);
@@ -59,9 +61,7 @@ public class PlayerConnectionListener implements Listener {
         String time = "Es ist: " + (day ? "<green>Tag</green>" : "<dark_aqua>Nacht</dark_aqua>") + (Bukkit.getOnlinePlayers().size() != 0 ? "<reset> - " : "");
         Component message = MiniMessage.miniMessage().deserialize(new Message("<rainbow>Survival Projekt #2022</rainbow><br>" + time + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")), false).getMessageAsString());
         event.motd(message);
-        event.setHidePlayers(true);
         event.setMaxPlayers(event.getNumPlayers());
     }
-
 
 }

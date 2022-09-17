@@ -15,7 +15,7 @@ public class RecipeBreadAsBaguette extends ShapedRecipe {
         super(new NamespacedKey(MinecraftSurvival.getINSTANCE(), "baguette"), new ItemBuilder(Material.BREAD)
                 .setName("§fBaguette")
                 .setCustomModelData(1)
-                .addEnchantment(Enchantment.KNOCKBACK, 2, true)
+                .addEnchantment(Enchantment.KNOCKBACK, 3, true)
                 .addItemFlag(ItemFlag.HIDE_ENCHANTS)
                 .toItemStack());
         initValues();

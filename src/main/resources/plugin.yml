@@ -4,7 +4,7 @@ main: de.thomas.minecraftsurvival.MinecraftSurvival
 api-version: 1.19
 authors: [ Thomas ]
 description: Ein Plugin für das Survival Projekt
-load: POSTWORLD
+load: STARTUP
 commands:
   ping:
     description: Gibt den Ping zum Server an
