@@ -26,7 +26,7 @@ public class CraftItemListener implements Listener {
         if (event.getInventory().getResult() == null)
             return;
 
-        if(event.getInventory().containsAtLeast(new ItemBuilder(Material.BREAD).toItemStack(), 4)) {
+        if (event.getInventory().containsAtLeast(new ItemBuilder(Material.BREAD).toItemStack(), 4)) {
             event.getInventory().setResult(new ItemBuilder(Material.AIR).toItemStack());
             return;
         }
@@ -42,7 +42,7 @@ public class CraftItemListener implements Listener {
 
     @EventHandler
     public void onCraft(CraftItemEvent event) {
-        if (event.getInventory().getResult().getType() == Material.BREAD && event.getInventory().getResult().getItemMeta().getCustomModelData() >= 1) {
+        if (Objects.requireNonNull(event.getInventory().getResult()).getType() == Material.BREAD && event.getInventory().getResult().getItemMeta().getCustomModelData() >= 1) {
             // Load baguette counter
             initBaguetteContext();
 

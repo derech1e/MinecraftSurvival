@@ -1,4 +1,5 @@
 package de.thomas.utils.resourcepack.verification;
+
 import javax.annotation.Nonnull;
 import java.util.Objects;
 

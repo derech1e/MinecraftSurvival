@@ -20,6 +20,7 @@ public class RecipeBreadAsBaguette extends ShapedRecipe {
                 .toItemStack());
         initValues();
     }
+
     public void initValues() {
         this.shape("  X", " X ", "X  ");
         this.setIngredient('X', Material.BREAD);

@@ -7,7 +7,6 @@ import de.thomas.utils.builder.ItemBuilder;
 import de.thomas.utils.config.context.PlayerContext;
 import de.thomas.utils.crafting.RecipeManager;
 import de.thomas.utils.message.Message;
-import de.thomas.utils.resourcepack.ResourcePack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;

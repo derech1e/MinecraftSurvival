@@ -13,9 +13,12 @@ import java.util.List;
  * @author derech1e
  * @since 10.11.2021
  **/
-public record PlayerContext(boolean clock, List<WayPoint> waypoints, int baguetteCounter) implements JsonConfigSerializable {
-    // Default ctr required for reflections
-    public PlayerContext (){
+public record PlayerContext(boolean clock, List<WayPoint> waypoints,
+                            int baguetteCounter) implements JsonConfigSerializable {
+    /**
+     * Default ctr required for reflections
+     */
+    public PlayerContext() {
         this(true, new ArrayList<>(), 0);
     }
 

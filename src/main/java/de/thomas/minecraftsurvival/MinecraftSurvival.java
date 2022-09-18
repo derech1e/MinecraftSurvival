@@ -6,8 +6,8 @@ import de.thomas.utils.Variables;
 import de.thomas.utils.config.Configuration;
 import de.thomas.utils.crafting.RecipeManager;
 import de.thomas.utils.resourcepack.ResourcePack;
-import de.thomas.utils.resourcepack.verification.HashingUtil;
 import de.thomas.utils.resourcepack.ResourcePackURLData;
+import de.thomas.utils.resourcepack.verification.HashingUtil;
 import de.thomas.utils.threads.ClockTimeThread;
 import de.thomas.utils.threads.RestartThread;
 import org.bukkit.Bukkit;
@@ -15,12 +15,12 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
-import java.util.logging.Level;
 
 public class MinecraftSurvival extends JavaPlugin {
 
     private static MinecraftSurvival INSTANCE;
     public Configuration configuration;
+
     public static MinecraftSurvival getINSTANCE() {
         return INSTANCE;
     }
@@ -81,7 +81,7 @@ public class MinecraftSurvival extends JavaPlugin {
 
         ResourcePackURLData data = HashingUtil.performPackCheck(url, hash);
 
-        if(!data.match()) {
+        if (!data.match()) {
             this.getLogger().severe("Resource pack Hash does not match");
         }
         Variables.resourcePack = new ResourcePack(url, hash, data.size());

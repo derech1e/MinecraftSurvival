@@ -18,7 +18,7 @@ jobs:
           java-version: 18
 
       - name: Build with Maven
-        run: | 
+        run: |
           mvn -B clean package --file pom.xml
           mkdir staging && cp target/*.jar staging
 

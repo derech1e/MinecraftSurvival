@@ -1,10 +1,8 @@
 package de.thomas.utils.config;
 
-import com.google.errorprone.annotations.Var;
 import com.google.gson.JsonObject;
 import de.thomas.utils.Variables;
 import de.thomas.utils.config.base.AbstractConfiguration;
-import de.thomas.utils.config.context.BaguetteContext;
 import de.thomas.utils.config.context.PlayerContext;
 import de.thomas.utils.config.context.WayPoint;
 import org.bukkit.Material;

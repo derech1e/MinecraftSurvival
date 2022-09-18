@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 public class HashingUtil {
 
     private static final char[] hexCode = "0123456789ABCDEF".toCharArray();
+
     public static String toHexString(byte[] array) {
         StringBuilder r = new StringBuilder(array.length * 2);
         for (byte b : array) {
