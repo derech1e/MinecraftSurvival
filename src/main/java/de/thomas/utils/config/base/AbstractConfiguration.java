@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,13 +101,9 @@ public abstract class AbstractConfiguration implements JsonConfiguration {
     public <T extends JsonConfigSerializable> T get(String key, Class<T> type) {
         JsonObject object = root.getAsJsonObject(key);
         try {
-            Method method = type.getMethod("deserialize", JsonObject.class);
-            Object result = method.invoke(null, object);
-            if (type.isInstance(result))
-                return (T) result;
+            return (T) type.getDeclaredConstructor().newInstance().deserialize(object);
         } catch (Exception ex) {
-            Bukkit.getLogger().warning("Could not deserialize " + key + " to " + type.getSimpleName());
-//            ex.printStackTrace();
+            Bukkit.getLogger().severe("Could not deserialize " + key + " to " + type.getSimpleName());
         }
         return null;
     }

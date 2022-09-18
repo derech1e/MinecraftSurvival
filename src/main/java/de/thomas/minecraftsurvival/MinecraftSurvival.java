@@ -15,6 +15,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
+import java.util.logging.Level;
 
 public class MinecraftSurvival extends JavaPlugin {
 
@@ -81,7 +82,7 @@ public class MinecraftSurvival extends JavaPlugin {
         ResourcePackURLData data = HashingUtil.performPackCheck(url, hash);
 
         if(!data.match()) {
-            this.getLogger().warning("Resourcepack Hash does not match");
+            this.getLogger().severe("Resource pack Hash does not match");
         }
         Variables.resourcePack = new ResourcePack(url, hash, data.size());
     }

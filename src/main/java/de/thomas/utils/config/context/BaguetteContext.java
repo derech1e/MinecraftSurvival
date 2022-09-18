@@ -10,7 +10,8 @@ public record BaguetteContext(Integer totalBaguetteCounter) implements JsonConfi
         this(0);
     }
 
-    public static BaguetteContext deserialize(JsonObject object) {
+    @Override
+    public BaguetteContext deserialize(JsonObject object) {
         return new BaguetteContext(object.get(Variables.TOTAL_BAGUETTE_COUNTER_CONFIG_NAME).getAsInt());
     }
 

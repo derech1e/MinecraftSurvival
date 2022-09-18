@@ -29,7 +29,6 @@ public class PlayerConnectionListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Variables.resourcePack.setResourcePack(player.getUniqueId());
         event.joinMessage(new Message(ChatColor.DARK_GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + player.getName(), false).getMessage());
 
         PlayerContext playerContext = MinecraftSurvival.getINSTANCE().configuration.get(player.getUniqueId().toString(), PlayerContext.class);
@@ -39,6 +38,8 @@ public class PlayerConnectionListener implements Listener {
         Variables.playerConfigData.put(player.getUniqueId(), playerContext);
         MinecraftSurvival.getINSTANCE().configuration.set(player.getUniqueId().toString(), playerContext);
         MinecraftSurvival.getINSTANCE().configuration.save();
+
+        Variables.resourcePack.setResourcePack(player.getUniqueId());
 
         if (!player.hasPlayedBefore()) {
             RecipeManager.discoverRecipe(player);

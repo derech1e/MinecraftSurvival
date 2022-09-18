@@ -10,5 +10,5 @@ public interface JsonConfigSerializable {
 
     void serialize(JsonObject object);
 
-//    void deserialize(JsonObject object);
+    Object deserialize(JsonObject object);
 }
