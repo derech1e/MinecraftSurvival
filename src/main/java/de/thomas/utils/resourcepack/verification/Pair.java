@@ -8,7 +8,7 @@ import java.util.Objects;
  * @param <U> First type
  * @param <V> Second type
  */
-public class Pair<U, V> implements Tuple {
+public class Pair<U, V> {
 
     private final U first;
     private final V second;
@@ -76,20 +76,6 @@ public class Pair<U, V> implements Tuple {
     @Override
     public final String toString() {
         return String.format("(%s, %s)", this.first, this.second);
-    }
-
-    @Override
-    public final int getSize() {
-        return 2;
-    }
-
-    @Override
-    @Nonnull
-    public final Object[] toArray() {
-        final Object[] array = new Object[2];
-        array[0] = this.first;
-        array[1] = this.second;
-        return array;
     }
 
 }
