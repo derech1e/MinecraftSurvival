@@ -25,7 +25,9 @@ public class PlayerInteractListener implements Listener {
 
         if (event.getItem() != null && event.getItem().getType().equals(Material.COMPASS)) {
             if (!player.isSneaking()) {
-                int distance;
+                Location targetLocation = getCompassTargetLocation(player);
+                player.setCompassTarget(targetLocation);
+                int distance = (int) Math.round(targetLocation.distance(player.getLocation()));
 
                 // particle effects for targetLocation
                 ParticleBuilder particleBuilder = new ParticleBuilder(Particle.REDSTONE);
@@ -40,7 +42,7 @@ public class PlayerInteractListener implements Listener {
                 int strands = 5 + new Random().nextInt(10);
                 double rotation = Math.PI / 3;
 
-                Location location = new Location(player.getCompassTarget().getWorld(), player.getCompassTarget().getX(), player.getLocation().getY(), player.getCompassTarget().getZ());
+                Location location = getCompassTargetLocation(player);
                 if (player.getWorld().getEnvironment() == World.Environment.NETHER) {
                     location = Variables.playerPortalLocationSpawnMap.get(player.getUniqueId());
                     location.setY(player.getLocation().getY());
@@ -70,18 +72,10 @@ public class PlayerInteractListener implements Listener {
                     particleBuilder.spawn();
                 }
 
-                if (Variables.targetCompassPlayers.get(player.getUniqueId()) == null)
-                    if (player.getWorld().getEnvironment() == World.Environment.NETHER) {
-                        distance = (int) Math.round(Variables.playerPortalLocationSpawnMap.get(player.getUniqueId()).distance(player.getLocation()));
-                    } else {
-                        distance = (int) Math.round(player.getCompassTarget().distance(player.getLocation()));
-                    }
-                else
-                    distance = (int) Math.round(Variables.targetCompassPlayers.get(player.getUniqueId()).getLocation().distance(player.getLocation()));
                 if (distance > 10)
                     player.sendMessage(new Message("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel!", true).getMessageAsString());
                 else {
-                    double playerHeightToTarget = player.getLocation().getY() - player.getCompassTarget().getY();
+                    double playerHeightToTarget = player.getLocation().getY() - targetLocation.getY();
                     if (playerHeightToTarget <= -4)
                         player.sendMessage(new Message("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel! (Oben)", true).getMessageAsString());
                     else if (playerHeightToTarget >= 4)
@@ -114,5 +108,15 @@ public class PlayerInteractListener implements Listener {
             inventoryBuilder.setPlaceHolder(new ItemBuilder(Material.GRAY_STAINED_GLASS).setName("").toItemStack(), false);
             player.openInventory(inventoryBuilder.build());
         }
+    }
+
+    private Location getCompassTargetLocation(Player player) {
+        if (Variables.targetCompassPlayers.get(player.getUniqueId()) == null)
+            if (player.getWorld().getEnvironment() == World.Environment.NETHER)
+                return Variables.playerPortalLocationSpawnMap.get(player.getUniqueId());
+            else
+                return player.getCompassTarget();
+
+        return Variables.targetCompassPlayers.get(player.getUniqueId()).getLocation();
     }
 }
