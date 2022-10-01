@@ -31,7 +31,7 @@ public class DefaultInventories {
     }
 
     public static @Nullable Inventory getWaypoints(Player player, Component name) {
-        if (configuration.getWayPoints(player).isEmpty()) {
+        if (configuration.getWayPoints(player) == null || configuration.getWayPoints(player).isEmpty()) {
             player.closeInventory();
             return null;
         }
