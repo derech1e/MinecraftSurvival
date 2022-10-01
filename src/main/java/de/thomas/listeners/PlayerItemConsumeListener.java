@@ -18,7 +18,7 @@ public class PlayerItemConsumeListener implements Listener {
 
         if (item.getType().equals(Material.BREAD) && item.getItemMeta().getCustomModelData() >= 1) {
             player.setFoodLevel(40);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20, 2, false, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 20, 0, false, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20 * 60, 0, false, false, false));
             player.addPotionEffect(new PotionEffect(PotionEffectType.LUCK, 20 * 60, 50, false, false, false));
         }

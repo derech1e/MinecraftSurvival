@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 public class RestartThread extends IThreadBase {
 
@@ -17,9 +18,10 @@ public class RestartThread extends IThreadBase {
     @Override
     public void startThread() {
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
-            Date date = new Date();
-            Calendar calendar = GregorianCalendar.getInstance();
-            calendar.setTime(date);
+//            Date date = new Date();
+            Calendar calendar = GregorianCalendar.getInstance(TimeZone.getTimeZone("Europe/Berlin"));
+            System.out.println(calendar.get(Calendar.HOUR_OF_DAY));
+//            calendar.setTime(date);
 
             if (calendar.get(Calendar.HOUR_OF_DAY) == 2 && calendar.get(Calendar.MINUTE) >= 45) {
                 int minutes = (calendar.get(Calendar.MINUTE) - 45) * 60;
