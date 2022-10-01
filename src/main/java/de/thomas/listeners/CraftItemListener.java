@@ -31,7 +31,7 @@ public class CraftItemListener implements Listener {
             return;
         }
 
-        if (event.getInventory().getResult().getType() == Material.BREAD && event.getInventory().getResult().getItemMeta().getCustomModelData() >= 1) {
+        if (event.getInventory().getResult().getType() == Material.BREAD && event.getInventory().getResult().getItemMeta().hasCustomModelData() && event.getInventory().getResult().getItemMeta().getCustomModelData() >= 1) {
             initBaguetteContext();
 
             ItemMeta itemMeta = Objects.requireNonNull(event.getInventory().getResult()).getItemMeta();

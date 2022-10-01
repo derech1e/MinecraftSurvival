@@ -8,7 +8,9 @@ import org.bukkit.Bukkit;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class ClockTimeThread extends IThreadBase {
 
@@ -17,6 +19,7 @@ public class ClockTimeThread extends IThreadBase {
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> Bukkit.getOnlinePlayers().forEach(player -> {
             if (MinecraftSurvival.getINSTANCE().configuration.getClockStateByPlayer(player)) {
                 DateFormat dateFormatReadable = new SimpleDateFormat("HH:mm:ss");
+                dateFormatReadable.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
                 player.sendActionBar(Component.text(dateFormatReadable.format(new Date()), NamedTextColor.GRAY));
             }
         }), 0, 20);
