@@ -56,7 +56,7 @@ public class InventoryClickListener implements Listener {
             } else if (displayName.equals("§fEinstellungen")) {
                 player.openInventory(DefaultInventories.getSettings(player));
             } else if (currentItem.getType().equals(Material.PLAYER_HEAD)) {
-                Player targetPlayer = Bukkit.getPlayer(displayName);
+                Player targetPlayer = Bukkit.getPlayer(displayName.replace("§f", ""));
                 if (targetPlayer == null) {
                     System.out.println("PLAYER NULL");
                     return;

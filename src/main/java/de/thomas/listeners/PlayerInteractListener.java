@@ -95,7 +95,7 @@ public class PlayerInteractListener implements Listener {
 
             player.getWorld().getPlayers().stream().filter(playerToFilter -> playerToFilter != player).forEachOrdered(filteredPlayer -> {
                 ItemBuilder itemBuilder = new ItemBuilder(Material.PLAYER_HEAD);
-                itemBuilder.setName(ChatColor.RESET + filteredPlayer.getName());
+                itemBuilder.setName(ChatColor.WHITE + filteredPlayer.getName());
                 itemBuilder.setSkullTexture(filteredPlayer);
                 inventoryBuilder.addItem(itemBuilder.toItemStack());
             });
