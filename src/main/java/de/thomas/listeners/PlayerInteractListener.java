@@ -26,63 +26,18 @@ public class PlayerInteractListener implements Listener {
         if (event.getItem() != null && event.getItem().getType().equals(Material.COMPASS)) {
             if (!player.isSneaking()) {
                 Location targetLocation = getCompassTargetLocation(player);
+                if(targetLocation == null) {
+                    return;
+                }
                 player.setCompassTarget(targetLocation);
+
+                spawnParticlesAtLocation(player, targetLocation.clone());
+
                 int distance = (int) Math.round(targetLocation.distance(player.getLocation()));
-
-                // particle effects for targetLocation
-                ParticleBuilder particleBuilder = new ParticleBuilder(Particle.REDSTONE);
-                particleBuilder.color(new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255));
-                particleBuilder.count(1);
-                double min = player.getLocation().getY() - 20;
-                double max = player.getLocation().getY() + 20;
-
-                int radius = 2;
-                int particles = 40;
-                float curve = 8;
-                int strands = 5 + new Random().nextInt(10);
-                double rotation = Math.PI / 3;
-
-                Location location = getCompassTargetLocation(player);
-                if (player.getWorld().getEnvironment() == World.Environment.NETHER) {
-                    location = Variables.playerPortalLocationSpawnMap.get(player.getUniqueId());
-                    location.setY(player.getLocation().getY());
-                }
-
-                for (double i = 1; i <= strands; i++) {
-                    for (double j = 1; j <= particles; j++) {
-                        float ratio = (float) j / particles;
-                        double angle = curve * ratio * 2 * Math.PI / strands + (2 * Math.PI * i / strands) + rotation;
-                        double x = Math.cos(angle) * ratio * radius;
-                        double z = Math.sin(angle) * ratio * radius;
-
-                        particleBuilder.location(location.clone().add(0, 15, 0).add(x, j / 10, z));
-                        particleBuilder.receivers(player);
-                        particleBuilder.spawn();
-                    }
-                }
-
-                particleBuilder.color(255, 20, 80);
-                for (double i = min; i < max; i = i + 0.25) {
-                    location.setY(i);
-                    do {
-                        location.subtract(0, 1, 0);
-                    } while (!location.getBlock().getType().isAir());
-                    particleBuilder.location(location);
-                    particleBuilder.receivers(player);
-                    particleBuilder.spawn();
-                }
-
-                if (distance > 10)
-                    player.sendMessage(new Message("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel!", true).getMessageAsString());
-                else {
-                    double playerHeightToTarget = player.getLocation().getY() - targetLocation.getY();
-                    if (playerHeightToTarget <= -4)
-                        player.sendMessage(new Message("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel! (Oben)", true).getMessageAsString());
-                    else if (playerHeightToTarget >= 4)
-                        player.sendMessage(new Message("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel! (Unten)", true).getMessageAsString());
-                    else
-                        player.sendMessage(new Message("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel!", true).getMessageAsString());
-                }
+                double distanceY = Math.round(player.getLocation().getY() - targetLocation.getY());
+                System.out.println(distanceY);
+                boolean isNegative = Double.doubleToRawLongBits(distanceY) < 0;
+                player.sendMessage(new Message(String.format("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel! " + ChatColor.GRAY + "%s", isNegative ? "▲" : distanceY == 0 ? "-" : "▼"), true).getMessageAsString());
                 return;
             }
             int inventorySize = Variables.calculateInventorySize(playerCount + 2);
@@ -93,9 +48,9 @@ public class PlayerInteractListener implements Listener {
             spawnItemBuilder.setSkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2Y3Y2RlZWZjNmQzN2ZlY2FiNjc2YzU4NGJmNjIwODMyYWFhYzg1Mzc1ZTlmY2JmZjI3MzcyNDkyZDY5ZiJ9fX0=");
             inventoryBuilder.addItem(spawnItemBuilder.toItemStack());
 
-            player.getWorld().getPlayers().stream().filter(playerToFilter -> playerToFilter != player).forEachOrdered(filteredPlayer -> {
+            player.getWorld().getPlayers().stream().filter(playerToFilter -> playerToFilter != player && playerToFilter == null).forEachOrdered(filteredPlayer -> {
                 ItemBuilder itemBuilder = new ItemBuilder(Material.PLAYER_HEAD);
-                itemBuilder.setName(ChatColor.WHITE + filteredPlayer.getName());
+                itemBuilder.setName(ChatColor.RESET + filteredPlayer.getName());
                 itemBuilder.setSkullTexture(filteredPlayer);
                 inventoryBuilder.addItem(itemBuilder.toItemStack());
             });
@@ -110,13 +65,63 @@ public class PlayerInteractListener implements Listener {
         }
     }
 
-    private Location getCompassTargetLocation(Player player) {
-        if (Variables.targetCompassPlayers.get(player.getUniqueId()) == null)
-            if (player.getWorld().getEnvironment() == World.Environment.NETHER)
-                return Variables.playerPortalLocationSpawnMap.get(player.getUniqueId());
-            else
-                return player.getCompassTarget();
+    private void spawnParticlesAtLocation(Player player, Location location) {
 
-        return Variables.targetCompassPlayers.get(player.getUniqueId()).getLocation();
+        // particle effects for targetLocation
+        ParticleBuilder particleBuilder = new ParticleBuilder(Particle.REDSTONE);
+        particleBuilder.count(1);
+        particleBuilder.color(new Random().nextInt(255), new Random().nextInt(255), new Random().nextInt(255));
+        double min = player.getLocation().getY() - 20;
+        double max = player.getLocation().getY() + 20;
+
+        Location targetLocation = location.clone();
+
+        // Beacon
+        for (double i = min; i < max; i = i + 0.25) {
+            targetLocation.setY(i);
+            do {
+                targetLocation.subtract(0, 1, 0);
+            } while (!targetLocation.getBlock().getType().isAir());
+            particleBuilder.location(targetLocation.clone().subtract(0,5,0));
+            particleBuilder.receivers(player);
+            particleBuilder.spawn();
+        }
+
+        // Cone
+        int radius = 2;
+        int particles = 40;
+        float curve = 8;
+        int strands = 5 + new Random().nextInt(10);
+        double rotation = Math.PI / 3;
+
+        for (double i = 1; i <= strands; i++) {
+            for (double y = 1; y <= particles; y++) {
+                float ratio = (float) y / particles;
+                double angle = curve * ratio * 2 * Math.PI / strands + (2 * Math.PI * i / strands) + rotation;
+                double x = Math.cos(angle) * ratio * radius;
+                double z = Math.sin(angle) * ratio * radius;
+
+                particleBuilder.location(targetLocation.clone().subtract(0,5,0).add(x, y / 10, z));
+                particleBuilder.receivers(player);
+                particleBuilder.spawn();
+            }
+        }
+    }
+
+    private Location getCompassTargetLocation(Player player) {
+        Player targetPlayer = Variables.targetCompassPlayers.get(player.getUniqueId());
+        switch (player.getWorld().getEnvironment()) {
+            case NORMAL, THE_END -> {
+                if (targetPlayer == null)
+                    return player.getBedSpawnLocation();
+                return targetPlayer.getLocation();
+            }
+            case NETHER -> {
+                if (targetPlayer == null)
+                    return Variables.playerPortalLocationSpawnMap.getOrDefault(player.getUniqueId(), player.getCompassTarget()); // TODO: Save player portal location
+                return targetPlayer.getLocation();
+            }
+        }
+        return player.getWorld().getSpawnLocation();
     }
 }
