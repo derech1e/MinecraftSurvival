@@ -20,7 +20,7 @@ public class RestartThread extends IThreadBase {
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
             Calendar calendar = GregorianCalendar.getInstance(TimeZone.getTimeZone("Europe/Berlin"));
 
-            if (calendar.get(Calendar.HOUR_OF_DAY) == 2 && calendar.get(Calendar.MINUTE) >= 45) {
+            if (calendar.get(Calendar.HOUR_OF_DAY) == 1 && calendar.get(Calendar.MINUTE) >= 45) {
                 int minutes = (calendar.get(Calendar.MINUTE) - 45) * 60;
                 startCountdown(minutes);
                 stopThread();
