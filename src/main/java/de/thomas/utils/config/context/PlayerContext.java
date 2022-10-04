@@ -20,7 +20,7 @@ public record PlayerContext(boolean clock, List<WayPoint> waypoints,
      * Default ctr required for reflections
      */
     public PlayerContext() {
-        this(true, new ArrayList<>(), 0, new Location(Bukkit.getWorld("world_nether"), 0,0,0));
+        this(true, new ArrayList<>(), 0, new Location(Bukkit.getWorld("world_nether"), 0, 0, 0));
     }
 
     @Override

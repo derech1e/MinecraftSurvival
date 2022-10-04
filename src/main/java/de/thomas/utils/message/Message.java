@@ -20,6 +20,7 @@ public class Message {
         this.prefix = false;
         this.errorMessageType = ErrorMessageType.EMPTY;
     }
+
     @Deprecated
     public Message(String message, boolean prefix) {
         this.prefix = prefix;
@@ -45,10 +46,8 @@ public class Message {
                     Component.text("Du musst ein Spieler sein um diesen Befehl ausführen zu können!", NamedTextColor.RED);
             case NOT_ENOUGH_PERMISSION ->
                     Component.text("Du hast nicht genügen Berechtigungen um diesen Befehl ausführen zu können!", NamedTextColor.RED);
-            case NOT_EXIST ->
-                    Component.text("Dieser Befehl existiert nicht!", NamedTextColor.RED);
-            case NULL, FALSE_PARAM ->
-                    Component.text("Ein Nicht bekannter Fehler ist aufgetreten!", NamedTextColor.RED);
+            case NOT_EXIST -> Component.text("Dieser Befehl existiert nicht!", NamedTextColor.RED);
+            case NULL, FALSE_PARAM -> Component.text("Ein Nicht bekannter Fehler ist aufgetreten!", NamedTextColor.RED);
             default -> Component.text(message);
         };
     }
