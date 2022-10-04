@@ -1,11 +1,15 @@
 package de.thomas.listeners;
 
 import com.destroystokyo.paper.ParticleBuilder;
+import de.thomas.minecraftsurvival.MinecraftSurvival;
 import de.thomas.utils.Variables;
 import de.thomas.utils.builder.InventoryBuilder;
 import de.thomas.utils.builder.ItemBuilder;
 import de.thomas.utils.message.Message;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,7 +30,7 @@ public class PlayerInteractListener implements Listener {
         if (event.getItem() != null && event.getItem().getType().equals(Material.COMPASS)) {
             if (!player.isSneaking()) {
                 Location targetLocation = getCompassTargetLocation(player);
-                if(targetLocation == null) {
+                if (targetLocation == null) {
                     return;
                 }
                 player.setCompassTarget(targetLocation);
@@ -35,7 +39,6 @@ public class PlayerInteractListener implements Listener {
 
                 int distance = (int) Math.round(targetLocation.distance(player.getLocation()));
                 double distanceY = Math.round(player.getLocation().getY() - targetLocation.getY());
-                System.out.println(distanceY);
                 boolean isNegative = Double.doubleToRawLongBits(distanceY) < 0;
                 player.sendMessage(new Message(String.format("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel! " + ChatColor.GRAY + "%s", isNegative ? "▲" : distanceY == 0 ? "-" : "▼"), true).getRawMessageString());
                 return;
@@ -82,7 +85,7 @@ public class PlayerInteractListener implements Listener {
             do {
                 targetLocation.subtract(0, 1, 0);
             } while (!targetLocation.getBlock().getType().isAir());
-            particleBuilder.location(targetLocation.clone().subtract(0,5,0));
+            particleBuilder.location(targetLocation.clone().subtract(0, 5, 0));
             particleBuilder.receivers(player);
             particleBuilder.spawn();
         }
@@ -101,7 +104,7 @@ public class PlayerInteractListener implements Listener {
                 double x = Math.cos(angle) * ratio * radius;
                 double z = Math.sin(angle) * ratio * radius;
 
-                particleBuilder.location(targetLocation.clone().subtract(0,5,0).add(x, y / 10, z));
+                particleBuilder.location(targetLocation.clone().subtract(0, 5, 0).add(x, y / 10, z));
                 particleBuilder.receivers(player);
                 particleBuilder.spawn();
             }
@@ -118,7 +121,7 @@ public class PlayerInteractListener implements Listener {
             }
             case NETHER -> {
                 if (targetPlayer == null)
-                    return Variables.playerPortalLocationSpawnMap.getOrDefault(player.getUniqueId(), player.getCompassTarget()); // TODO: Save player portal location
+                    return Variables.playerPortalLocationSpawnMap.getOrDefault(player.getUniqueId(), MinecraftSurvival.getINSTANCE().configuration.getNetherPortalLocationByPlayer(player));
                 return targetPlayer.getLocation();
             }
         }

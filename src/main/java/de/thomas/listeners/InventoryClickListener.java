@@ -48,7 +48,7 @@ public class InventoryClickListener implements Listener {
             if (currentItem.getItemMeta() == null || currentItem.getItemMeta().displayName() == null) return;
 
             Location spawnLocation =
-                    player.getWorld().getName().equals("world_nether") ? Variables.playerPortalLocationSpawnMap.get(player.getUniqueId()) :
+                    player.getWorld().getName().equals("world_nether") ? Variables.playerPortalLocationSpawnMap.getOrDefault(player.getUniqueId(), configuration.getNetherPortalLocationByPlayer(player)) :
                             player.getBedSpawnLocation() == null ? player.getWorld().getSpawnLocation() : player.getBedSpawnLocation();
 
             if (displayName.equals("§6Spawnpunkt")) {

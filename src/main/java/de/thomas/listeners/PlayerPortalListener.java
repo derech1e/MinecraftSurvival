@@ -1,5 +1,6 @@
 package de.thomas.listeners;
 
+import de.thomas.minecraftsurvival.MinecraftSurvival;
 import de.thomas.utils.Variables;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -23,6 +24,7 @@ public class PlayerPortalListener implements Listener {
                     location.add(0, 0.5, 0);
                     Variables.playerPortalLocationMap.put(event.getPlayer().getUniqueId(), location);
                     Variables.playerPortalLocationSpawnMap.put(event.getPlayer().getUniqueId(), event.getTo());
+                    MinecraftSurvival.getINSTANCE().configuration.updateNetherPortalLocationByPlayer(event.getPlayer(), event.getTo());
                     Variables.targetCompassPlayers.put(event.getPlayer().getUniqueId(), null);
                     event.getPlayer().setCompassTarget(location);
                 }

@@ -11,6 +11,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -32,7 +33,7 @@ public class PlayerConnectionListener implements Listener {
 
         PlayerContext playerContext = MinecraftSurvival.getINSTANCE().configuration.get(player.getUniqueId().toString(), PlayerContext.class);
         if (playerContext == null) {
-            playerContext = new PlayerContext(true, new ArrayList<>(), 0);
+            playerContext = new PlayerContext(true, new ArrayList<>(), 0, new Location(Bukkit.getWorld("world_nether"), 0,0,0));
         }
         Variables.playerConfigData.put(player.getUniqueId(), playerContext);
         MinecraftSurvival.getINSTANCE().configuration.set(player.getUniqueId().toString(), playerContext);
