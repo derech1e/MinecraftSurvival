@@ -16,7 +16,7 @@ public class PingCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@Nonnull CommandSender sender, @Nonnull Command command, @Nonnull String label, @Nonnull String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(new Message(ErrorMessageType.NOT_A_PLAYER).getMessageAsString());
+            sender.sendMessage(new Message(ErrorMessageType.NOT_A_PLAYER).getRawMessageString());
             return true;
         }
         if (args.length == 1) {
@@ -24,11 +24,11 @@ public class PingCommand implements CommandExecutor {
             if (targetPlayer != null)
                 player = targetPlayer;
             else {
-                sender.sendMessage(new Message(ChatColor.RED + "Dieser Spieler ist derzeit nicht online!", true).getMessageAsString());
+                sender.sendMessage(new Message(ChatColor.RED + "Dieser Spieler ist derzeit nicht online!", true).getRawMessageString());
                 return true;
             }
         }
-        sender.sendMessage(new Message("Dein Ping beträgt §6" + player.getPing() + "§f ms.", true).getMessageAsString());
+        sender.sendMessage(new Message("Dein Ping beträgt §6" + player.getPing() + "§f ms.", true).getRawMessageString());
 
         return false;
     }

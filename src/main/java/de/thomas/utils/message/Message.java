@@ -9,19 +9,25 @@ public class Message {
     private final ErrorMessageType errorMessageType;
     public String PREFIX = ChatColor.GRAY + "[" + ChatColor.GOLD + "M" + ChatColor.GREEN + "S" + ChatColor.GRAY + "]" + ChatColor.RESET + " ";
     private String message = PREFIX;
-    private boolean prefix = false;
+    private boolean prefix = true;
 
     public Message(ErrorMessageType errorMessageType) {
         this.errorMessageType = errorMessageType;
     }
 
+    public Message(String message) {
+        this.message = message;
+        this.prefix = false;
+        this.errorMessageType = ErrorMessageType.EMPTY;
+    }
+    @Deprecated
     public Message(String message, boolean prefix) {
         this.prefix = prefix;
         this.message = prefix ? PREFIX + message : message;
-        errorMessageType = ErrorMessageType.EMPTY;
+        this.errorMessageType = ErrorMessageType.EMPTY;
     }
 
-    public String getMessageAsString() {
+    public String getRawMessageString() {
         switch (errorMessageType) {
             case NOT_A_PLAYER ->
                     message += ChatColor.RED + "Du musst ein Spieler sein um diesen Befehl ausführen zu können!";
@@ -34,8 +40,22 @@ public class Message {
     }
 
     public Component getMessage() {
+        return switch (errorMessageType) {
+            case NOT_A_PLAYER ->
+                    Component.text("Du musst ein Spieler sein um diesen Befehl ausführen zu können!", NamedTextColor.RED);
+            case NOT_ENOUGH_PERMISSION ->
+                    Component.text("Du hast nicht genügen Berechtigungen um diesen Befehl ausführen zu können!", NamedTextColor.RED);
+            case NOT_EXIST ->
+                    Component.text("Dieser Befehl existiert nicht!", NamedTextColor.RED);
+            case NULL, FALSE_PARAM ->
+                    Component.text("Ein Nicht bekannter Fehler ist aufgetreten!", NamedTextColor.RED);
+            default -> Component.text(message);
+        };
+    }
+
+    public Component getPrefixedMessage() {
         if (!this.prefix)
-            PREFIX = "";
+            this.PREFIX = "";
 
         return switch (errorMessageType) {
             case NOT_A_PLAYER ->
@@ -46,7 +66,7 @@ public class Message {
                     Component.text(PREFIX).append(Component.text("Dieser Befehl existiert nicht!", NamedTextColor.RED));
             case NULL, FALSE_PARAM ->
                     Component.text(PREFIX).append(Component.text("Ein Nicht bekannter Fehler ist aufgetreten!", NamedTextColor.RED));
-            default -> Component.text(message);
+            default -> Component.text(PREFIX).append(Component.text(message));
         };
     }
 }

@@ -37,7 +37,7 @@ public class PlayerInteractListener implements Listener {
                 double distanceY = Math.round(player.getLocation().getY() - targetLocation.getY());
                 System.out.println(distanceY);
                 boolean isNegative = Double.doubleToRawLongBits(distanceY) < 0;
-                player.sendMessage(new Message(String.format("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel! " + ChatColor.GRAY + "%s", isNegative ? "▲" : distanceY == 0 ? "-" : "▼"), true).getMessageAsString());
+                player.sendMessage(new Message(String.format("Es sind noch " + ChatColor.GOLD + distance + ChatColor.WHITE + " Blöcke bis zum Ziel! " + ChatColor.GRAY + "%s", isNegative ? "▲" : distanceY == 0 ? "-" : "▼"), true).getRawMessageString());
                 return;
             }
             int inventorySize = Variables.calculateInventorySize(playerCount + 2);

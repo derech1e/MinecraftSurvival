@@ -2,6 +2,7 @@ package de.thomas.listeners;
 
 import de.thomas.minecraftsurvival.MinecraftSurvival;
 import de.thomas.utils.message.Message;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -31,7 +32,7 @@ public class PlayerBedListener implements Listener {
         playerInBed.add(player.getUniqueId());
 
         int countToSkip = getPlayerCountToSkip() - playerInBed.size();
-        Bukkit.broadcast(new Message(ChatColor.GOLD + player.getName() + ChatColor.WHITE + " hat sich ins Bett gelegt." + (countToSkip > 0 ? " (Noch " + countToSkip + ")" : ""), true).getMessage());
+        broadcastToWorld(new Message(ChatColor.GOLD + player.getName() + ChatColor.WHITE + " hat sich ins Bett gelegt." + (countToSkip > 0 ? " (Noch " + countToSkip + ")" : ""), true).getMessage());
 
         if (canSkip()) {
             skipNight(false, player);
@@ -43,7 +44,7 @@ public class PlayerBedListener implements Listener {
             inProgress = true;
             if (!(player.getWorld().getTime() > 23850 || player.getWorld().getTime() < 12300)) {
                 player.getWorld().setTime(0);
-                Bukkit.broadcast(new Message(ChatColor.GREEN + "Guten Morgen :)", true).getMessage());
+                broadcastToWorld(new Message(ChatColor.GREEN + "Guten Morgen :)", true).getMessage());
             }
             if (!player.getWorld().isClearWeather() || player.getWorld().isThundering()) {
                 player.getWorld().setClearWeatherDuration(new Random().nextInt((minToTicks(80) - minToTicks(30) + 1)) + minToTicks(30));
@@ -64,7 +65,7 @@ public class PlayerBedListener implements Listener {
 
         if (!inProgress) {
             int countToSkip = (getPlayerCountToSkip() - playerInBed.size());
-            Bukkit.broadcast(new Message(ChatColor.GOLD + player.getName() + ChatColor.WHITE + " hat das Bett verlassen." + (countToSkip > 0 ? " (Noch " + countToSkip + ")" : ""), false).getMessage());
+            broadcastToWorld(new Message(ChatColor.GOLD + player.getName() + ChatColor.WHITE + " hat das Bett verlassen." + (countToSkip > 0 ? " (Noch " + countToSkip + ")" : ""), false).getMessage());
         }
     }
 
@@ -84,10 +85,14 @@ public class PlayerBedListener implements Listener {
     }
 
     private int getPlayerCountToSkip() {
-        return Math.max(Math.round(50 * Bukkit.getOnlinePlayers().size() / 100f), 1);
+        return Math.max(Math.round(50 * Bukkit.getWorld("world").getPlayers().size() / 100f), 1);
     }
 
     private int minToTicks(int min) {
         return min * 60 * 20;
+    }
+
+    private void broadcastToWorld(Component message) {
+        Bukkit.getWorld("world").getPlayers().forEach(player -> player.sendMessage(message));
     }
 }
