@@ -51,7 +51,7 @@ public class PlayerInteractListener implements Listener {
             spawnItemBuilder.setSkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2Y3Y2RlZWZjNmQzN2ZlY2FiNjc2YzU4NGJmNjIwODMyYWFhYzg1Mzc1ZTlmY2JmZjI3MzcyNDkyZDY5ZiJ9fX0=");
             inventoryBuilder.addItem(spawnItemBuilder.toItemStack());
 
-            player.getWorld().getPlayers().stream().filter(playerToFilter -> playerToFilter != player && playerToFilter == null).forEachOrdered(filteredPlayer -> {
+            player.getWorld().getPlayers().stream().filter(playerToFilter -> playerToFilter != player && playerToFilter != null).forEachOrdered(filteredPlayer -> {
                 ItemBuilder itemBuilder = new ItemBuilder(Material.PLAYER_HEAD);
                 itemBuilder.setName(ChatColor.RESET + filteredPlayer.getName());
                 itemBuilder.setSkullTexture(filteredPlayer);
@@ -116,7 +116,7 @@ public class PlayerInteractListener implements Listener {
         switch (player.getWorld().getEnvironment()) {
             case NORMAL, THE_END -> {
                 if (targetPlayer == null)
-                    return player.getBedSpawnLocation();
+                    return player.getCompassTarget();
                 return targetPlayer.getLocation();
             }
             case NETHER -> {
@@ -125,6 +125,7 @@ public class PlayerInteractListener implements Listener {
                 return targetPlayer.getLocation();
             }
         }
+        // Basically not reachable
         return player.getWorld().getSpawnLocation();
     }
 }
