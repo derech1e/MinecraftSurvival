@@ -18,12 +18,16 @@ import java.util.UUID;
 public class PlayerMoveListener implements Listener {
 
     private final List<Material> materials = Arrays.asList(Material.GRAY_CONCRETE, Material.LIGHT_GRAY_CONCRETE);
+    private final List<Material> surfaceMaterials = Arrays.asList(Material.DIRT_PATH);
     private final HashMap<UUID, Integer> accelerateIDs = new HashMap<>();
     private final HashMap<UUID, Integer> slowDownIDs = new HashMap<>();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
+
+        if (player.getName().equals("TheChamp_")) return;
+
         Material prev = event.getFrom().clone().subtract(0, 1, 0).getBlock().getType();
         Material next = event.getTo().clone().subtract(0, 1, 0).getBlock().getType();
 
@@ -35,7 +39,7 @@ public class PlayerMoveListener implements Listener {
         }
         // Note: prev == next check does not work. Server cant process the high speed of the player
 
-        if (isStandingOnBlock(event.getTo().clone().subtract(0, 0.9, 0), materials)) {
+        if (canSpeed(event.getTo().clone())) {
             removeTask(player, slowDownIDs);
             if (!accelerateIDs.containsKey(player.getUniqueId()) && player.getWalkSpeed() != 1) {
                 accelerateIDs.put(player.getUniqueId(), Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
@@ -63,6 +67,10 @@ public class PlayerMoveListener implements Listener {
     private void removeTask(Player player, HashMap<UUID, Integer> taskIdMap) {
         Bukkit.getScheduler().cancelTask(taskIdMap.getOrDefault(player.getUniqueId(), -1));
         taskIdMap.remove(player.getUniqueId());
+    }
+
+    private boolean canSpeed(Location location) {
+        return isStandingOnBlock(location.subtract(0, 0.9, 0), materials) || (isStandingOnBlock(location.subtract(0, 0.9, 0), surfaceMaterials) && isStandingOnBlock(location.subtract(0, 1.9, 0), materials));
     }
 
     private boolean isStandingOnBlock(Location location, List<Material> materials) {

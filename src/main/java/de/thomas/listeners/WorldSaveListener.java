@@ -16,7 +16,7 @@ public class WorldSaveListener implements Listener {
 
     @EventHandler
     public void onSave(WorldSaveEvent event) {
-        if (event.getWorld().getName().equals("world") && (lastTime + 60000 * 60) <= new Date().getTime()) {
+        if (event.getWorld().getName().equals("world") && (lastTime + 60000 * 30) <= new Date().getTime()) {
             Bukkit.getOnlinePlayers().stream().filter(Player::isOp).forEach(player -> new Message(ChatColor.GRAY.toString() + ChatColor.ITALIC + "[Server: Saved the game]").getMessage());
             lastTime = new Date().getTime();
         }
