@@ -77,7 +77,7 @@ public class MinecraftSurvival extends JavaPlugin {
     }
 
     private void registerResourcePack() throws Exception {
-        final String url = "http://132.145.251.78/BaguettePack.zip";
+        final String url = "https://nuerk-solutions.de/BaguettePack.zip";
         String hash = "C8B9C31CC9E40801E171810A198CFF5F7E911525";
 
         ResourcePackURLData data = HashingUtil.performPackCheck(url, hash);
