@@ -26,7 +26,7 @@ public class PlayerMoveListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
 
-        if (player.getName().equals("TheChamp_")) return;
+        if (player.getName().equals("TheChamp_") || player.getName().equals("be_ricarda") || player.getName().equals("kurzvorneun")) return;
 
         Material prev = event.getFrom().clone().subtract(0, 1, 0).getBlock().getType();
         Material next = event.getTo().clone().subtract(0, 1, 0).getBlock().getType();
