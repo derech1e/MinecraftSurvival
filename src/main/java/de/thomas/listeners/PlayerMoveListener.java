@@ -39,7 +39,7 @@ public class PlayerMoveListener implements Listener {
         }
         // Note: prev == next check does not work. Server cant process the high speed of the player
 
-        if (canSpeed(event.getTo().clone())) {
+        if (canSpeed(event.getTo())) {
             removeTask(player, slowDownIDs);
             if (!accelerateIDs.containsKey(player.getUniqueId()) && player.getWalkSpeed() != 1) {
                 accelerateIDs.put(player.getUniqueId(), Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
@@ -70,7 +70,7 @@ public class PlayerMoveListener implements Listener {
     }
 
     private boolean canSpeed(Location location) {
-        return isStandingOnBlock(location.subtract(0, 0.9, 0), materials) || (isStandingOnBlock(location.subtract(0, 0.9, 0), surfaceMaterials) && isStandingOnBlock(location.subtract(0, 1.9, 0), materials));
+        return (isStandingOnBlock(location.clone().subtract(0, 0.9, 0), materials)) || (isStandingOnBlock(location.clone().subtract(0, 0.8, 0), surfaceMaterials) && isStandingOnBlock(location.clone().subtract(0, 1.8, 0), materials));
     }
 
     private boolean isStandingOnBlock(Location location, List<Material> materials) {
