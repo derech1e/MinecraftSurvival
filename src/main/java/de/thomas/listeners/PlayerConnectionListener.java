@@ -33,16 +33,16 @@ public class PlayerConnectionListener implements Listener {
 
         PlayerContext playerContext = MinecraftSurvival.getINSTANCE().configuration.get(player.getUniqueId().toString(), PlayerContext.class);
         if (playerContext == null) {
-            playerContext = new PlayerContext(true, new ArrayList<>(), 0, new Location(Bukkit.getWorld("world_nether"), 0, 0, 0));
+            playerContext = new PlayerContext(true, new ArrayList<>(), 0, new Location(Bukkit.getWorld("world_nether"), 0, 0, 0), false);
         }
         Variables.playerConfigData.put(player.getUniqueId(), playerContext);
         MinecraftSurvival.getINSTANCE().configuration.set(player.getUniqueId().toString(), playerContext);
         MinecraftSurvival.getINSTANCE().configuration.save();
 
         Variables.resourcePack.setResourcePack(player.getUniqueId());
+        RecipeManager.discoverRecipe(player);
 
         if (!player.hasPlayedBefore()) {
-            RecipeManager.discoverRecipe(player);
             new ItemBuilder(Material.COMPASS).setName("§6Der weise Wegweiser").addLore("HILFE: ICH DREHE GLEICH DURCH HIER").inject(player.getInventory());
         }
     }

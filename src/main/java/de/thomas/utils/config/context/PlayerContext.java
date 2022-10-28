@@ -15,12 +15,13 @@ import java.util.List;
  * @since 10.11.2021
  **/
 public record PlayerContext(boolean clock, List<WayPoint> waypoints,
-                            int baguetteCounter, Location netherPortalLocation) implements JsonConfigSerializable {
+                            int baguetteCounter, Location netherPortalLocation,
+                            boolean speedBlock) implements JsonConfigSerializable {
     /**
      * Default ctr required for reflections
      */
     public PlayerContext() {
-        this(true, new ArrayList<>(), 0, new Location(Bukkit.getWorld("world_nether"), 0, 0, 0));
+        this(true, new ArrayList<>(), 0, new Location(Bukkit.getWorld("world_nether"), 0, 0, 0), false);
     }
 
     @Override
@@ -36,19 +37,8 @@ public record PlayerContext(boolean clock, List<WayPoint> waypoints,
             waypoints.add(new WayPoint(id, name, location));
         });
         Location netherPortalLocation = Variables.stringToLocation(object.get("netherPortalLocation").getAsString());
-        return new PlayerContext(clock, waypoints, baguetteCounter, netherPortalLocation);
-    }
-
-    public boolean isClock() {
-        return clock;
-    }
-
-    public List<WayPoint> getWaypoints() {
-        return waypoints;
-    }
-
-    public int getBaguetteCounter() {
-        return baguetteCounter;
+        boolean speedBlock = object.get("speedBlock").getAsBoolean();
+        return new PlayerContext(clock, waypoints, baguetteCounter, netherPortalLocation, speedBlock);
     }
 
     @Override
@@ -65,5 +55,6 @@ public record PlayerContext(boolean clock, List<WayPoint> waypoints,
         });
         object.add("waypoints", waypoints);
         object.addProperty("netherPortalLocation", Variables.locationToString(netherPortalLocation));
+        object.addProperty("speedBlock", this.speedBlock);
     }
 }

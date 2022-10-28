@@ -33,9 +33,16 @@ public class Configuration extends AbstractConfiguration {
 
     public boolean getClockStateByPlayer(Player player) {
         if (Variables.playerConfigData.containsKey(player.getUniqueId()))
-            return Variables.playerConfigData.get(player.getUniqueId()).isClock();
+            return Variables.playerConfigData.get(player.getUniqueId()).clock();
         else
             return true;
+    }
+
+    public boolean getSpeedBlockStateByPlayer(Player player) {
+        if (Variables.playerConfigData.containsKey(player.getUniqueId()))
+            return Variables.playerConfigData.get(player.getUniqueId()).speedBlock();
+        else
+            return false;
     }
 
     public Location getNetherPortalLocationByPlayer(Player player) {
@@ -46,13 +53,13 @@ public class Configuration extends AbstractConfiguration {
 
     public int getBaguetteCounterByPlayer(Player player) {
         if (Variables.playerConfigData.containsKey(player.getUniqueId()))
-            return Variables.playerConfigData.get(player.getUniqueId()).getBaguetteCounter();
+            return Variables.playerConfigData.get(player.getUniqueId()).baguetteCounter();
         else
             return 0;
     }
 
     public void addBaguetteCounter(Player player) {
-        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(getClockStateByPlayer(player), getWayPoints(player), getBaguetteCounterByPlayer(player) + 1, getNetherPortalLocationByPlayer(player)));
+        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(getClockStateByPlayer(player), getWayPoints(player), getBaguetteCounterByPlayer(player) + 1, getNetherPortalLocationByPlayer(player), getSpeedBlockStateByPlayer(player)));
     }
 
     public void addWayPoint(Player player, String name) {
@@ -75,24 +82,28 @@ public class Configuration extends AbstractConfiguration {
     }
 
     public List<WayPoint> getWayPoints(Player player) {
-        return Variables.playerConfigData.get(player.getUniqueId()).getWaypoints();
+        return Variables.playerConfigData.get(player.getUniqueId()).waypoints();
     }
 
     public List<WayPoint> getWorldWayPoints(Player player) {
-        return Variables.playerConfigData.get(player.getUniqueId()).getWaypoints().stream().filter(wayPoint -> wayPoint.location().getWorld().getName().equals(player.getWorld().getName())).collect(Collectors.toList());
+        return Variables.playerConfigData.get(player.getUniqueId()).waypoints().stream().filter(wayPoint -> wayPoint.location().getWorld().getName().equals(player.getWorld().getName())).collect(Collectors.toList());
     }
 
     public void setWaypoints(Player player, List<WayPoint> wayPoints) {
-        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(getClockStateByPlayer(player), wayPoints, getBaguetteCounterByPlayer(player), getNetherPortalLocationByPlayer(player)));
+        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(getClockStateByPlayer(player), wayPoints, getBaguetteCounterByPlayer(player), getNetherPortalLocationByPlayer(player), getSpeedBlockStateByPlayer(player)));
     }
 
     public boolean updateClockStateByPlayer(Player player, boolean state) {
-        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(state, getWayPoints(player), getBaguetteCounterByPlayer(player), getNetherPortalLocationByPlayer(player)));
+        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(state, getWayPoints(player), getBaguetteCounterByPlayer(player), getNetherPortalLocationByPlayer(player), getSpeedBlockStateByPlayer(player)));
         return state;
     }
 
-    public Location updateNetherPortalLocationByPlayer(Player player, Location location) {
-        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(getClockStateByPlayer(player), getWayPoints(player), getBaguetteCounterByPlayer(player), location));
-        return location;
+    public boolean updateSpeedBlockStateByPlayer(Player player, boolean state) {
+        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(state, getWayPoints(player), getBaguetteCounterByPlayer(player), getNetherPortalLocationByPlayer(player), state));
+        return state;
+    }
+
+    public void updateNetherPortalLocationByPlayer(Player player, Location location) {
+        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(getClockStateByPlayer(player), getWayPoints(player), getBaguetteCounterByPlayer(player), location, getSpeedBlockStateByPlayer(player)));
     }
 }

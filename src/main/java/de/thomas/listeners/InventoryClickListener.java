@@ -69,6 +69,9 @@ public class InventoryClickListener implements Listener {
             event.setCancelled(true);
             if (displayName.equals("§6Wegpunkte")) {
                 player.openInventory(DefaultInventories.getWayPointsOverview());
+            } else if(displayName.contains("Autobahn")) {
+                boolean speedBlockState = configuration.updateSpeedBlockStateByPlayer(player, !configuration.getSpeedBlockStateByPlayer(player));
+                event.getClickedInventory().setItem(4, new ItemBuilder(Material.PLAYER_HEAD).setSkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzA2ZDdiZWZjODJmMjAxZjgzZTE5Mzc2N2U2M2Y4MTAzNzIxNWFmZDQ4M2EzOGQzNjk2NTk4MmNhNmQwIn19fQ==").setName(ChatColor.GOLD + "Autobahn: " + (speedBlockState ? ChatColor.GREEN + "AN" : ChatColor.RED + "AUS")).toItemStack());
             } else if (displayName.contains("Uhr")) {
                 boolean clockState = configuration.updateClockStateByPlayer(player, !configuration.getClockStateByPlayer(player));
                 event.getClickedInventory().setItem(6, new ItemBuilder(Material.PLAYER_HEAD).setSkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODQ3N2RhZmM4YzllYTA3OTk2MzMzODE3OTM4NjZkMTQ2YzlhMzlmYWQ0YzY2ODRlNzExN2Q5N2U5YjZjMyJ9fX0=").setName(ChatColor.GOLD + "Uhrzeit: " + (clockState ? ChatColor.GREEN + "AN" : ChatColor.RED + "AUS")).toItemStack());
