@@ -41,6 +41,7 @@ public class DefaultInventories {
             if (wayPoint.location().getWorld().getName().equals(player.getWorld().getName())) {
                 ItemBuilder itemBuilder = new ItemBuilder(Material.PLAYER_HEAD);
                 itemBuilder.setName(wayPoint.name());
+                itemBuilder.addLore("§7" + String.join(",", "X: " + wayPoint.location().getBlockX(), "Y: " + wayPoint.location().getBlockY(), "Z: " + wayPoint.location().getBlockZ()));
                 itemBuilder.setSkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2ZhZWE5NzdhZWViYTFjODM3NjY5NDEzYjg4Yzk1YzI3ZDA4ZmI0MjlmM2RmZmI0MzFhOGZhYjM2MWE5ZiJ9fX0=");
                 inventoryBuilder.addItem(itemBuilder.toItemStack());
             }

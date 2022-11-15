@@ -53,7 +53,7 @@ public class PlayerMoveListener implements Listener {
             }
             if (!accelerateIDs.containsKey(player.getUniqueId()) && player.getWalkSpeed() != 1) {
                 accelerateIDs.put(player.getUniqueId(), Bukkit.getScheduler().scheduleSyncRepeatingTask(MinecraftSurvival.getINSTANCE(), () -> {
-                    float newWalkSpeed = player.getWalkSpeed() < 0.9F ? player.getWalkSpeed() + 0.1F : 1F;
+                    float newWalkSpeed = player.getWalkSpeed() < 0.5F ? player.getWalkSpeed() + 0.1F : 0.6F;
                     player.setWalkSpeed(newWalkSpeed);
                     if (player.getWalkSpeed() == 1F) {
                         removeTask(player, accelerateIDs);
