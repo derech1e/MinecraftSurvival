@@ -6,10 +6,7 @@ import de.thomas.utils.Variables;
 import de.thomas.utils.builder.InventoryBuilder;
 import de.thomas.utils.builder.ItemBuilder;
 import de.thomas.utils.message.Message;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -120,7 +117,7 @@ public class PlayerInteractListener implements Listener {
                 return targetPlayer.getLocation();
             }
             case NETHER -> {
-                if (targetPlayer == null)
+                if (targetPlayer == null || targetPlayer.getWorld().getEnvironment() != World.Environment.NETHER)
                     return Variables.playerPortalLocationSpawnMap.getOrDefault(player.getUniqueId(), MinecraftSurvival.getINSTANCE().configuration.getNetherPortalLocationByPlayer(player));
                 return targetPlayer.getLocation();
             }
