@@ -19,6 +19,9 @@ public class PlayerPortalListener implements Listener {
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
             switch (event.getTo().getWorld().getEnvironment()) {
                 case NETHER -> {
+                    if (event.getPlayer().isSneaking()) {
+                        return;
+                    }
                     Location location = event.getFrom();
                     location.setYaw(location.getYaw() + 180);
                     location.add(0, 0.5, 0);
@@ -28,8 +31,11 @@ public class PlayerPortalListener implements Listener {
                     Variables.targetCompassPlayers.put(event.getPlayer().getUniqueId(), null);
                     event.getPlayer().setCompassTarget(location);
                 }
-                case NORMAL ->
-                        event.setTo(Variables.playerPortalLocationMap.getOrDefault(event.getPlayer().getUniqueId(), event.getTo()));
+                case NORMAL -> {
+                    if (event.getPlayer().isSneaking())
+                        return;
+                    event.setTo(Variables.playerPortalLocationMap.getOrDefault(event.getPlayer().getUniqueId(), event.getTo()));
+                }
             }
         }
     }
