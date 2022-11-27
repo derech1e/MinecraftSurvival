@@ -10,6 +10,7 @@ import de.thomas.utils.resourcepack.ResourcePackURLData;
 import de.thomas.utils.resourcepack.verification.HashingUtil;
 import de.thomas.utils.threads.ClockTimeThread;
 import de.thomas.utils.threads.RestartThread;
+import de.thomas.utils.threads.SnowThread;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -43,6 +44,7 @@ public class MinecraftSurvival extends JavaPlugin {
         //Load Threads
         new RestartThread().startThread();
         new ClockTimeThread().startThread();
+        new SnowThread().startThread();
 
         try {
             registerResourcePack();
