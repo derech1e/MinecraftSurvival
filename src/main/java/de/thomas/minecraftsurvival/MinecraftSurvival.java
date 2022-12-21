@@ -44,7 +44,7 @@ public class MinecraftSurvival extends JavaPlugin {
         //Load Threads
         new RestartThread().startThread();
         new ClockTimeThread().startThread();
-        new SnowThread().startThread();
+//        new SnowThread().startThread();
 
         try {
             registerResourcePack();
@@ -80,7 +80,7 @@ public class MinecraftSurvival extends JavaPlugin {
 
     private void registerResourcePack() throws Exception {
         final String url = "https://nuerk-solutions.de/BaguettePack.zip";
-        String hash = "C8B9C31CC9E40801E171810A198CFF5F7E911525";
+        String hash = "27019F3E5E673715CA2109B55E945BC533A01F44";
 
         ResourcePackURLData data = HashingUtil.performPackCheck(url, hash);
 
