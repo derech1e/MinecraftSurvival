@@ -10,7 +10,6 @@ import de.thomas.utils.resourcepack.ResourcePackURLData;
 import de.thomas.utils.resourcepack.verification.HashingUtil;
 import de.thomas.utils.threads.ClockTimeThread;
 import de.thomas.utils.threads.RestartThread;
-import de.thomas.utils.threads.SnowThread;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -80,7 +79,7 @@ public class MinecraftSurvival extends JavaPlugin {
 
     private void registerResourcePack() throws Exception {
         final String url = "https://nuerk-solutions.de/BaguettePack.zip";
-        String hash = "27019F3E5E673715CA2109B55E945BC533A01F44";
+        String hash = "C8B9C31CC9E40801E171810A198CFF5F7E911525";
 
         ResourcePackURLData data = HashingUtil.performPackCheck(url, hash);
 
