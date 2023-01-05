@@ -15,7 +15,7 @@ import java.util.List;
  * @since 10.11.2021
  **/
 public record PlayerContext(boolean clock, List<WayPoint> waypoints,
-                            int baguetteCounter, Location netherPortalLocation,
+                            int baguetteCounter, Location portalLocation,
                             boolean speedBlock) implements JsonConfigSerializable {
     /**
      * Default ctr required for reflections
@@ -36,9 +36,9 @@ public record PlayerContext(boolean clock, List<WayPoint> waypoints,
             Location location = Variables.stringToLocation(waypointObject.get("location").getAsString());
             waypoints.add(new WayPoint(id, name, location));
         });
-        Location netherPortalLocation = Variables.stringToLocation(object.get("netherPortalLocation").getAsString());
+        Location portalLocation = Variables.stringToLocation(object.get("portalLocation").getAsString());
         boolean speedBlock = object.get("speedBlock").getAsBoolean();
-        return new PlayerContext(clock, waypoints, baguetteCounter, netherPortalLocation, speedBlock);
+        return new PlayerContext(clock, waypoints, baguetteCounter, portalLocation, speedBlock);
     }
 
     @Override
@@ -54,7 +54,7 @@ public record PlayerContext(boolean clock, List<WayPoint> waypoints,
             waypoints.add(waypointObject);
         });
         object.add("waypoints", waypoints);
-        object.addProperty("netherPortalLocation", Variables.locationToString(netherPortalLocation));
+        object.addProperty("portalLocation", Variables.locationToString(portalLocation));
         object.addProperty("speedBlock", this.speedBlock);
     }
 }

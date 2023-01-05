@@ -6,6 +6,7 @@ import de.thomas.utils.builder.ItemBuilder;
 import de.thomas.utils.builder.impl.DefaultInventories;
 import de.thomas.utils.config.Configuration;
 import de.thomas.utils.config.context.WayPoint;
+import de.thomas.utils.interfaces.CompassTarget;
 import de.thomas.utils.message.ErrorMessageType;
 import de.thomas.utils.message.Message;
 import net.kyori.adventure.text.Component;
@@ -47,12 +48,12 @@ public class InventoryClickListener implements Listener {
 
             if (currentItem.getItemMeta() == null || currentItem.getItemMeta().displayName() == null) return;
 
-            Location spawnLocation =
-                    player.getWorld().getName().equals("world_nether") ? Variables.playerPortalLocationSpawnMap.getOrDefault(player.getUniqueId(), configuration.getNetherPortalLocationByPlayer(player)) :
+            Location worldExitLocation =
+                    !player.getWorld().getName().equals("world") ? Variables.playerPortalLocationSpawnMap.getOrDefault(player.getUniqueId(), configuration.getPortalLocationByPlayer(player)) :
                             player.getBedSpawnLocation() == null ? player.getWorld().getSpawnLocation() : player.getBedSpawnLocation();
 
             if (displayName.equals("§6Spawnpunkt")) {
-                setNewCompassTarget(player, spawnLocation, "den" + ChatColor.GOLD + " Spawnpunkt", null);
+                setNewCompassTarget(player, worldExitLocation, "den" + ChatColor.GOLD + " Spawnpunkt", null);
             } else if (displayName.equals("§fEinstellungen")) {
                 player.openInventory(DefaultInventories.getSettings(player));
             } else if (currentItem.getType().equals(Material.PLAYER_HEAD)) {
@@ -129,7 +130,7 @@ public class InventoryClickListener implements Listener {
 
     private void setNewCompassTarget(Player player, @Nullable Location location, String message, @Nullable Player targetPlayer) {
         if (location != null) {
-            Variables.targetCompassPlayers.put(player.getUniqueId(), targetPlayer);
+            Variables.targetCompassPlayers.put(player.getUniqueId(), new CompassTarget<>(player));
             int distance = (int) Math.round(player.getLocation().distance(location));
             player.setCompassTarget(location);
             player.sendMessage(new Message("Du hast " + message + ChatColor.WHITE + " als dein neues Ziel gesetzt. (" + ChatColor.GOLD + distance + (distance > 1 ? " Blöcke entfernt" : " Block entfernt") + ChatColor.WHITE + ")", true).getRawMessageString());

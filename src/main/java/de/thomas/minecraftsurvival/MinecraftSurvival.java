@@ -43,7 +43,6 @@ public class MinecraftSurvival extends JavaPlugin {
         //Load Threads
         new RestartThread().startThread();
         new ClockTimeThread().startThread();
-//        new SnowThread().startThread();
 
         try {
             registerResourcePack();

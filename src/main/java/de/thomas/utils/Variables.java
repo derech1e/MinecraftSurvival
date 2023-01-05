@@ -1,6 +1,7 @@
 package de.thomas.utils;
 
 import de.thomas.utils.config.context.PlayerContext;
+import de.thomas.utils.interfaces.CompassTarget;
 import de.thomas.utils.message.Message;
 import de.thomas.utils.resourcepack.ResourcePack;
 import net.kyori.adventure.text.Component;
@@ -10,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Variables {
@@ -18,9 +20,10 @@ public class Variables {
     public static final Component INVENTORY_NAME_SETTINGS = new Message(ChatColor.DARK_GRAY + "Einstellungen", false).getMessage();
     public static final Component INVENTORY_NAME_WAYPOINTS = new Message(ChatColor.GOLD + "Wegpunkte", false).getMessage();
     public static final Component INVENTORY_NAME_WAYPOINT_SELECT = new Message(ChatColor.GOLD + "Auswählen", false).getMessage();
+
     public static final Component INVENTORY_NAME_WAYPOINT_ADD = new Message(ChatColor.GREEN + "Hinzufügen", false).getMessage();
     public static final Component INVENTORY_NAME_WAYPOINT_DELETE = new Message(ChatColor.RED + "Entfernen", false).getMessage();
-    public static final HashMap<UUID, Player> targetCompassPlayers = new HashMap<>();
+    public static final HashMap<UUID, CompassTarget<?>> targetCompassPlayers = new HashMap<>();
     public static final HashMap<UUID, PlayerContext> playerConfigData = new HashMap<>();
     public static final HashMap<UUID, Location> playerPortalLocationSpawnMap = new HashMap<>();
     public static final String TOTAL_BAGUETTE_COUNTER_CONFIG_NAME = "totalBaguetteCounter";
