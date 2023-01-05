@@ -60,7 +60,7 @@ public class PlayerConnectionListener implements Listener {
     public void onServerListPing(PaperServerListPingEvent event) {
         boolean day = (Objects.requireNonNull(Bukkit.getWorld("world")).getTime() > 23850 || Objects.requireNonNull(Bukkit.getWorld("world")).getTime() < 12300);
         String time = "Es ist: " + (day ? "<green>Tag</green>" : "<dark_aqua>Nacht</dark_aqua>") + (Bukkit.getOnlinePlayers().size() != 0 ? "<reset> - " : "");
-        Component message = MiniMessage.miniMessage().deserialize(new Message("<rainbow>Survival Projekt #2022</rainbow><br>" + time + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")), false).getRawMessageString());
+        Component message = MiniMessage.miniMessage().deserialize(new Message("<rainbow>Survival Projekt #2022/23</rainbow><br>" + time + Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.joining(", ")), false).getRawMessageString());
         event.motd(message);
         event.setMaxPlayers(event.getNumPlayers());
     }
