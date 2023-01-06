@@ -6,7 +6,7 @@ import de.thomas.utils.builder.ItemBuilder;
 import de.thomas.utils.builder.impl.DefaultInventories;
 import de.thomas.utils.config.Configuration;
 import de.thomas.utils.config.context.WayPoint;
-import de.thomas.utils.interfaces.CompassTarget;
+import de.thomas.utils.CompassTarget;
 import de.thomas.utils.message.ErrorMessageType;
 import de.thomas.utils.message.Message;
 import net.kyori.adventure.text.Component;
@@ -23,7 +23,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -53,7 +53,7 @@ public class InventoryClickListener implements Listener {
                             player.getBedSpawnLocation() == null ? player.getWorld().getSpawnLocation() : player.getBedSpawnLocation();
 
             if (displayName.equals("§6Spawnpunkt")) {
-                setNewCompassTarget(player, worldExitLocation, "den" + ChatColor.GOLD + " Spawnpunkt", null);
+                setNewCompassTarget(player, CompassTarget.create(worldExitLocation), "den" + ChatColor.GOLD + " Spawnpunkt");
             } else if (displayName.equals("§fEinstellungen")) {
                 player.openInventory(DefaultInventories.getSettings(player));
             } else if (currentItem.getType().equals(Material.PLAYER_HEAD)) {
@@ -62,7 +62,7 @@ public class InventoryClickListener implements Listener {
                     player.sendMessage(new Message(ErrorMessageType.NULL).getMessage());
                     return;
                 }
-                setNewCompassTarget(player, targetPlayer.getLocation(), ChatColor.AQUA + targetPlayer.getName(), targetPlayer);
+                setNewCompassTarget(player, CompassTarget.create(targetPlayer), ChatColor.AQUA + targetPlayer.getName());
             }
 
             // Inventory Settings
@@ -70,7 +70,7 @@ public class InventoryClickListener implements Listener {
             event.setCancelled(true);
             if (displayName.equals("§6Wegpunkte")) {
                 player.openInventory(DefaultInventories.getWayPointsOverview());
-            } else if(displayName.contains("Autobahn")) {
+            } else if (displayName.contains("Autobahn")) {
                 boolean speedBlockState = configuration.updateSpeedBlockStateByPlayer(player, !configuration.getSpeedBlockStateByPlayer(player));
                 event.getClickedInventory().setItem(4, new ItemBuilder(Material.PLAYER_HEAD).setSkullTexture("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzA2ZDdiZWZjODJmMjAxZjgzZTE5Mzc2N2U2M2Y4MTAzNzIxNWFmZDQ4M2EzOGQzNjk2NTk4MmNhNmQwIn19fQ==").setName(ChatColor.GOLD + "Autobahn: " + (speedBlockState ? ChatColor.GREEN + "AN" : ChatColor.RED + "AUS")).toItemStack());
             } else if (displayName.contains("Uhr")) {
@@ -81,8 +81,8 @@ public class InventoryClickListener implements Listener {
             // Inventory Waypoints
         } else if (viewTitle.toString().equals(Variables.INVENTORY_NAME_WAYPOINTS.toString())) {
             event.setCancelled(true);
-            if (displayName.equals("§aHinzufügen")) {
-                new AnvilGUI.Builder()
+            switch (displayName) {
+                case "§aHinzufügen" -> new AnvilGUI.Builder()
                         .onComplete((anvilPlayer, text) -> {
                             configuration.addWayPoint(player, text);
                             anvilPlayer.sendMessage(new Message("Du hast den Wegpunkt §6" + text + ChatColor.WHITE + " auf §6X: " + Math.round(anvilPlayer.getLocation().getX()) + " Y: " + Math.round(anvilPlayer.getLocation().getY()) + " Z: " + Math.round(anvilPlayer.getLocation().getZ()) + " §rgesetzt!", true).getRawMessageString());
@@ -93,20 +93,22 @@ public class InventoryClickListener implements Listener {
                         .title("Wegpunktname!")
                         .plugin(MinecraftSurvival.getINSTANCE())
                         .open(player);
-            } else if (displayName.equals("§cEntfernen")) {
-                Inventory inventory = DefaultInventories.getWaypoints(player, Variables.INVENTORY_NAME_WAYPOINT_DELETE);
-                if (inventory == null) {
-                    player.sendMessage(new Message(ChatColor.RED + "Es gibt keine Wegpunkte zu entfernen!", true).getRawMessageString());
-                    return;
+                case "§cEntfernen" -> {
+                    Inventory inventory = DefaultInventories.getWaypoints(player, Variables.INVENTORY_NAME_WAYPOINT_DELETE);
+                    if (inventory == null) {
+                        player.sendMessage(new Message(ChatColor.RED + "Es gibt keine Wegpunkte zu entfernen!", true).getRawMessageString());
+                        return;
+                    }
+                    player.openInventory(inventory);
                 }
-                player.openInventory(inventory);
-            } else if (displayName.equals("§6Auswählen")) {
-                Inventory inventory = DefaultInventories.getWaypoints(player, Variables.INVENTORY_NAME_WAYPOINT_SELECT);
-                if (inventory == null) {
-                    player.sendMessage(new Message(ChatColor.RED + "Es gibt keine Wegpunkte zum Auswählen!", true).getRawMessageString());
-                    return;
+                case "§6Auswählen" -> {
+                    Inventory inventory = DefaultInventories.getWaypoints(player, Variables.INVENTORY_NAME_WAYPOINT_SELECT);
+                    if (inventory == null) {
+                        player.sendMessage(new Message(ChatColor.RED + "Es gibt keine Wegpunkte zum Auswählen!", true).getRawMessageString());
+                        return;
+                    }
+                    player.openInventory(inventory);
                 }
-                player.openInventory(inventory);
             }
 
 
@@ -114,7 +116,7 @@ public class InventoryClickListener implements Listener {
         } else if (viewTitle.toString().equals(Variables.INVENTORY_NAME_WAYPOINT_SELECT.toString())) {
             WayPoint wayPoint = configuration.getWorldWayPoints(player).get(event.getSlot());
             if (displayName.equals(wayPoint.name())) {
-                setNewCompassTarget(player, wayPoint.location(), "den Wegpunkt " + ChatColor.GOLD + wayPoint.name(), null);
+                setNewCompassTarget(player, CompassTarget.create(wayPoint.location()), "den Wegpunkt " + ChatColor.GOLD + wayPoint.name());
             }
 
             // Inventory Waypoints Delete
@@ -128,16 +130,14 @@ public class InventoryClickListener implements Listener {
         }
     }
 
-    private void setNewCompassTarget(Player player, @Nullable Location location, String message, @Nullable Player targetPlayer) {
-        if (location != null) {
-            Variables.targetCompassPlayers.put(player.getUniqueId(), new CompassTarget<>(player));
-            int distance = (int) Math.round(player.getLocation().distance(location));
-            player.setCompassTarget(location);
-            player.sendMessage(new Message("Du hast " + message + ChatColor.WHITE + " als dein neues Ziel gesetzt. (" + ChatColor.GOLD + distance + (distance > 1 ? " Blöcke entfernt" : " Block entfernt") + ChatColor.WHITE + ")", true).getRawMessageString());
-            player.closeInventory();
+    private void setNewCompassTarget(Player player, @NotNull CompassTarget<?> compassTarget, String message) {
+        Variables.targetCompassPlayers.put(player.getUniqueId(), compassTarget);
+        int distance = (int) Math.round(player.getLocation().distance(compassTarget.getTrivialLocation()));
+        player.setCompassTarget(compassTarget.getTrivialLocation());
+        player.sendMessage(new Message("Du hast " + message + ChatColor.WHITE + " als dein neues Ziel gesetzt. (" + ChatColor.GOLD + distance + (distance > 1 ? " Blöcke entfernt" : " Block entfernt") + ChatColor.WHITE + ")", true).getRawMessageString());
+        player.closeInventory();
 
-            if (targetPlayer != null)
-                targetPlayer.sendMessage(new Message(ChatColor.AQUA + player.getName() + ChatColor.WHITE + " hat dich als sein neues Compass-Ziel gesetzt. (" + ChatColor.GOLD + distance + " Blöcke entfernt " + ChatColor.WHITE + ")", true).getRawMessageString());
-        }
+        if (compassTarget.isPlayer())
+            compassTarget.getPlayer().sendMessage(new Message(ChatColor.AQUA + player.getName() + ChatColor.WHITE + " hat dich als sein neues Compass-Ziel gesetzt. (" + ChatColor.GOLD + distance + " Blöcke entfernt " + ChatColor.WHITE + ")", true).getRawMessageString());
     }
 }

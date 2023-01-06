@@ -1,11 +1,10 @@
 package de.thomas.listeners;
 
 import com.destroystokyo.paper.ParticleBuilder;
-import de.thomas.minecraftsurvival.MinecraftSurvival;
 import de.thomas.utils.Variables;
 import de.thomas.utils.builder.InventoryBuilder;
 import de.thomas.utils.builder.ItemBuilder;
-import de.thomas.utils.interfaces.CompassTarget;
+import de.thomas.utils.CompassTarget;
 import de.thomas.utils.message.Message;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -110,20 +109,31 @@ public class PlayerInteractListener implements Listener {
     }
 
     private Location getCompassTargetLocation(Player player) {
-        Player targetPlayer = Variables.targetCompassPlayers.get(player.getUniqueId());
-        switch (player.getWorld().getEnvironment()) {
-            case NORMAL -> {
-                if (targetPlayer == null || targetPlayer.getWorld().getEnvironment() != player.getWorld().getEnvironment())
-                    return player.getCompassTarget();
-                return targetPlayer.getLocation();
-            }
-            case NETHER, THE_END -> {
-                if (targetPlayer == null || targetPlayer.getWorld().getEnvironment() != player.getWorld().getEnvironment())
-                    return Variables.playerPortalLocationSpawnMap.getOrDefault(player.getUniqueId(), MinecraftSurvival.getINSTANCE().configuration.getPortalLocationByPlayer(player));
-                return targetPlayer.getLocation();
-            }
+        CompassTarget<?> compassTarget = Variables.targetCompassPlayers.get(player.getUniqueId());
+
+        if (compassTarget.isLocation() && compassTarget.isSameEnvironment(player.getWorld()))
+            return compassTarget.getLocation();
+
+        if (compassTarget.isPlayer() && compassTarget.isSameEnvironment(player.getWorld())) {
+            return compassTarget.getPlayer().getLocation();
         }
-        // Basically not reachable
-        return player.getWorld().getSpawnLocation();
+
+        return null;
+
+
+//        switch (player.getWorld().getEnvironment()) {
+//            case NORMAL -> {
+//                if (compassTarget == null || compassTarget.getWorld().getEnvironment() != player.getWorld().getEnvironment())
+//                    return player.getCompassTarget();
+//                return compassTarget.getLocation();
+//            }
+//            case NETHER, THE_END -> {
+//                if (compassTarget == null || compassTarget.getWorld().getEnvironment() != player.getWorld().getEnvironment())
+//                    return Variables.playerPortalLocationSpawnMap.getOrDefault(player.getUniqueId(), MinecraftSurvival.getINSTANCE().configuration.getPortalLocationByPlayer(player));
+//                return compassTarget.getLocation();
+//            }
+//        }
+//        // Basically not reachable
+//        return player.getWorld().getSpawnLocation();
     }
 }
