@@ -7,6 +7,9 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -48,5 +51,14 @@ public class Variables {
     public static Location stringToLocation(String location) {
         String[] params = location.split(";");
         return new Location(Bukkit.getWorld(params[0]), Double.parseDouble(params[1]), Double.parseDouble(params[2]), Double.parseDouble(params[3]), Float.parseFloat(params[4]), Float.parseFloat(params[5]));
+    }
+
+
+
+    public static ItemStack getCompassInHand(Player player) {
+        ItemStack mainHand = player.getInventory().getItemInMainHand();
+        ItemStack offHand = player.getInventory().getItemInOffHand();
+
+        return mainHand.getType() == Material.COMPASS ? mainHand : offHand;
     }
 }

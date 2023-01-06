@@ -23,9 +23,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CompassMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+
+import static de.thomas.utils.Variables.getCompassInHand;
 
 public class InventoryClickListener implements Listener {
     private final Configuration configuration = MinecraftSurvival.getINSTANCE().configuration;
@@ -133,6 +136,12 @@ public class InventoryClickListener implements Listener {
     private void setNewCompassTarget(Player player, @NotNull CompassTarget<?> compassTarget, String message) {
         Variables.targetCompassPlayers.put(player.getUniqueId(), compassTarget);
         int distance = (int) Math.round(player.getLocation().distance(compassTarget.getTrivialLocation()));
+        ItemStack compass = getCompassInHand(player);
+        CompassMeta compassMeta = (CompassMeta) compass.getItemMeta();
+        compassMeta.setLodestoneTracked(false);
+        compassMeta.setLodestone(compassTarget.getTrivialLocation());
+        compass.setItemMeta(compassMeta);
+
         player.setCompassTarget(compassTarget.getTrivialLocation());
         player.sendMessage(new Message("Du hast " + message + ChatColor.WHITE + " als dein neues Ziel gesetzt. (" + ChatColor.GOLD + distance + (distance > 1 ? " Blöcke entfernt" : " Block entfernt") + ChatColor.WHITE + ")", true).getRawMessageString());
         player.closeInventory();

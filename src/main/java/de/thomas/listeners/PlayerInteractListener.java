@@ -12,8 +12,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CompassMeta;
 
 import java.util.Random;
+
+import static de.thomas.utils.Variables.getCompassInHand;
 
 public class PlayerInteractListener implements Listener {
 
@@ -31,6 +35,13 @@ public class PlayerInteractListener implements Listener {
                     return;
                 }
                 player.setCompassTarget(targetLocation);
+
+                // Set lodestone location
+                ItemStack compass = getCompassInHand(player);
+                CompassMeta compassMeta = (CompassMeta) compass.getItemMeta();
+                compassMeta.setLodestoneTracked(false);
+                compassMeta.setLodestone(targetLocation);
+                compass.setItemMeta(compassMeta);
 
                 spawnParticlesAtLocation(player, targetLocation.clone());
 
