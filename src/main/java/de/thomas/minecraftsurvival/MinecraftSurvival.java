@@ -1,5 +1,6 @@
 package de.thomas.minecraftsurvival;
 
+import de.thomas.commands.FlyCommand;
 import de.thomas.commands.PingCommand;
 import de.thomas.listeners.*;
 import de.thomas.utils.Variables;
@@ -74,6 +75,7 @@ public class MinecraftSurvival extends JavaPlugin {
 
     private void registerCommands() {
         Objects.requireNonNull(getCommand("ping")).setExecutor(new PingCommand());
+        Objects.requireNonNull(getCommand("fly")).setExecutor(new FlyCommand());
     }
 
     private void registerResourcePack() throws Exception {

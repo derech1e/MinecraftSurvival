@@ -8,3 +8,5 @@ load: STARTUP
 commands:
   ping:
     description: Gibt den Ping zum Server an
+  fly:
+    description: Lass dich fliegen!
