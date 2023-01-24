@@ -30,6 +30,6 @@ public class PingCommand implements CommandExecutor {
         }
         sender.sendMessage(new Message("Dein Ping beträgt §6" + player.getPing() + "§f ms.", true).getRawMessageString());
 
-        return false;
+        return true;
     }
 }
