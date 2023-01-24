@@ -1,12 +1,15 @@
 package de.thomas.listeners;
 
 import com.destroystokyo.paper.ParticleBuilder;
+import de.thomas.utils.CompassTarget;
 import de.thomas.utils.Variables;
 import de.thomas.utils.builder.InventoryBuilder;
 import de.thomas.utils.builder.ItemBuilder;
-import de.thomas.utils.CompassTarget;
 import de.thomas.utils.message.Message;
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -122,12 +125,13 @@ public class PlayerInteractListener implements Listener {
     private Location getCompassTargetLocation(Player player) {
         CompassTarget<?> compassTarget = Variables.targetCompassPlayers.get(player.getUniqueId());
 
-        if (compassTarget.isLocation() && compassTarget.isSameEnvironment(player.getWorld()))
+        if (compassTarget == null || !compassTarget.isSameEnvironment(player.getWorld())) return null;
+
+        if (compassTarget.isLocation())
             return compassTarget.getLocation();
 
-        if (compassTarget.isPlayer() && compassTarget.isSameEnvironment(player.getWorld())) {
+        if (compassTarget.isPlayer())
             return compassTarget.getPlayer().getLocation();
-        }
 
         return null;
 
