@@ -1,7 +1,7 @@
 package de.thomas.utils.threads;
 
 import com.destroystokyo.paper.ParticleBuilder;
-import de.thomas.minecraftsurvival.MinecraftSurvival;
+import de.thomas.MinecraftSurvival;
 import de.thomas.utils.threads.base.IThreadBase;
 import org.bukkit.*;
 import org.bukkit.block.Block;

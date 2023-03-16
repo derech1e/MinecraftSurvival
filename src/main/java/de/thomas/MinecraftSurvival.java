@@ -1,4 +1,4 @@
-package de.thomas.minecraftsurvival;
+package de.thomas;
 
 import de.thomas.commands.FlyCommand;
 import de.thomas.commands.PingCommand;

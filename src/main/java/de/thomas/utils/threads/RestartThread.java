@@ -1,6 +1,6 @@
 package de.thomas.utils.threads;
 
-import de.thomas.minecraftsurvival.MinecraftSurvival;
+import de.thomas.MinecraftSurvival;
 import de.thomas.utils.message.Message;
 import de.thomas.utils.threads.base.IThreadBase;
 import org.bukkit.Bukkit;

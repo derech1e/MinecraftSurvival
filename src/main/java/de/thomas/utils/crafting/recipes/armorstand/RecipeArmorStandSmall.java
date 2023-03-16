@@ -1,6 +1,6 @@
 package de.thomas.utils.crafting.recipes.armorstand;
 
-import de.thomas.minecraftsurvival.MinecraftSurvival;
+import de.thomas.MinecraftSurvival;
 import de.thomas.utils.builder.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

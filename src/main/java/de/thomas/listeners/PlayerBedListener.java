@@ -1,6 +1,6 @@
 package de.thomas.listeners;
 
-import de.thomas.minecraftsurvival.MinecraftSurvival;
+import de.thomas.MinecraftSurvival;
 import de.thomas.utils.message.Message;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;

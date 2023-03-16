@@ -1,6 +1,6 @@
 package de.thomas.listeners;
 
-import de.thomas.minecraftsurvival.MinecraftSurvival;
+import de.thomas.MinecraftSurvival;
 import de.thomas.utils.config.Configuration;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

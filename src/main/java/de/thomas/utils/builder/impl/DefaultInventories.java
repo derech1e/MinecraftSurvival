@@ -1,6 +1,6 @@
 package de.thomas.utils.builder.impl;
 
-import de.thomas.minecraftsurvival.MinecraftSurvival;
+import de.thomas.MinecraftSurvival;
 import de.thomas.utils.Variables;
 import de.thomas.utils.builder.InventoryBuilder;
 import de.thomas.utils.builder.ItemBuilder;

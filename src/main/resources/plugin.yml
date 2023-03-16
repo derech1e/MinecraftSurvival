@@ -1,6 +1,6 @@
 name: MinecraftSurvival
 version: ${project.version}
-main: de.thomas.minecraftsurvival.MinecraftSurvival
+main: de.thomas.MinecraftSurvival
 api-version: 1.19
 authors: [ Thomas ]
 description: Ein Plugin für das Survival Projekt

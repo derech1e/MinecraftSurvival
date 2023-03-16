@@ -1,6 +1,6 @@
 package de.thomas.listeners;
 
-import de.thomas.minecraftsurvival.MinecraftSurvival;
+import de.thomas.MinecraftSurvival;
 import de.thomas.utils.Variables;
 import de.thomas.utils.builder.ItemBuilder;
 import de.thomas.utils.builder.impl.DefaultInventories;
