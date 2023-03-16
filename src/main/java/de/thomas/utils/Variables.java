@@ -54,7 +54,6 @@ public class Variables {
     }
 
 
-
     public static ItemStack getCompassInHand(Player player) {
         ItemStack mainHand = player.getInventory().getItemInMainHand();
         ItemStack offHand = player.getInventory().getItemInOffHand();

@@ -1,12 +1,12 @@
 package de.thomas.listeners;
 
 import de.thomas.MinecraftSurvival;
+import de.thomas.utils.CompassTarget;
 import de.thomas.utils.Variables;
 import de.thomas.utils.builder.ItemBuilder;
 import de.thomas.utils.builder.impl.DefaultInventories;
 import de.thomas.utils.config.Configuration;
 import de.thomas.utils.config.context.WayPoint;
-import de.thomas.utils.CompassTarget;
 import de.thomas.utils.message.ErrorMessageType;
 import de.thomas.utils.message.Message;
 import net.kyori.adventure.text.Component;
