@@ -99,7 +99,7 @@ public class Configuration extends AbstractConfiguration {
     }
 
     public boolean updateSpeedBlockStateByPlayer(Player player, boolean state) {
-        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(state, getWayPoints(player), getBaguetteCounterByPlayer(player), getPortalLocationByPlayer(player), state));
+        Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(getClockStateByPlayer(player), getWayPoints(player), getBaguetteCounterByPlayer(player), getPortalLocationByPlayer(player), state));
         return state;
     }
 
