@@ -1,9 +1,12 @@
 package de.thomas;
 
+import de.thomas.commands.ChunkCommand;
 import de.thomas.commands.FlyCommand;
 import de.thomas.commands.PingCommand;
 import de.thomas.listeners.*;
 import de.thomas.utils.Variables;
+import de.thomas.utils.chunkloader.ChunkManager;
+import de.thomas.utils.chunkloader.ChunkTicker;
 import de.thomas.utils.config.Configuration;
 import de.thomas.utils.crafting.RecipeManager;
 import de.thomas.utils.resourcepack.ResourcePack;
@@ -21,6 +24,7 @@ public class MinecraftSurvival extends JavaPlugin {
 
     private static MinecraftSurvival INSTANCE;
     public Configuration configuration;
+    public ChunkManager chunkManager;
 
     public static MinecraftSurvival getINSTANCE() {
         return INSTANCE;
@@ -44,6 +48,8 @@ public class MinecraftSurvival extends JavaPlugin {
         //Load Threads
         new RestartThread().startThread();
         new ClockTimeThread().startThread();
+
+        initChunkLoading();
 
         try {
             registerResourcePack();
@@ -77,6 +83,13 @@ public class MinecraftSurvival extends JavaPlugin {
     private void registerCommands() {
         Objects.requireNonNull(getCommand("ping")).setExecutor(new PingCommand());
         Objects.requireNonNull(getCommand("fly")).setExecutor(new FlyCommand());
+        Objects.requireNonNull(getCommand("chunkloader")).setExecutor(new ChunkCommand());
+    }
+
+    private void initChunkLoading() {
+        Bukkit.getWorlds().forEach(world -> world.getPluginChunkTickets().get(this).forEach(ticket -> ticket.removePluginChunkTicket(this)));
+        chunkManager = new ChunkManager();
+        chunkManager.initLoading();
     }
 
     private void registerResourcePack() throws Exception {

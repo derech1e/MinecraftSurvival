@@ -10,3 +10,5 @@ commands:
     description: Gibt den Ping zum Server an
   fly:
     description: Lass dich fliegen!
+  chunkloader:
+    description: Lasse chunks laden

@@ -4,14 +4,12 @@ import de.thomas.utils.config.context.PlayerContext;
 import de.thomas.utils.message.Message;
 import de.thomas.utils.resourcepack.ResourcePack;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Variables {
@@ -53,6 +51,14 @@ public class Variables {
         return new Location(Bukkit.getWorld(params[0]), Double.parseDouble(params[1]), Double.parseDouble(params[2]), Double.parseDouble(params[3]), Float.parseFloat(params[4]), Float.parseFloat(params[5]));
     }
 
+    public static String chunkToString(Chunk chunk) {
+        return String.format("%s;%s;%s", chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+    }
+
+    public static Chunk stringToChunk(String chunk) {
+        String[] params = chunk.split(";");
+        return Objects.requireNonNull(Bukkit.getWorld(params[0])).getChunkAt(Integer.parseInt(params[1]), Integer.parseInt(params[2]));
+    }
 
     public static ItemStack getCompassInHand(Player player) {
         ItemStack mainHand = player.getInventory().getItemInMainHand();

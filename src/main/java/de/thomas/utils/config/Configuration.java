@@ -3,14 +3,14 @@ package de.thomas.utils.config;
 import com.google.gson.JsonObject;
 import de.thomas.utils.Variables;
 import de.thomas.utils.config.base.AbstractConfiguration;
-import de.thomas.utils.config.context.PlayerContext;
-import de.thomas.utils.config.context.WayPoint;
+import de.thomas.utils.config.context.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -105,5 +105,22 @@ public class Configuration extends AbstractConfiguration {
 
     public void updatePortalLocationByPlayer(Player player, Location location) {
         Variables.playerConfigData.put(player.getUniqueId(), new PlayerContext(getClockStateByPlayer(player), getWayPoints(player), getBaguetteCounterByPlayer(player), location, getSpeedBlockStateByPlayer(player)));
+    }
+
+    public List<ChunkData> getLoadedChunks() {
+        ChunkLoadingContext context = this.get("loadedChunks", ChunkLoadingContext.class);
+        return context == null ? new ArrayList<>() : context.chunkDataList();
+    }
+    public void addChunk(ChunkData chunkData) {
+        List<ChunkData> newChunkData = getLoadedChunks();
+        newChunkData.add(chunkData);
+        this.set("loadedChunks", new ChunkLoadingContext(newChunkData));
+        this.save();
+    }
+    public void removeChunk(ChunkData chunkData) {
+        List<ChunkData> newChunkData = getLoadedChunks();
+        newChunkData.remove(chunkData);
+        this.set("loadedChunks", new ChunkLoadingContext(newChunkData));
+        this.save();
     }
 }
