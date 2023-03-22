@@ -9,14 +9,19 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class ChunkManager {
 
-    private static final List<Chunk> loadedChunks = new ArrayList<>();
+    private List<Chunk> loadedChunks = new ArrayList<>();
     private BukkitTask tickTask;
 
     public void initLoading() {
+        loadedChunks = MinecraftSurvival.getINSTANCE().configuration.getLoadedChunks().stream().map(ChunkData::chunk).toList();;
+
+        loadedChunks.forEach(chunk -> {
+            chunk.addPluginChunkTicket(MinecraftSurvival.getINSTANCE());
+            chunk.setForceLoaded(true);
+        });
         // Enable tick
         tickTask = new BukkitRunnable() {
             @Override
@@ -25,7 +30,6 @@ public class ChunkManager {
                 if(loadedChunks.size() != 0) {
                     loadedChunks.forEach(chunk -> {
                         if(!ChunkTicker.isInsideRange(chunk)) {
-                            chunk.addPluginChunkTicket(MinecraftSurvival.getINSTANCE());
                             ChunkTicker.tickChunk(chunk);
                         }
                     });
@@ -47,33 +51,15 @@ public class ChunkManager {
     public void addChunk(Player player, final Chunk chunk) {
         loadedChunks.add(chunk);
         MinecraftSurvival.getINSTANCE().configuration.addChunk(new ChunkData(player.getUniqueId(), chunk));
+        chunk.setForceLoaded(true);
         chunk.addPluginChunkTicket(MinecraftSurvival.getINSTANCE());
     }
 
     public void removeChunk(Player player, final Chunk chunk) {
         loadedChunks.remove(chunk);
         MinecraftSurvival.getINSTANCE().configuration.removeChunk(new ChunkData(player.getUniqueId(), chunk));
-    }
-    public Boolean hasChunk(final Chunk c) {
-        return loadedChunks.contains(c);
-    }
-
-    public Boolean hasAllChunks(final Set<Chunk> chunks) {
-        for (final Chunk c : chunks) {
-            if (!loadedChunks.contains(c)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public Boolean hasNoneChunks(final Set<Chunk> chunks) {
-        for (final Chunk c : chunks) {
-            if (loadedChunks.contains(c)) {
-                return false;
-            }
-        }
-        return true;
+        chunk.setForceLoaded(false);
+        chunk.removePluginChunkTicket(MinecraftSurvival.getINSTANCE());
     }
 
     public List<Chunk> getChunks() {

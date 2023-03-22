@@ -20,7 +20,6 @@ public record ChunkLoadingContext(List<ChunkData> chunkDataList) implements Json
     public ChunkLoadingContext deserialize(JsonObject object) {
         object.get("loadedChunks").getAsJsonArray().forEach(chunk -> {
             JsonObject chunkObject = chunk.getAsJsonObject();
-            System.out.println(chunkObject);
             String uuid = chunkObject.get("playerId").getAsString();
             Chunk actualChunk = Variables.stringToChunk(chunkObject.get("chunkData").getAsString());
             chunkDataList.add(new ChunkData(UUID.fromString(uuid), actualChunk));

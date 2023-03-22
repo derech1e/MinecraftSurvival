@@ -6,7 +6,6 @@ import de.thomas.commands.PingCommand;
 import de.thomas.listeners.*;
 import de.thomas.utils.Variables;
 import de.thomas.utils.chunkloader.ChunkManager;
-import de.thomas.utils.chunkloader.ChunkTicker;
 import de.thomas.utils.config.Configuration;
 import de.thomas.utils.crafting.RecipeManager;
 import de.thomas.utils.resourcepack.ResourcePack;
@@ -15,6 +14,8 @@ import de.thomas.utils.resourcepack.verification.HashingUtil;
 import de.thomas.utils.threads.ClockTimeThread;
 import de.thomas.utils.threads.RestartThread;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -87,7 +88,7 @@ public class MinecraftSurvival extends JavaPlugin {
     }
 
     private void initChunkLoading() {
-        Bukkit.getWorlds().forEach(world -> world.getPluginChunkTickets().get(this).forEach(ticket -> ticket.removePluginChunkTicket(this)));
+        Bukkit.getWorlds().stream().filter(world -> world.getPluginChunkTickets().get(this) != null).forEach(world -> world.getPluginChunkTickets().get(this).forEach(chunk -> chunk.removePluginChunkTicket(this)));
         chunkManager = new ChunkManager();
         chunkManager.initLoading();
     }
